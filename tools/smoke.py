@@ -11,7 +11,7 @@ from pathlib import Path
 
 import requests
 
-from archlens.store import Store
+from hld_navigator.store import Store
 
 
 def main():
@@ -25,15 +25,15 @@ def main():
             port = listener.getsockname()[1]
         base = f"http://127.0.0.1:{port}"
         env = os.environ.copy()
-        env["ARCHLENS_DB"] = database
-        env.pop("ARCHLENS_OLLAMA_MODEL", None)
+        env["HLD_NAVIGATOR_DB"] = database
+        env.pop("HLD_NAVIGATOR_OLLAMA_MODEL", None)
         with (Path(temporary) / "server.log").open("w") as logs:
             server = subprocess.Popen(
                 [
                     sys.executable,
                     "-m",
                     "uvicorn",
-                    "archlens.app:app",
+                    "hld_navigator.app:app",
                     "--host",
                     "127.0.0.1",
                     "--port",

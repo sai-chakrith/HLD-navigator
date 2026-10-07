@@ -1,4 +1,4 @@
-# ArchLens
+# HLD Navigator
 
 Case Study 1: **AUTOSAR HLD Document Analysis Assistant**. A separate local repository from SpecProbe. This first slice provides controlled document ingestion, an evidence-backed architecture inventory, approved-source search, reviewer decisions, inventory revision comparison and JSON export.
 
@@ -7,16 +7,17 @@ Case Study 1: **AUTOSAR HLD Document Analysis Assistant**. A separate local repo
 Python 3.11+ and uv are required. Run from this repository:
 
 ```powershell
+cd C:\Users\peddi\Downloads\chakrithdump\HLD-navigator
 uv sync --frozen --extra dev
-uv run python -m archlens.admin engineer --workspace pilot --role reviewer
+uv run python -m hld_navigator.admin engineer --workspace pilot --role reviewer
 # Copy the returned token privately; it is stored only as a hash.
-uv run uvicorn archlens.app:app --host 127.0.0.1 --port 8010
+uv run uvicorn hld_navigator.app:app --host 127.0.0.1 --port 8010
 ```
 
 In a second terminal:
 
 ```powershell
-uv run streamlit run src/archlens/ui.py --server.port 8510 --server.address 127.0.0.1
+uv run streamlit run src/hld_navigator/ui.py --server.port 8510 --server.address 127.0.0.1
 ```
 
 Open [the UI](http://127.0.0.1:8510) and enter the token with workspace `pilot`. [API docs](http://127.0.0.1:8010/docs) describe all endpoints. The API refuses unauthenticated access to documents; viewer/editor/reviewer permissions are enforced server-side. The CLI is a trusted local operator interface and requires access to the database filesystem. Provisioning an existing user rotates their token across all memberships. Enterprise IAM, account revocation tooling and deployment hardening remain future work.
@@ -49,8 +50,8 @@ The default uses SQLite FTS5 ranked lexical retrieval and returns exact approved
 Optional local Ollama integration:
 
 ```powershell
-$env:ARCHLENS_OLLAMA_URL='http://127.0.0.1:11434'
-$env:ARCHLENS_OLLAMA_MODEL='<installed model tag>'
+$env:HLD_NAVIGATOR_OLLAMA_URL='http://127.0.0.1:11434'
+$env:HLD_NAVIGATOR_OLLAMA_MODEL='<installed model tag>'
 # Restart the API with these variables.
 ```
 

@@ -4,19 +4,19 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from archlens.analysis import compare, findings
-from archlens.app import create_app
-from archlens.extraction import extract
-from archlens.models import Review, SourceReview
-from archlens.rag import supported
-from archlens.store import Store
+from hld_navigator.analysis import compare, findings
+from hld_navigator.app import create_app
+from hld_navigator.extraction import extract
+from hld_navigator.models import Review, SourceReview
+from hld_navigator.rag import supported
+from hld_navigator.store import Store
 
 EXAMPLE = Path(__file__).parents[1] / "examples/powertrain.md"
 
 
 @pytest.fixture
 def api(tmp_path, monkeypatch):
-    monkeypatch.delenv("ARCHLENS_OLLAMA_MODEL", raising=False)
+    monkeypatch.delenv("HLD_NAVIGATOR_OLLAMA_MODEL", raising=False)
     app = create_app(str(tmp_path / "test.db"))
     client = TestClient(app)
     store = app.state.store
@@ -273,8 +273,8 @@ def test_model_unavailable_no_silent_fallback(api, monkeypatch):
     client, _, reviewer, _ = api
     doc = upload(api)
     approve(api, doc)
-    monkeypatch.setenv("ARCHLENS_OLLAMA_MODEL", "missing")
-    monkeypatch.delenv("ARCHLENS_OLLAMA_URL", raising=False)
+    monkeypatch.setenv("HLD_NAVIGATOR_OLLAMA_MODEL", "missing")
+    monkeypatch.delenv("HLD_NAVIGATOR_OLLAMA_URL", raising=False)
     assert (
         client.post(
             "/workspaces/pilot/query",

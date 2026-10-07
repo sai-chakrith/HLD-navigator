@@ -61,44 +61,6 @@ wheels = [
 ]
 
 [[package]]
-name = "archlens"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "fastapi" },
-    { name = "pdfplumber" },
-    { name = "pydantic" },
-    { name = "python-multipart" },
-    { name = "requests" },
-    { name = "streamlit" },
-    { name = "uvicorn" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "httpx" },
-    { name = "pytest" },
-    { name = "reportlab" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "fastapi", specifier = ">=0.115" },
-    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.27" },
-    { name = "pdfplumber", specifier = ">=0.11" },
-    { name = "pydantic", specifier = ">=2.8" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
-    { name = "python-multipart", specifier = ">=0.0.18" },
-    { name = "reportlab", marker = "extra == 'dev'", specifier = ">=4.2" },
-    { name = "requests", specifier = ">=2.31" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
-    { name = "streamlit", specifier = ">=1.40" },
-    { name = "uvicorn", specifier = ">=0.30" },
-]
-provides-extras = ["dev"]
-
-[[package]]
 name = "attrs"
 version = "26.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -473,6 +435,44 @@ sdist = { url = "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6f
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86", size = 37515, upload-time = "2025-04-24T03:35:24.344Z" },
 ]
+
+[[package]]
+name = "hld-navigator"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "fastapi" },
+    { name = "pdfplumber" },
+    { name = "pydantic" },
+    { name = "python-multipart" },
+    { name = "requests" },
+    { name = "streamlit" },
+    { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "httpx" },
+    { name = "pytest" },
+    { name = "reportlab" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.115" },
+    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.27" },
+    { name = "pdfplumber", specifier = ">=0.11" },
+    { name = "pydantic", specifier = ">=2.8" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
+    { name = "python-multipart", specifier = ">=0.0.18" },
+    { name = "reportlab", marker = "extra == 'dev'", specifier = ">=4.2" },
+    { name = "requests", specifier = ">=2.31" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
+    { name = "streamlit", specifier = ">=1.40" },
+    { name = "uvicorn", specifier = ">=0.30" },
+]
+provides-extras = ["dev"]
 
 [[package]]
 name = "httpcore"

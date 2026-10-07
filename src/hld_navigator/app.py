@@ -13,8 +13,8 @@ from .store import Store
 
 
 def create_app(path=None):
-    store = Store(path or os.getenv("ARCHLENS_DB", ".data/archlens.db"))
-    app = FastAPI(title="ArchLens — HLD Review Pilot")
+    store = Store(path or os.getenv("HLD_NAVIGATOR_DB", ".data/hld_navigator.db"))
+    app = FastAPI(title="HLD Navigator — HLD Review Pilot")
     app.state.store = store
 
     def authorize(workspace, authorization, minimum="viewer"):

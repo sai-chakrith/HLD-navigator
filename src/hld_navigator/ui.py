@@ -3,8 +3,8 @@ import json
 import requests
 import streamlit as st
 
-st.set_page_config(page_title="ArchLens", layout="wide")
-st.title("ArchLens · AUTOSAR HLD Review")
+st.set_page_config(page_title="HLD Navigator", layout="wide")
+st.title("HLD Navigator · AUTOSAR HLD Review")
 st.caption("Engineering pilot · Exact source excerpts by default · Human-reviewed architecture")
 base = st.sidebar.text_input("API", "http://127.0.0.1:8010").rstrip("/")
 workspace = st.sidebar.text_input("Workspace", "pilot")

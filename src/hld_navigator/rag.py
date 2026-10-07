@@ -29,16 +29,16 @@ def answer(question, evidence):
             "answer": "Insufficient approved source evidence.",
             "evidence": [],
         }
-    model = os.getenv("ARCHLENS_OLLAMA_MODEL")
+    model = os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
     if not model:
         return {
             "mode": "lexical_source_excerpts",
             "answer": "\n".join(f"{item['text']} [{i}]" for i, item in enumerate(evidence, 1)),
             "evidence": evidence,
         }
-    base = os.getenv("ARCHLENS_OLLAMA_URL")
+    base = os.getenv("HLD_NAVIGATOR_OLLAMA_URL")
     if not base:
-        raise ValueError("ARCHLENS_OLLAMA_URL is required when a model is configured")
+        raise ValueError("HLD_NAVIGATOR_OLLAMA_URL is required when a model is configured")
     context = "\n".join(f"[{i}] {item['text']}" for i, item in enumerate(evidence, 1))
     payload = {
         "model": model,

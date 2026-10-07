@@ -5,7 +5,7 @@ import pytest
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Table
 
-from archlens.extraction import extract
+from hld_navigator.extraction import extract
 
 
 def test_text_pdf_actual_page_evidence():
@@ -47,7 +47,7 @@ def test_pdf_table_actual_row_evidence():
 def test_ui_initial_load():
     from streamlit.testing.v1 import AppTest
 
-    app = AppTest.from_file(str(Path(__file__).parents[1] / "src/archlens/ui.py")).run()
+    app = AppTest.from_file(str(Path(__file__).parents[1] / "src/hld_navigator/ui.py")).run()
     assert not app.exception
-    assert "ArchLens" in app.title[0].value
+    assert "HLD Navigator" in app.title[0].value
     assert "Provision" in app.info[0].value
