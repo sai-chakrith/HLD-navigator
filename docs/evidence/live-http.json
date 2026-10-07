@@ -1,0 +1,13 @@
+{
+  "health": {
+    "status": "ok",
+    "retrieval": "sqlite_fts5",
+    "pilot": true
+  },
+  "unauthenticated_status": 401,
+  "approved_entities": 8,
+  "findings": 0,
+  "retrieval_mode": "lexical_source_excerpts",
+  "runtime": "3.14.8",
+  "validation": "Synthetic live HTTP workflow; no real HLD or model benchmark"
+}
