@@ -9,7 +9,7 @@ from .analysis import compare, findings
 from .extraction import ALLOWED, REQUIRED, extract
 from .models import CoverageReview, ManualEntity, Question, Review, SourceReview
 from .rag import answer
-from .store import Store
+from .store import ProvenanceError, Store
 from .vectors import configured_embedder
 
 
@@ -94,6 +94,8 @@ def create_app(path=None):
             store.review(workspace, identifier, decision, actor, source=True)
         except KeyError as error:
             raise HTTPException(404, "Document not found") from error
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
         return {"ok": True}
 
     @app.post("/workspaces/{workspace}/entities/{identifier}/review")
@@ -113,7 +115,10 @@ def create_app(path=None):
             raise HTTPException(422, "Unknown, missing or empty architecture attributes")
         if entity["kind"] == "port" and attrs["direction"] not in {"provides", "requires"}:
             raise HTTPException(422, "Invalid port direction")
-        store.review(workspace, identifier, decision, actor)
+        try:
+            store.review(workspace, identifier, decision, actor)
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
         return {"ok": True}
 
     @app.post("/workspaces/{workspace}/query")
@@ -168,6 +173,12 @@ def create_app(path=None):
         document = next((d for d in store.documents(workspace) if d["id"] == document_id), None)
         if not document:
             raise HTTPException(404, "Document not found")
+        if document["provenance_status"] != "verified":
+            raise HTTPException(409, "Verified provenance required; re-ingest this document")
+        try:
+            store.assert_exportable_provenance(workspace, document_id)
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
         if not document["approved"]:
             raise HTTPException(409, "Approve the source before export")
         proposals = store.entities(workspace, document_id)
@@ -204,7 +215,10 @@ def create_app(path=None):
     @app.get("/workspaces/{workspace}/documents/{identifier}/blocks")
     def source_blocks(workspace: str, identifier: str, authorization: str | None = Header(None)):
         authorize(workspace, authorization)
-        return store.eligible_blocks(workspace, identifier, "source", approved=False)
+        try:
+            return store.eligible_blocks(workspace, identifier, "source", approved=False)
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
 
     @app.post("/workspaces/{workspace}/documents/{identifier}/entities")
     def manual_entity(
@@ -221,6 +235,8 @@ def create_app(path=None):
             }
         except KeyError as error:
             raise HTTPException(404, "Evidence block not found") from error
+        except ProvenanceError as error:
+            raise HTTPException(409, str(error)) from error
         except ValueError as error:
             raise HTTPException(422, str(error)) from error
 
@@ -236,6 +252,8 @@ def create_app(path=None):
             store.coverage_review(workspace, identifier, decision, actor)
         except KeyError as error:
             raise HTTPException(404, "Document not found") from error
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
         return {"ok": True}
 
     @app.post("/workspaces/{workspace}/documents/{identifier}/index")
@@ -251,6 +269,8 @@ def create_app(path=None):
             }
         except KeyError as error:
             raise HTTPException(404, "Document not found") from error
+        except ProvenanceError as error:
+            raise HTTPException(409, str(error)) from error
         except (URLError, TimeoutError, ValueError) as error:
             raise HTTPException(
                 503, "Embedding indexing failed; existing index remains intact"

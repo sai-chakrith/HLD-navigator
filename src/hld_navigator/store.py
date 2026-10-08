@@ -7,7 +7,13 @@ from contextlib import contextmanager
 from pathlib import Path
 from uuid import uuid4
 
-from .models import Location
+from pydantic import ValidationError
+
+from .models import Block, Entity, EvidenceSource, Location
+
+
+class ProvenanceError(ValueError):
+    """Raised when source lineage cannot be proven by an exact occurrence."""
 
 
 class Store:
@@ -16,7 +22,7 @@ class Store:
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         with self.connection() as db:
             version = db.execute("PRAGMA user_version").fetchone()[0]
-            if version > 2:
+            if version > 3:
                 raise ValueError("Database schema is newer than this application")
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY, token_hash TEXT UNIQUE NOT NULL);
@@ -25,6 +31,8 @@ class Store:
                 CREATE TABLE IF NOT EXISTS documents(id TEXT PRIMARY KEY, workspace TEXT NOT NULL,
                     title TEXT NOT NULL, version TEXT NOT NULL, name TEXT NOT NULL, sha256 TEXT NOT NULL,
                     original BLOB NOT NULL, approved INTEGER NOT NULL DEFAULT 0, warnings TEXT NOT NULL,
+                    provenance_status TEXT NOT NULL DEFAULT 'legacy_unverified',
+                    provenance_detail TEXT NOT NULL DEFAULT 'Predates occurrence validation',
                     UNIQUE(workspace,title,version));
                 CREATE TABLE IF NOT EXISTS blocks(id TEXT PRIMARY KEY, document_id TEXT NOT NULL,
                     text TEXT NOT NULL, location TEXT NOT NULL,
@@ -40,17 +48,22 @@ class Store:
                 CREATE TABLE IF NOT EXISTS entity_evidence(entity_id TEXT, block_id TEXT,
                     PRIMARY KEY(entity_id,block_id), FOREIGN KEY(entity_id) REFERENCES entities(id),
                     FOREIGN KEY(block_id) REFERENCES blocks(id));
-                INSERT OR IGNORE INTO entity_evidence
-                    SELECT e.id,b.id FROM entities e JOIN blocks b
-                    ON e.document_id=b.document_id AND e.evidence=b.text
-                    AND (json_extract(e.location,'$.table') IS NULL OR e.location=b.location);
                 CREATE TABLE IF NOT EXISTS coverage_reviews(document_id TEXT PRIMARY KEY,
                     fingerprint TEXT NOT NULL, scope TEXT NOT NULL, reason TEXT NOT NULL, actor TEXT NOT NULL,
                     FOREIGN KEY(document_id) REFERENCES documents(id));
                 CREATE TABLE IF NOT EXISTS embeddings(block_id TEXT, model TEXT, fingerprint TEXT,
                     vector TEXT NOT NULL, PRIMARY KEY(block_id,model), FOREIGN KEY(block_id) REFERENCES blocks(id));
-                PRAGMA user_version=2;
             """)
+            columns = {row[1] for row in db.execute("PRAGMA table_info(documents)")}
+            if "provenance_status" not in columns:
+                db.execute(
+                    "ALTER TABLE documents ADD COLUMN provenance_status TEXT NOT NULL DEFAULT 'legacy_unverified'"
+                )
+            if "provenance_detail" not in columns:
+                db.execute(
+                    "ALTER TABLE documents ADD COLUMN provenance_detail TEXT NOT NULL DEFAULT 'Predates occurrence validation'"
+                )
+            db.execute("PRAGMA user_version=3")
 
     @contextmanager
     def connection(self):
@@ -97,11 +110,148 @@ class Store:
             (actor, action, target, json.dumps(details, sort_keys=True)),
         )
 
-    def ingest(self, workspace, title, version, name, content, blocks, entities, warnings, actor):
+    @staticmethod
+    def _location_json(location: Location) -> str:
+        return location.model_dump_json()
+
+    @classmethod
+    def _source_key(cls, text: str, location: Location) -> tuple[str, str]:
+        return text, cls._location_json(location)
+
+    @classmethod
+    def _validate_batch(cls, blocks, entities):
+        validated_blocks = [Block.model_validate(block, strict=True) for block in blocks]
+        validated_entities = [Entity.model_validate(entity, strict=True) for entity in entities]
+        occurrences = {}
+        for block in validated_blocks:
+            key = cls._source_key(block.text, block.location)
+            if key in occurrences:
+                raise ProvenanceError("Duplicate source blocks claim the same occurrence")
+            occurrences[key] = block
+        resolved = []
+        for entity in validated_entities:
+            sources = [
+                EvidenceSource(text=entity.evidence, location=entity.location),
+                *[EvidenceSource.model_validate(source, strict=True) for source in entity.sources],
+            ]
+            unique = {}
+            for source in sources:
+                key = cls._source_key(source.text, source.location)
+                if key not in occurrences:
+                    raise ProvenanceError(
+                        "Entity evidence does not resolve to an exact source-block occurrence"
+                    )
+                unique[key] = source
+            if not unique:
+                raise ProvenanceError("Entity has no resolvable source occurrence")
+            resolved.append((entity, list(unique.values())))
+        return validated_blocks, resolved
+
+    @classmethod
+    def _lineage_issues(cls, db, document):
+        issues = []
+        block_keys = {}
+        blocks = db.execute(
+            "SELECT id,text,location FROM blocks WHERE document_id=?", (document,)
+        ).fetchall()
+        for row in blocks:
+            try:
+                block = Block(
+                    text=row["text"],
+                    location=Location.model_validate_json(row["location"], strict=True),
+                )
+            except Exception as error:
+                issues.append(f"block {row['id']} has malformed evidence: {error}")
+                continue
+            key = cls._source_key(block.text, block.location)
+            if key in block_keys:
+                issues.append(
+                    f"blocks {block_keys[key]} and {row['id']} claim the same occurrence"
+                )
+            block_keys[key] = row["id"]
+        broken_links = db.execute(
+            "SELECT ee.entity_id,ee.block_id FROM entity_evidence ee "
+            "JOIN entities e ON e.id=ee.entity_id LEFT JOIN blocks b ON b.id=ee.block_id "
+            "WHERE e.document_id=? AND b.id IS NULL",
+            (document,),
+        ).fetchall()
+        for link in broken_links:
+            issues.append(
+                f"entity {link['entity_id']} links missing block {link['block_id']}"
+            )
+        entities = db.execute(
+            "SELECT id,evidence,location FROM entities WHERE document_id=?", (document,)
+        ).fetchall()
+        for entity in entities:
+            try:
+                evidence = EvidenceSource(
+                    text=entity["evidence"],
+                    location=Location.model_validate_json(entity["location"], strict=True),
+                )
+            except Exception as error:
+                issues.append(f"entity {entity['id']} has malformed primary evidence: {error}")
+                continue
+            links = db.execute(
+                "SELECT b.id,b.document_id,b.text,b.location FROM entity_evidence ee "
+                "JOIN blocks b ON b.id=ee.block_id WHERE ee.entity_id=?",
+                (entity["id"],),
+            ).fetchall()
+            if not links:
+                issues.append(f"entity {entity['id']} has no evidence occurrence")
+                continue
+            primary = 0
+            for link in links:
+                if link["document_id"] != document:
+                    issues.append(f"entity {entity['id']} links evidence from another document")
+                    continue
+                try:
+                    block = Block(
+                        text=link["text"],
+                        location=Location.model_validate_json(link["location"], strict=True),
+                    )
+                except Exception as error:
+                    issues.append(f"block {link['id']} has malformed evidence: {error}")
+                    continue
+                if cls._source_key(block.text, block.location) == cls._source_key(
+                    evidence.text, evidence.location
+                ):
+                    primary += 1
+            if primary != 1:
+                issues.append(
+                    f"entity {entity['id']} primary evidence resolves to {primary} occurrences"
+                )
+        return issues
+
+    @classmethod
+    def _assert_document_verified(cls, db, workspace, document):
+        row = db.execute(
+            "SELECT id,provenance_status FROM documents WHERE workspace=? AND id=?",
+            (workspace, document),
+        ).fetchone()
+        if not row:
+            raise KeyError(document)
+        if row["provenance_status"] != "verified":
+            raise ProvenanceError(
+                "Document provenance is unverified; governed re-ingestion is required"
+            )
+        issues = cls._lineage_issues(db, document)
+        if issues:
+            detail = "; ".join(issues)
+            db.execute(
+                "UPDATE documents SET provenance_status='quarantined',provenance_detail=?,approved=0 WHERE id=?",
+                (detail, document),
+            )
+            db.commit()
+            raise ProvenanceError("Document provenance failed integrity audit: " + detail)
+        return row
+
+    def _record_quarantined_upload(
+        self, workspace, title, version, name, content, warnings, detail, actor
+    ):
         document = str(uuid4())
         with self.connection() as db:
             db.execute(
-                "INSERT INTO documents(id,workspace,title,version,name,sha256,original,warnings) VALUES(?,?,?,?,?,?,?,?)",
+                "INSERT INTO documents(id,workspace,title,version,name,sha256,original,warnings,provenance_status,provenance_detail) VALUES(?,?,?,?,?,?,?,?,?,?)",
                 (
                     document,
                     workspace,
@@ -111,58 +261,117 @@ class Store:
                     hashlib.sha256(content).hexdigest(),
                     content,
                     json.dumps(warnings),
+                    "quarantined",
+                    detail,
                 ),
             )
-            for block in blocks:
-                identifier = str(uuid4())
+            self.audit(
+                db,
+                actor or "provenance-validator",
+                "provenance_rejection",
+                document,
+                {"detail": detail, "sha256": hashlib.sha256(content).hexdigest()},
+            )
+        return document
+
+    def ingest(self, workspace, title, version, name, content, blocks, entities, warnings, actor):
+        try:
+            validated_blocks, resolved_entities = self._validate_batch(blocks, entities)
+        except (ProvenanceError, ValidationError) as error:
+            document = self._record_quarantined_upload(
+                workspace, title, version, name, content, warnings, str(error), actor
+            )
+            raise ProvenanceError(
+                f"Provenance validation failed; original quarantined as document {document}: {error}"
+            ) from error
+        document = str(uuid4())
+        try:
+            with self.connection() as db:
                 db.execute(
-                    "INSERT INTO blocks VALUES(?,?,?,?)",
-                    (identifier, document, block.text, block.location.model_dump_json()),
-                )
-                db.execute("INSERT INTO search VALUES(?,?)", (identifier, block.text))
-            for entity in entities:
-                entity_identifier = str(uuid4())
-                attrs = json.dumps(entity.attributes, sort_keys=True)
-                db.execute(
-                    "INSERT INTO entities VALUES(?,?,?,?,?,?,?,?,'proposed')",
+                    "INSERT INTO documents(id,workspace,title,version,name,sha256,original,warnings,provenance_status,provenance_detail) VALUES(?,?,?,?,?,?,?,?,?,?)",
                     (
-                        entity_identifier,
                         document,
-                        entity.kind,
-                        entity.name,
-                        attrs,
-                        attrs,
-                        entity.evidence,
-                        entity.location.model_dump_json(),
+                        workspace,
+                        title,
+                        version,
+                        name,
+                        hashlib.sha256(content).hexdigest(),
+                        content,
+                        json.dumps(warnings),
+                        "verified",
+                        "Exact source occurrences validated during ingestion",
                     ),
                 )
-                for source in [
-                    {"text": entity.evidence, "location": entity.location.model_dump()},
-                    *entity.sources,
-                ]:
-                    source_location = Location.model_validate(source["location"])
+                occurrence_ids = {}
+                for block in validated_blocks:
+                    identifier = str(uuid4())
                     db.execute(
-                        "INSERT OR IGNORE INTO entity_evidence SELECT ?,id FROM blocks WHERE document_id=? AND text=? AND (? IS NULL OR location=?)",
+                        "INSERT INTO blocks VALUES(?,?,?,?)",
+                        (identifier, document, block.text, block.location.model_dump_json()),
+                    )
+                    db.execute("INSERT INTO search VALUES(?,?)", (identifier, block.text))
+                    occurrence_ids[self._source_key(block.text, block.location)] = identifier
+                for entity, sources in resolved_entities:
+                    entity_identifier = str(uuid4())
+                    attrs = json.dumps(entity.attributes, sort_keys=True)
+                    db.execute(
+                        "INSERT INTO entities VALUES(?,?,?,?,?,?,?,?,'proposed')",
                         (
                             entity_identifier,
                             document,
-                            source["text"],
-                            source_location.table,
-                            source_location.model_dump_json(),
+                            entity.kind,
+                            entity.name,
+                            attrs,
+                            attrs,
+                            entity.evidence,
+                            entity.location.model_dump_json(),
                         ),
                     )
-            self.audit(
-                db, actor, "upload", document, {"sha256": hashlib.sha256(content).hexdigest()}
+                    for source in sources:
+                        block_identifier = occurrence_ids[
+                            self._source_key(source.text, source.location)
+                        ]
+                        db.execute(
+                            "INSERT OR IGNORE INTO entity_evidence VALUES(?,?)",
+                            (entity_identifier, block_identifier),
+                        )
+                issues = self._lineage_issues(db, document)
+                if issues:
+                    raise ProvenanceError(
+                        "Stored provenance validation failed: " + "; ".join(issues)
+                    )
+                self.audit(
+                    db, actor, "upload", document, {"sha256": hashlib.sha256(content).hexdigest()}
+                )
+        except sqlite3.IntegrityError as error:
+            if "documents.workspace, documents.title, documents.version" in str(error):
+                raise
+            rejected = self._record_quarantined_upload(
+                workspace, title, version, name, content, warnings, str(error), actor
             )
+            raise ProvenanceError(
+                f"Persistence failed; original quarantined as document {rejected}: {error}"
+            ) from error
+        except ProvenanceError as error:
+            rejected = self._record_quarantined_upload(
+                workspace, title, version, name, content, warnings, str(error), actor
+            )
+            raise ProvenanceError(
+                f"Persistence failed; original quarantined as document {rejected}: {error}"
+            ) from error
         return document
 
     def documents(self, workspace):
         with self.connection() as db:
             rows = db.execute(
-                "SELECT id,title,version,name,sha256,approved,warnings FROM documents WHERE workspace=? ORDER BY rowid DESC",
+                "SELECT id,title,version,name,sha256,approved,warnings,provenance_status,provenance_detail FROM documents WHERE workspace=? ORDER BY rowid DESC",
                 (workspace,),
             ).fetchall()
         return [{**dict(r), "warnings": json.loads(r["warnings"])} for r in rows]
+
+    def assert_exportable_provenance(self, workspace, document):
+        with self.connection() as db:
+            self._assert_document_verified(db, workspace, document)
 
     def entities(self, workspace, document=None, approved_only=False):
         query = "SELECT e.*,d.title,d.version FROM entities e JOIN documents d ON d.id=e.document_id WHERE d.workspace=?"
@@ -171,8 +380,25 @@ class Store:
             query += " AND d.id=?"
             params.append(document)
         if approved_only:
-            query += " AND d.approved=1 AND e.status='approved'"
+            query += (
+                " AND d.approved=1 AND d.provenance_status='verified' "
+                "AND e.status='approved'"
+            )
         with self.connection() as db:
+            if approved_only:
+                documents = (
+                    [document]
+                    if document
+                    else [
+                        row["id"]
+                        for row in db.execute(
+                            "SELECT id FROM documents WHERE workspace=? AND approved=1",
+                            (workspace,),
+                        ).fetchall()
+                    ]
+                )
+                for identifier in documents:
+                    self._assert_document_verified(db, workspace, identifier)
             rows = db.execute(query, params).fetchall()
         with self.connection() as db:
             sources = db.execute(
@@ -209,6 +435,14 @@ class Store:
                 ).fetchone()
             if not row:
                 raise KeyError(identifier)
+            reviewed_document = (
+                identifier
+                if source
+                else db.execute(
+                    "SELECT document_id FROM entities WHERE id=?", (identifier,)
+                ).fetchone()[0]
+            )
+            self._assert_document_verified(db, workspace, reviewed_document)
             if source:
                 db.execute(
                     "UPDATE documents SET approved=? WHERE id=?", (decision.approved, identifier)
@@ -220,12 +454,6 @@ class Store:
                         (json.dumps(decision.attributes, sort_keys=True), identifier),
                     )
                 db.execute("UPDATE entities SET status=? WHERE id=?", (decision.status, identifier))
-            if source:
-                reviewed_document = identifier
-            else:
-                reviewed_document = db.execute(
-                    "SELECT document_id FROM entities WHERE id=?", (identifier,)
-                ).fetchone()[0]
             db.execute("DELETE FROM coverage_reviews WHERE document_id=?", (reviewed_document,))
             self.audit(
                 db,
@@ -243,7 +471,7 @@ class Store:
         if not words:
             return []
         query = " OR ".join('"' + w + '"' for w in words[:30])
-        sql = "SELECT b.id,b.text,b.location,d.id AS document_id,d.title,d.version,d.name FROM search JOIN blocks b ON b.id=search.id JOIN documents d ON d.id=b.document_id WHERE search MATCH ? AND d.workspace=? AND d.approved=1"
+        sql = "SELECT b.id,b.text,b.location,d.id AS document_id,d.title,d.version,d.name FROM search JOIN blocks b ON b.id=search.id JOIN documents d ON d.id=b.document_id WHERE search MATCH ? AND d.workspace=? AND d.approved=1 AND d.provenance_status='verified'"
         params = [query, workspace]
         if document:
             sql += " AND d.id=?"
@@ -257,7 +485,7 @@ class Store:
         return [eligible[r["id"]] for r in rows if r["id"] in eligible][:5]
 
     def eligible_blocks(self, workspace, document=None, scope="facts", approved=True):
-        sql = "SELECT b.*,d.title,d.version,d.name FROM blocks b JOIN documents d ON d.id=b.document_id WHERE d.workspace=?"
+        sql = "SELECT b.*,d.title,d.version,d.name FROM blocks b JOIN documents d ON d.id=b.document_id WHERE d.workspace=? AND d.provenance_status='verified'"
         params = [workspace]
         if approved:
             sql += " AND d.approved=1"
@@ -265,6 +493,20 @@ class Store:
             sql += " AND d.id=?"
             params.append(document)
         with self.connection() as db:
+            if document:
+                present = db.execute(
+                    "SELECT 1 FROM documents WHERE workspace=? AND id=?", (workspace, document)
+                ).fetchone()
+                if not present:
+                    return []
+                self._assert_document_verified(db, workspace, document)
+            else:
+                verified = db.execute(
+                    "SELECT id FROM documents WHERE workspace=? AND provenance_status='verified'",
+                    (workspace,),
+                ).fetchall()
+                for row in verified:
+                    self._assert_document_verified(db, workspace, row["id"])
             rows = db.execute(sql, params).fetchall()
             links = db.execute(
                 "SELECT ee.block_id,e.status,e.attributes,e.original_attributes FROM entity_evidence ee JOIN entities e ON e.id=ee.entity_id JOIN documents d ON d.id=e.document_id WHERE d.workspace=?",
@@ -298,9 +540,9 @@ class Store:
         return output
 
     def snapshot_fingerprint(self, workspace, document):
-        source = next((d for d in self.documents(workspace) if d["id"] == document), None)
-        if not source:
-            raise KeyError(document)
+        with self.connection() as db:
+            self._assert_document_verified(db, workspace, document)
+        source = next(d for d in self.documents(workspace) if d["id"] == document)
         entities = self.entities(workspace, document)
         snapshot = {
             "source": source["sha256"],
@@ -312,6 +554,7 @@ class Store:
     def coverage_review(self, workspace, document, decision, actor):
         with self.connection() as db:
             db.execute("BEGIN IMMEDIATE")
+            self._assert_document_verified(db, workspace, document)
             fingerprint = self.snapshot_fingerprint(workspace, document)
             db.execute(
                 "INSERT OR REPLACE INTO coverage_reviews VALUES(?,?,?,?,?)",
@@ -320,6 +563,8 @@ class Store:
             self.audit(db, actor, "coverage_review", document, decision.model_dump())
 
     def coverage(self, workspace, document):
+        with self.connection() as db:
+            self._assert_document_verified(db, workspace, document)
         fingerprint = self.snapshot_fingerprint(workspace, document)
         with self.connection() as db:
             row = db.execute(
@@ -383,6 +628,7 @@ class Store:
 
         with self.connection() as db:
             db.execute("BEGIN IMMEDIATE")
+            self._assert_document_verified(db, workspace, document)
             block = db.execute(
                 "SELECT b.* FROM blocks b JOIN documents d ON d.id=b.document_id WHERE d.workspace=? AND d.id=? AND b.id=?",
                 (workspace, document, decision.evidence_block_id),

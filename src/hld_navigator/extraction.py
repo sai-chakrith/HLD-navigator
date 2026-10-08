@@ -52,7 +52,7 @@ def parse_line(text: str, location: Location) -> tuple[Entity | None, str | None
     ), None
 
 
-def _pdf_prose_block(page, tables, location: Location) -> Block:
+def _pdf_prose_block(page, tables, location: Location) -> Block | None:
     """Separate table cells from prose using original page coordinates."""
     bounds = [table.bbox for table in tables]
 
@@ -64,7 +64,8 @@ def _pdf_prose_block(page, tables, location: Location) -> Block:
         return not any(left <= x <= right and top <= y <= bottom
                        for left, top, right, bottom in bounds)
 
-    return Block(text=page.filter(outside_tables).extract_text() or "", location=location)
+    text = page.filter(outside_tables).extract_text() or ""
+    return Block(text=text, location=location) if text.strip() else None
 
 
 def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[dict]]:
@@ -191,7 +192,11 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
                 page_source = Block(text=text, location=Location(page=page_number))
                 captured_tables = page.find_tables()
                 prose_source = _pdf_prose_block(page, captured_tables, page_source.location)
-                parsed, issues = parse_pdf_prose(page_source, interpretation=prose_source)
+                parsed, issues = (
+                    parse_pdf_prose(page_source, interpretation=prose_source)
+                    if prose_source is not None
+                    else ([], [])
+                )
                 if parsed or issues:
                     blocks.append(page_source)
                     entities.extend(parsed)
