@@ -1,0 +1,5 @@
+
+# Preserve bytes of hashed evaluation inputs and signed review references.
+data/evaluation/** -text
+docs/evidence/*.json -text
+docs/reviewer-packet/*.json -text
