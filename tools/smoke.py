@@ -27,6 +27,7 @@ def main():
         env = os.environ.copy()
         env["HLD_NAVIGATOR_DB"] = database
         env.pop("HLD_NAVIGATOR_OLLAMA_MODEL", None)
+        env.pop("HLD_NAVIGATOR_EMBED_MODEL", None)
         with (Path(temporary) / "server.log").open("w") as logs:
             server = subprocess.Popen(
                 [
@@ -65,7 +66,12 @@ def main():
                     url + "/documents",
                     headers=headers,
                     data={"title": "Powertrain", "version": "1"},
-                    files={"file": ("fixture.md", (root / "examples/powertrain.md").read_bytes())},
+                    files={
+                        "file": (
+                            "fixture.md",
+                            (root / "data/evaluation/torque-prose.md").read_bytes(),
+                        )
+                    },
                     timeout=3,
                 )
                 upload.raise_for_status()
@@ -91,7 +97,7 @@ def main():
                 response = requests.post(
                     url + "/query",
                     headers=headers,
-                    json={"text": "VehicleSpeed", "document_id": document},
+                    json={"text": "TorqueInterface", "document_id": document},
                     timeout=3,
                 )
                 response.raise_for_status()
@@ -107,7 +113,11 @@ def main():
                     findings=len(exported.json()["findings"]),
                     retrieval_mode=response.json()["mode"],
                     runtime=sys.version.split()[0],
-                    validation="Synthetic live HTTP workflow; no real HLD or model benchmark",
+                    validation=(
+                        "Ordinary-prose synthetic live HTTP workflow; "
+                        "no real HLD or model benchmark"
+                    ),
+                    fixture="data/evaluation/torque-prose.md",
                 )
             finally:
                 if os.name == "nt":

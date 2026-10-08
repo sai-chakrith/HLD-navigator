@@ -5,13 +5,16 @@ from pathlib import Path
 import pdfplumber
 
 from .models import Block, Entity, Location
+from .ocr import page_ocr
+from .prose import merge_entities, parse_prose
+from .tables import table_lines
 
 KINDS = {"component", "interface", "signal", "port", "dependency", "flow"}
 ALLOWED = {
     "component": {"description"},
-    "interface": {"kind", "payload", "description"},
+    "interface": {"kind", "payload", "type", "description"},
     "signal": {"type", "unit", "description"},
-    "port": {"owner", "interface", "direction", "description"},
+    "port": {"owner", "interface", "direction", "type", "description"},
     "dependency": {"source", "target", "interface", "description"},
     "flow": {"source", "target", "interface", "description"},
 }
@@ -54,94 +57,126 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
     entities: list[Entity] = []
     warnings: list[dict] = []
 
-    def accept(text: str, location: Location) -> None:
+    def accept(text: str, location: Location, prose=True) -> None:
         entity, error = parse_line(text, location)
         if entity:
             entities.append(entity)
+        elif not error and prose:
+            parsed, issues = parse_prose(text, location)
+            entities.extend(parsed)
+            warnings.extend(issues)
         if error:
-            warnings.append({"message": error, "location": location.model_dump(), "text": text})
+            warnings.append(
+                {
+                    "code": "invalid_declaration",
+                    "severity": "blocking",
+                    "message": error,
+                    "location": location.model_dump(),
+                    "text": text,
+                }
+            )
 
     suffix = Path(name).suffix.lower()
     if suffix in {".md", ".txt"}:
         text = content.decode("utf-8-sig")
         section = None
+        markdown_tables = []
+        pending = []
         for number, line in enumerate(text.splitlines(), 1):
+            if line.strip().startswith("|"):
+                pending.append((number, line))
+            elif pending:
+                markdown_tables.append(pending)
+                pending = []
             if line.startswith("#"):
                 section = line.lstrip("#").strip()
             if line.strip():
                 location = Location(section=section, line=number)
                 blocks.append(Block(text=line, location=location))
-                accept(line, location)
+                if not line.strip().startswith("|"):
+                    accept(line, location)
+        if pending:
+            markdown_tables.append(pending)
+        for table_index, rows in enumerate(markdown_tables, 1):
+            table = []
+            for _, line in rows:
+                cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+                table.append(
+                    [None] * len(cells) if all(re.fullmatch(r":?-+:?", c) for c in cells) else cells
+                )
+            declarations, issues = table_lines(table, text, {"table": table_index})
+            warnings.extend(issues)
+            for declaration, row in declarations:
+                location = Location(table=table_index, row=row, line=rows[row - 1][0])
+                blocks.append(Block(text=declaration, location=location))
+                accept(declaration, location)
     elif suffix == ".pdf":
         with pdfplumber.open(io.BytesIO(content)) as pdf:
             for page_number, page in enumerate(pdf.pages, 1):
                 text = page.extract_text() or ""
                 if not text.strip():
-                    raise ValueError(f"Page {page_number} has no extractable text; OCR is required")
+                    if not page.images and not page.rects and not page.curves and not page.lines:
+                        warnings.append(
+                            {
+                                "code": "blank_page",
+                                "severity": "info",
+                                "message": "Blank page skipped",
+                                "page": page_number,
+                            }
+                        )
+                        continue
+                    ocr_lines = page_ocr(page)
+                    if not ocr_lines:
+                        raise ValueError(f"Page {page_number}: OCR produced no usable text")
+                    for number, (line, confidence) in enumerate(ocr_lines, 1):
+                        location = Location(
+                            page=page_number, line=number, origin="ocr", confidence=confidence
+                        )
+                        blocks.append(Block(text=line, location=location))
+                        accept(line, location)
+                    warnings.append(
+                        {
+                            "code": "ocr_review",
+                            "severity": "blocking",
+                            "message": "OCR text requires comparison with the rendered page",
+                            "page": page_number,
+                        }
+                    )
+                    continue
                 for number, line in enumerate(text.splitlines(), 1):
                     if line.strip():
                         location = Location(page=page_number, line=number)
                         blocks.append(Block(text=line, location=location))
-                        accept(line, location)
+                        accept(line, location, prose=False)
+                # Combine wrapped prose for interpretation; retain original lines independently.
+                joined = " ".join(text.split())
+                parsed, issues = parse_prose(joined, Location(page=page_number))
+                if parsed or issues:
+                    blocks.append(Block(text=joined, location=Location(page=page_number)))
+                    entities.extend(parsed)
+                    warnings.extend(issues)
                 for index, table in enumerate(page.extract_tables(), 1):
                     if not table or not table[0]:
                         continue
-                    headers = [(h or "").strip().lower() for h in table[0]]
-                    if not {"kind", "name"}.issubset(headers):
-                        warnings.append(
-                            {
-                                "message": "Unsupported table header",
-                                "page": page_number,
-                                "table": index,
-                            }
-                        )
-                        continue
-                    if len(set(headers)) != len(headers) or any(not h for h in headers):
-                        warnings.append(
-                            {
-                                "message": "Ambiguous table header",
-                                "page": page_number,
-                                "table": index,
-                            }
-                        )
-                        continue
-                    for row_number, row in enumerate(table[1:], 2):
-                        if len(row) != len(headers):
-                            warnings.append(
-                                {
-                                    "message": "Unequal table row width",
-                                    "page": page_number,
-                                    "table": index,
-                                    "row": row_number,
-                                }
-                            )
-                            continue
-                        values = dict(zip(headers, [(v or "").strip() for v in row], strict=True))
-                        kind = values.pop("kind").lower()
-                        entity_name = values.pop("name")
-                        line = f"{kind.title()}: {entity_name}" + "".join(
-                            f" | {k}={v}" for k, v in values.items() if v
-                        )
+                    declarations, issues = table_lines(
+                        table, text, {"page": page_number, "table": index}
+                    )
+                    warnings.extend(issues)
+                    for line, row_number in declarations:
                         location = Location(page=page_number, table=index, row=row_number)
-                        if kind not in KINDS:
-                            warnings.append(
-                                {
-                                    "message": f"Unknown entity kind: {kind}",
-                                    "location": location.model_dump(),
-                                }
-                            )
-                            continue
                         blocks.append(Block(text=line, location=location))
                         accept(line, location)
     else:
         raise ValueError("Supported files are text PDFs, UTF-8 Markdown and TXT")
     if not blocks:
         raise ValueError("Document has no usable text")
-    # Retain duplicate evidence locations, but one semantic proposal per entity definition.
-    unique = {}
-    for entity in entities:
-        key = (entity.kind, entity.name, tuple(sorted(entity.attributes.items())))
-        unique.setdefault(key, entity)
-    if not unique:
-        warnings.append({"message": "No template entities recognized; review/normalize the layout"})
-    return blocks, list(unique.values()), warnings
+    merged = merge_entities(entities, warnings)
+    if not merged:
+        warnings.append(
+            {
+                "code": "no_entities",
+                "severity": "blocking",
+                "message": "No template entities or supported prose patterns recognized",
+            }
+        )
+    return blocks, merged, warnings

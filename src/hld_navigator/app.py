@@ -7,9 +7,10 @@ from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
 
 from .analysis import compare, findings
 from .extraction import ALLOWED, REQUIRED, extract
-from .models import Question, Review, SourceReview
+from .models import CoverageReview, ManualEntity, Question, Review, SourceReview
 from .rag import answer
 from .store import Store
+from .vectors import configured_embedder
 
 
 def create_app(path=None):
@@ -118,7 +119,31 @@ def create_app(path=None):
     @app.post("/workspaces/{workspace}/query")
     def query(workspace: str, question: Question, authorization: str | None = Header(None)):
         authorize(workspace, authorization)
-        evidence = store.search(workspace, question.text, question.document_id)
+        try:
+            embedder = configured_embedder()
+            if embedder:
+                evidence = store.vector_search(
+                    workspace, question.text, question.document_id, embedder, question.scope
+                )
+            else:
+                evidence = store.search(
+                    workspace, question.text, question.document_id, question.scope
+                )
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
+        except (URLError, TimeoutError) as error:
+            raise HTTPException(503, "Configured embedding model unavailable") from error
+        if question.scope == "source" and any(
+            e["review_state"] != "approved_facts" for e in evidence
+        ):
+            return {
+                "mode": "source_review_required",
+                "answer": (
+                    "Source statements are unreviewed or disputed; "
+                    "they are not approved design facts."
+                ),
+                "evidence": evidence,
+            }
         # Avoid presenting evidence across revisions as a single architecture.
         if not question.document_id and len({(e["title"], e["version"]) for e in evidence}) > 1:
             return {
@@ -127,7 +152,11 @@ def create_app(path=None):
                 "evidence": evidence,
             }
         try:
-            return answer(question.text, evidence)
+            result = answer(question.text, evidence)
+            if embedder and result["mode"] == "lexical_source_excerpts":
+                result["mode"] = "embedding_source_excerpts"
+            result["retrieval"] = "local_embedding_cosine" if embedder else "sqlite_fts5"
+            return result
         except (URLError, TimeoutError, ValueError, KeyError) as error:
             raise HTTPException(
                 503, "Configured local model unavailable or invalid response"
@@ -145,7 +174,23 @@ def create_app(path=None):
         if any(e["status"] == "proposed" for e in proposals):
             raise HTTPException(409, "Review every entity proposal before export")
         approved = store.entities(workspace, document_id, True)
+        if not approved:
+            raise HTTPException(
+                409, "No approved architecture entities; empty inventory export blocked"
+            )
+        blockers = [w for w in document["warnings"] if w.get("severity", "blocking") != "info"]
+        coverage = store.coverage(workspace, document_id)
+        if blockers and not coverage:
+            raise HTTPException(
+                409,
+                (
+                    "Unresolved extraction warnings: reviewer must assess coverage "
+                    "and explicitly sign the report scope"
+                ),
+            )
         return {
+            "coverage_review": coverage,
+            "coverage_claim": "reviewed scoped inventory; not proof of document completeness",
             "document": document,
             "entities": approved,
             "findings": findings(approved),
@@ -155,6 +200,61 @@ def create_app(path=None):
                 "not confirmed defects."
             ),
         }
+
+    @app.get("/workspaces/{workspace}/documents/{identifier}/blocks")
+    def source_blocks(workspace: str, identifier: str, authorization: str | None = Header(None)):
+        authorize(workspace, authorization)
+        return store.eligible_blocks(workspace, identifier, "source", approved=False)
+
+    @app.post("/workspaces/{workspace}/documents/{identifier}/entities")
+    def manual_entity(
+        workspace: str,
+        identifier: str,
+        decision: ManualEntity,
+        authorization: str | None = Header(None),
+    ):
+        actor = authorize(workspace, authorization, "editor")
+        try:
+            return {
+                "id": store.add_manual(workspace, identifier, decision, actor),
+                "status": "proposed",
+            }
+        except KeyError as error:
+            raise HTTPException(404, "Evidence block not found") from error
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from error
+
+    @app.post("/workspaces/{workspace}/documents/{identifier}/coverage-review")
+    def coverage_review(
+        workspace: str,
+        identifier: str,
+        decision: CoverageReview,
+        authorization: str | None = Header(None),
+    ):
+        actor = authorize(workspace, authorization, "reviewer")
+        try:
+            store.coverage_review(workspace, identifier, decision, actor)
+        except KeyError as error:
+            raise HTTPException(404, "Document not found") from error
+        return {"ok": True}
+
+    @app.post("/workspaces/{workspace}/documents/{identifier}/index")
+    def index(workspace: str, identifier: str, authorization: str | None = Header(None)):
+        authorize(workspace, authorization, "editor")
+        try:
+            embedder = configured_embedder()
+            if not embedder:
+                raise HTTPException(409, "Configure a local embedding model first")
+            return {
+                "indexed_blocks": store.index_vectors(workspace, identifier, embedder),
+                "model": embedder.identity,
+            }
+        except KeyError as error:
+            raise HTTPException(404, "Document not found") from error
+        except (URLError, TimeoutError, ValueError) as error:
+            raise HTTPException(
+                503, "Embedding indexing failed; existing index remains intact"
+            ) from error
 
     @app.get("/workspaces/{workspace}/compare")
     def revisions(

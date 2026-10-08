@@ -1,0 +1,164 @@
+FFFFFFFF                                                                 [100%]
+================================== FAILURES ===================================
+_______________ test_negation_cannot_be_cropped_out_of_citation _______________
+
+    def test_negation_cannot_be_cropped_out_of_citation():
+        evidence=[{"text":"It is false that Engine controls braking."}]
+>       assert not supported("Engine controls braking [1]",evidence)
+E       AssertionError: assert not True
+E        +  where True = supported('Engine controls braking [1]', [{'text': 'It is false that Engine controls braking.'}])
+
+tests\test_review_regressions.py:11: AssertionError
+____________________ test_valid_pdf_followed_by_blank_page ____________________
+
+    def test_valid_pdf_followed_by_blank_page():
+        stream=io.BytesIO()
+        pdf=canvas.Canvas(stream)
+        pdf.drawString(50,750,"Component: Engine")
+        pdf.showPage()
+        pdf.showPage()
+        pdf.save()
+>       _,entities,warnings=extract("blank-tail.pdf",stream.getvalue())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_review_regressions.py:21:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'blank-tail.pdf'
+content = b'%PDF-1.3\n%\x93\x8c\x8b\x9e ReportLab Generated PDF document (opensource)\n1 0 obj\n<<\n/F1 2 0 R\n>>\nendobj\n2 0 o...tLab generated PDF document -- digest (opensource)\n\n/Info 6 0 R\n/Root 5 0 R\n/Size 10\n>>\nstartxref\n1349\n%%EOF\n'
+
+    def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[dict]]:
+        blocks: list[Block] = []
+        entities: list[Entity] = []
+        warnings: list[dict] = []
+
+        def accept(text: str, location: Location) -> None:
+            entity, error = parse_line(text, location)
+            if entity:
+                entities.append(entity)
+            if error:
+                warnings.append({"message": error, "location": location.model_dump(), "text": text})
+
+        suffix = Path(name).suffix.lower()
+        if suffix in {".md", ".txt"}:
+            text = content.decode("utf-8-sig")
+            section = None
+            for number, line in enumerate(text.splitlines(), 1):
+                if line.startswith("#"):
+                    section = line.lstrip("#").strip()
+                if line.strip():
+                    location = Location(section=section, line=number)
+                    blocks.append(Block(text=line, location=location))
+                    accept(line, location)
+        elif suffix == ".pdf":
+            with pdfplumber.open(io.BytesIO(content)) as pdf:
+                for page_number, page in enumerate(pdf.pages, 1):
+                    text = page.extract_text() or ""
+                    if not text.strip():
+>                       raise ValueError(f"Page {page_number} has no extractable text; OCR is required")
+E                       ValueError: Page 2 has no extractable text; OCR is required
+
+src\hld_navigator\extraction.py:80: ValueError
+_______________ test_ordinary_hld_prose_without_special_syntax ________________
+
+    def test_ordinary_hld_prose_without_special_syntax():
+        paragraph=("The EngineControl component provides the TorqueInterface interface "
+                   "to the InstrumentCluster component. "
+                   "The TorqueInterface interface carries the Torque signal. "
+                   "The Torque signal has type uint16 and unit Nm.")
+        _,entities,_=extract("ordinary.md",paragraph.encode())
+        inventory={(e.kind,e.name):e.attributes for e in entities}
+>       assert ("component","EngineControl") in inventory
+E       AssertionError: assert ('component', 'EngineControl') in {}
+
+tests\test_review_regressions.py:32: AssertionError
+_____________ test_no_affirmative_edge_from_negated_relationship ______________
+
+    def test_no_affirmative_edge_from_negated_relationship():
+        _,entities,warnings=extract("negation.md",b"The Engine component does not provide the Torque interface to the Cluster component.")
+        assert not any(e.kind in {"dependency","port"} for e in entities)
+>       assert any(w.get("code")=="ambiguous_prose" for w in warnings)
+E       assert False
+E        +  where False = any(<generator object test_no_affirmative_edge_from_negated_relationship.<locals>.<genexpr> at 0x000002466BF9B840>)
+
+tests\test_review_regressions.py:42: AssertionError
+______________ test_requires_requires_dependency_is_incompatible ______________
+
+    def test_requires_requires_dependency_is_incompatible():
+        def entity(kind,name,**attrs):
+            return {"id":name,"kind":kind,"name":name,"attributes":attrs,"location":{"page":1}}
+        rows=[entity("component","A"),entity("component","B"),entity("interface","I"),
+              entity("port","PA",owner="A",interface="I",direction="requires"),
+              entity("port","PB",owner="B",interface="I",direction="requires"),
+              entity("dependency","D",source="A",target="B",interface="I")]
+>       assert any(f["kind"]=="port_direction_mismatch" for f in findings(rows))
+E       assert False
+E        +  where False = any(<generator object test_requires_requires_dependency_is_incompatible.<locals>.<genexpr> at 0x000002466BF869B0>)
+
+tests\test_review_regressions.py:51: AssertionError
+_____________________ test_zero_entity_export_is_blocked ______________________
+
+api = (<starlette.testclient.TestClient object at 0x000002466BF6FB60>, <hld_navigator.store.Store object at 0x000002466BFFA7...m-3M1I3lLf--13JvIECHy-xIOLDS4GBQ'}, {'Authorization': 'Bearer <ephemeral-test-token-redacted>'})
+
+    def test_zero_entity_export_is_blocked(api):
+        client,_,reviewer,_=api
+        document=upload(api,content=b"An unrecognized architecture description.")
+        approve(api,document)
+>       assert client.get("/workspaces/pilot/export",headers=reviewer,params={"document_id":document}).status_code==409
+E       AssertionError: assert 200 == 409
+E        +  where 200 = <Response [200 OK]>.status_code
+E        +    where <Response [200 OK]> = get('/workspaces/pilot/export', headers={'Authorization': 'Bearer <ephemeral-test-token-redacted>'}, params={'document_id': 'acfb962b-b84c-4740-872d-34b1ba3a4345'})
+E        +      where get = <starlette.testclient.TestClient object at 0x000002466BF6FB60>.get
+
+tests\test_review_regressions.py:57: AssertionError
+______________ test_unresolved_extraction_warning_blocks_export _______________
+
+api = (<starlette.testclient.TestClient object at 0x000002466C0291D0>, <hld_navigator.store.Store object at 0x000002466C0282...srqfQjlPr09vA1aIU2eYIoITwo_d_3_A'}, {'Authorization': 'Bearer <ephemeral-test-token-redacted>'})
+
+    def test_unresolved_extraction_warning_blocks_export(api):
+        client,_,reviewer,_=api
+        document=upload(api,content=b"Component: Engine\nPort: Bad | owner=Engine")
+        approve(api,document)
+>       assert client.get("/workspaces/pilot/export",headers=reviewer,params={"document_id":document}).status_code==409
+E       AssertionError: assert 200 == 409
+E        +  where 200 = <Response [200 OK]>.status_code
+E        +    where <Response [200 OK]> = get('/workspaces/pilot/export', headers={'Authorization': 'Bearer <ephemeral-test-token-redacted>'}, params={'document_id': 'c4994554-8356-4672-972d-18937e5a1e17'})
+E        +      where get = <starlette.testclient.TestClient object at 0x000002466C0291D0>.get
+
+tests\test_review_regressions.py:63: AssertionError
+_____________ test_rejected_entity_statement_not_returned_as_fact _____________
+
+api = (<starlette.testclient.TestClient object at 0x000002466BFFB390>, <hld_navigator.store.Store object at 0x000002466BF37E...36uav4vNtGV3uADyvAKauUhw9bh8PigA'}, {'Authorization': 'Bearer <ephemeral-test-token-redacted>'})
+
+    def test_rejected_entity_statement_not_returned_as_fact(api):
+        client,_,reviewer,_=api
+        document=upload(api,content=b"Component: UntrustedEngine")
+        approve(api,document)
+        entity=client.get("/workspaces/pilot/entities",headers=reviewer).json()[0]
+        client.post(f'/workspaces/pilot/entities/{entity["id"]}/review',headers=reviewer,
+                    json={"status":"rejected","reason":"Incorrect source declaration"})
+        response=client.post("/workspaces/pilot/query",headers=reviewer,
+                             json={"text":"UntrustedEngine","document_id":document})
+>       assert response.json()["evidence"]==[]
+E       AssertionError: assert [{'id': 'f11e...8f5a17', ...}] == []
+E
+E         Left contains one more item: {'id': 'f11e775e-cd5c-42da-9dc0-d8b2115a6653', 'text': 'Component: UntrustedEngine', 'location': {'page': None, 'section': None, 'line': 1, 'table': None, ...}, 'document_id': 'fcaddc77-4d22-45dc-ae76-3cb08f8f5a17', ...}
+E         Use -v to get more diff
+
+tests\test_review_regressions.py:74: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\peddi\Downloads\chakrithdump\HLD-navigator\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_review_regressions.py::test_negation_cannot_be_cropped_out_of_citation
+FAILED tests/test_review_regressions.py::test_valid_pdf_followed_by_blank_page
+FAILED tests/test_review_regressions.py::test_ordinary_hld_prose_without_special_syntax
+FAILED tests/test_review_regressions.py::test_no_affirmative_edge_from_negated_relationship
+FAILED tests/test_review_regressions.py::test_requires_requires_dependency_is_incompatible
+FAILED tests/test_review_regressions.py::test_zero_entity_export_is_blocked
+FAILED tests/test_review_regressions.py::test_unresolved_extraction_warning_blocks_export
+FAILED tests/test_review_regressions.py::test_rejected_entity_statement_not_returned_as_fact
+8 failed, 1 warning in 1.19s

@@ -1,69 +1,80 @@
 # HLD Navigator
 
-Case Study 1: **AUTOSAR HLD Document Analysis Assistant**. A separate local repository from SpecProbe. This first slice provides controlled document ingestion, an evidence-backed architecture inventory, approved-source search, reviewer decisions, inventory revision comparison and JSON export.
+Case Study 1: AUTOSAR HLD Document Analysis Assistant. Ingest supported ordinary prose and tables, review extracted components/interfaces/signals/ports/dependencies/flows, search cited facts and compare architecture revisions. This remains an engineering pilot; broad OEM document quality and learned-model performance are not established.
 
-## Run on Windows
+## Launch
 
-Python 3.11+ and uv are required. Run from this repository:
+Python 3.11+ and uv. Existing users/tokens/database survive the additive schema update. Do not provision an existing user again unless you intend to rotate their token. Back up `.data/hld_navigator.db` before upgrading, then restart API/UI.
 
 ```powershell
 cd C:\Users\peddi\Downloads\chakrithdump\HLD-navigator
 uv sync --frozen --extra dev
+# First use only: provision a reviewer and save the returned token privately.
 uv run python -m hld_navigator.admin engineer --workspace pilot --role reviewer
-# Copy the returned token privately; it is stored only as a hash.
 uv run uvicorn hld_navigator.app:app --host 127.0.0.1 --port 8010
 ```
 
-In a second terminal:
+Second terminal:
 
 ```powershell
+cd C:\Users\peddi\Downloads\chakrithdump\HLD-navigator
 uv run streamlit run src/hld_navigator/ui.py --server.port 8510 --server.address 127.0.0.1
 ```
 
-Open [the UI](http://127.0.0.1:8510) and enter the token with workspace `pilot`. [API docs](http://127.0.0.1:8010/docs) describe all endpoints. The API refuses unauthenticated access to documents; viewer/editor/reviewer permissions are enforced server-side. The CLI is a trusted local operator interface and requires access to the database filesystem. Provisioning an existing user rotates their token across all memberships. Enterprise IAM, account revocation tooling and deployment hardening remain future work.
+Open [UI](http://127.0.0.1:8510), workspace `pilot`, your individual token. [API](http://127.0.0.1:8010/docs). Viewers read/query; editors ingest/annotate/index; reviewers decide source/entity/coverage approval. The local operator CLI requires trusted filesystem access. Enterprise IAM, TLS, credential lifecycle and managed deployment remain pending.
 
-1. Upload `examples/powertrain.md` with a title and version.
-2. Inspect warnings, then approve the source and each extracted entity as a reviewer.
-3. Search a selected revision and inspect the cited page/section/line evidence.
-4. Export the reviewed inventory and potential unresolved-reference findings.
-5. Change the example signal type, upload version 2 with the same title, review it and compare inventories.
+## Demonstration without rewriting the HLD
 
-## Supported extraction template
+1. Upload `data/evaluation/torque-prose.md`, a synthetic development document written in ordinary sentences. The older `examples/powertrain.md` declaration format remains supported.
+2. Inspect entities and all contributing source references. Approve the source and each proposal. Correct misses directly from selected source evidence; manual proposals require review.
+3. Search `TorqueInterface` using Approved extracted facts. Unreviewed, rejected and edited-original statements are excluded. The separate Source statements scope labels disputed/unreviewed evidence and abstains from presenting it as approved design facts.
+4. Export the reviewed inventory. Empty inventories and unresolved blocking warnings fail with HTTP 409. Reviewers can sign an explicit scoped report after corrections or documented exclusions; this is not a completeness certificate. Further source/entity decisions invalidate that scope.
+5. Change the consumer port to `provides` in a new revision to demonstrate a provider/consumer mismatch. Change the signal type and compare revisions to see possible impact paths with source edge IDs.
 
-Text PDFs, UTF-8 Markdown and TXT are supported; maximum 10 MB. Explicit declarations are recognized:
+## Extraction and OCR boundaries
 
-```text
-Component: Engine | description=Computes torque
-Signal: Torque | type=uint16 | unit=Nm
-Interface: TorqueInterface | kind=sender_receiver | payload=Torque
-Port: TorqueOut | owner=Engine | interface=TorqueInterface | direction=provides
-Dependency: TorqueDisplay | source=Engine | target=Cluster | interface=TorqueInterface
-Flow: DisplayTorque | source=Engine | target=Cluster
+PDF, UTF-8 Markdown/TXT, maximum 10 MB. Supported affirmative prose includes named components, interfaces carrying signals, signal types/units, named providing/requiring ports, producer-to-consumer links and named flows. Wrapped PDF prose is combined while retaining page references. Negation, uncertainty, unsupported relationships and conflicts require review. This is a conservative pattern parser, not universal natural-language understanding or an evaluated LLM extractor.
+
+PDF/Markdown tables recognize aliases including SWC Name/Responsibility and Port Name/Component/Interface/Port Kind, title rows and repeated headers. P-Port/R-Port normalize to provides/requires. Unknown populated columns produce warnings. Original bytes/hash and contributing page/table/row or section/line references are retained. PDF line ordinals describe extracted text, not raw file offsets.
+
+Blank PDF pages without graphical content are skipped. Nontext graphical/image pages require OCR; diagram topology is not inferred. Optional local Tesseract:
+
+```powershell
+$env:HLD_NAVIGATOR_OCR='1'
+$env:HLD_NAVIGATOR_TESSERACT='C:\path\to\tesseract.exe'
+# Restart API, then ingest the scanned PDF.
 ```
 
-PDF tables use `Kind`, `Name` and supported attribute columns. Unknown/ambiguous tables and malformed declarations are reported, not converted into invented architecture. PDFs with a page containing no extractable text are blocked with an OCR requirement. Diagram-only architecture, arbitrary OEM tables, natural-language entity extraction and OCR are not yet implemented. PDF line numbers are extracted-text ordinals, not raw PDF source coordinates. Table page/table/row references and Markdown section/line references are preserved. Original bytes and SHA-256 are persisted.
+OCR retains page/line origin and minimum word confidence and creates a blocking review warning. The adapter was tested with controlled TSV responses and image rendering. A genuine Tesseract/OEM scan run was unavailable. Confidence is not a calibrated correctness probability. General OEM layouts and diagrams remain unvalidated.
 
-## Search and local AI
+## Local embeddings and answers
 
-The default uses SQLite FTS5 ranked lexical retrieval and returns exact approved source excerpts. It is **not embedding retrieval or a benchmarked AI answer model**. Entity approval controls reports; source approval controls source search. Evidence from proposed/rejected source statements can still appear when the containing source is approved, so citations are source evidence rather than approved design decisions.
+Default: SQLite FTS5 lexical baseline and full source-block excerpts. Optional learned embeddings use local Ollama `/api/embed`; vectors and content/model fingerprints persist in SQLite with exhaustive cosine ranking. This custom local vector store is a small-pilot implementation, not FAISS/Chroma or a scalable ANN index. No synthetic/hash vectors replace a configured model.
 
-Optional local Ollama integration:
+Configure an installed embedding model and exact `/api/tags` digest:
 
 ```powershell
 $env:HLD_NAVIGATOR_OLLAMA_URL='http://127.0.0.1:11434'
-$env:HLD_NAVIGATOR_OLLAMA_MODEL='<installed model tag>'
-# Restart the API with these variables.
+$env:HLD_NAVIGATOR_EMBED_MODEL='<installed embedding model:tag>'
+$env:HLD_NAVIGATOR_EMBED_DIGEST='<digest from /api/tags>'
+# Optional answer model:
+$env:HLD_NAVIGATOR_OLLAMA_MODEL='<installed answer model:tag>'
 ```
 
-The model must return exact source-supported quotes with citations. Unsupported claims abstain; unavailable configured models return 503. Quote support does not establish relevance or semantic correctness, and quoted source instructions remain untrusted content. Requests spanning multiple document versions require explicit revision selection. Local inference/learned embeddings and prompt-injection resilience still need model-level evaluation with approved HLDs.
+Restart the API and use Index this revision in Review. Configured embedding retrieval requires a complete index; failure leaves previous vectors intact. Artifact drift, invalid vectors and dimension mismatch are rejected. The embedding endpoint must be loopback. Oversized model inputs error instead of silently truncating. [Ollama API reference](https://github.com/ollama/ollama/blob/main/docs/openapi.yaml).
 
-## Checks and next steps
+Answer models must quote entire retrieved blocks with citations. Cropping negation or qualifiers fails support checks. This rejects fragments and paraphrases; it does not establish semantic entailment or relevance. Insufficient evidence abstains; mixed revisions require selection; configured model failures are explicit. Ollama was unavailable here: model quality remains unmeasured.
+
+## Reproduce checks and evaluation
 
 ```powershell
-uv run pytest -q
+uv run pytest -q --junitxml=docs/evidence/pytest.xml
 uv run python tools/smoke.py
+uv run python tools/evaluate.py --models
 uv run ruff check src tests tools
 uv run ruff format --check src tests tools
 ```
 
-[STATUS](STATUS.md) records implemented versus pending capabilities. [Validation procedure](docs/VALIDATION.md) defines genuine architect-reviewed evaluation and remaining dependencies. Do not interpret synthetic tests as OEM accuracy or measured productivity benefits. Use only a controlled local pilot until deployment acceptance.
+The manifest freezes file hashes and field annotations. Reports separate extraction precision/recall, missed/incorrect facts, correction actions, lexical/embedding recall@5/MRR and full-block quote support. Measured correction minutes and human semantic groundedness remain null. The included corpus is development data, not an independently reviewed holdout. Supply `--manifest <approved-manifest.json> --output <report.json>` for external evaluation; never tune on that holdout afterward.
+
+[STATUS](STATUS.md) and [validation record](docs/VALIDATION.md) distinguish local checks from external acceptance.

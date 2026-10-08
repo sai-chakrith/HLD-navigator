@@ -1,0 +1,83 @@
+{
+  "review_status": "synthetic_development_unreviewed",
+  "reviewers": [],
+  "measured_correction_minutes": null,
+  "documents": [
+    {
+      "file": "torque-prose.md",
+      "sha256": "52545d878260f9343455c85a059dacf891422ffda5b7c786c01af34b86e69297",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "EngineControl",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "InstrumentCluster",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "TorqueInterface",
+          "attributes": {
+            "payload": "Torque"
+          }
+        },
+        {
+          "kind": "signal",
+          "name": "Torque",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          }
+        },
+        {
+          "kind": "port",
+          "name": "TorqueOut",
+          "attributes": {
+            "owner": "EngineControl",
+            "interface": "TorqueInterface",
+            "direction": "provides"
+          }
+        },
+        {
+          "kind": "port",
+          "name": "TorqueIn",
+          "attributes": {
+            "owner": "InstrumentCluster",
+            "interface": "TorqueInterface",
+            "direction": "requires"
+          }
+        },
+        {
+          "kind": "dependency",
+          "name": "EngineControl->InstrumentCluster:TorqueInterface",
+          "attributes": {
+            "source": "EngineControl",
+            "target": "InstrumentCluster",
+            "interface": "TorqueInterface"
+          }
+        },
+        {
+          "kind": "flow",
+          "name": "TorqueDelivery",
+          "attributes": {
+            "source": "EngineControl",
+            "target": "InstrumentCluster"
+          }
+        }
+      ],
+      "queries": [
+        {
+          "text": "Which component publishes torque to the display?",
+          "relevant_quote": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component."
+        },
+        {
+          "text": "What data type and physical unit does Torque have?",
+          "relevant_quote": "The Torque signal has type uint16 and unit Nm."
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,8 @@ class Location(BaseModel):
     line: int | None = None
     table: int | None = None
     row: int | None = None
+    origin: str = "text"
+    confidence: float | None = None
 
 
 class Block(BaseModel):
@@ -22,6 +24,7 @@ class Entity(BaseModel):
     attributes: dict[str, str] = Field(default_factory=dict)
     evidence: str
     location: Location
+    sources: list[dict] = Field(default_factory=list)
 
 
 class Review(BaseModel):
@@ -40,3 +43,18 @@ class SourceReview(BaseModel):
 class Question(BaseModel):
     text: str = Field(min_length=1, max_length=2000)
     document_id: str | None = None
+    scope: Literal["facts", "source"] = "facts"
+
+
+class CoverageReview(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    scope: str = Field(min_length=10, max_length=2000)
+    reason: str = Field(min_length=10, max_length=2000)
+
+
+class ManualEntity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    kind: Literal["component", "interface", "signal", "port", "dependency", "flow"]
+    name: str = Field(min_length=1, max_length=200)
+    attributes: dict[str, str] = Field(default_factory=dict)
+    evidence_block_id: str
