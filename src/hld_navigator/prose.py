@@ -27,7 +27,7 @@ def parse_prose(text, location):
     sentences = re.split(r"(?<=[.!?])\s+", text)
     for sentence in sentences:
         if re.search(
-            r"\b(?:not|never|cannot|no|without|may|might|possibly|false|if|unless|doesn't|isn't|can't)\b",
+            r"\b(?:not|never|cannot|no|without|may|might|possibly|false|if|unless|doesn't|isn't|can't|when|while|except|until|provided|depending)\b",
             sentence,
             re.I,
         ):
@@ -40,7 +40,10 @@ def parse_prose(text, location):
                     {
                         "code": "ambiguous_prose",
                         "severity": "blocking",
-                        "message": "Negated/uncertain architecture statement needs interpretation",
+                        "message": (
+                            "Negated, uncertain or qualified architecture statement needs "
+                            "interpretation"
+                        ),
                         "text": sentence,
                         "location": location.model_dump(),
                     }
@@ -55,14 +58,26 @@ def parse_prose(text, location):
                 add(kind, match[1])
             for match in re.finditer(rf"\b({NAME})\s+is\s+(?:an?\s+)?{nouns}\b", sentence):
                 add(kind, match[1])
-        relationship = re.search(
-            rf"(?:The\s+)?({NAME})\s+(?:component\s+|SWC\s+)?"
-            rf"(?:provides|publishes|sends)\s+(?:the\s+)?({NAME})\s+interface\s+"
-            rf"(?:to|for)\s+(?:the\s+)?({NAME})(?:\s+(?:component|SWC))?",
+        covered = []
+        subject = None
+        relationships = re.finditer(
+            rf"(?:(?:The\s+|the\s+)?({NAME})\s+(?:component\s+|SWC\s+)?|\band\s+)"
+            rf"(provides|publishes|sends|receives|consumes)\s+(?:the\s+)?({NAME})\s+interface\s+"
+            rf"(to|for|from)\s+(?:the\s+)?({NAME})(?:\s+(?:component|SWC))?",
             sentence,
         )
-        if relationship:
-            source, interface, target = relationship.groups()
+        for relationship in relationships:
+            explicit_subject, verb, interface, preposition, peer = relationship.groups()
+            subject = explicit_subject or subject
+            receiving = verb in {"receives", "consumes"}
+            if (
+                subject is None
+                or (receiving and preposition != "from")
+                or (not receiving and preposition == "from")
+            ):
+                continue
+            source, target = (peer, subject) if receiving else (subject, peer)
+            covered.append(relationship.span())
             add("component", source)
             add("component", target)
             add("interface", interface)
@@ -71,38 +86,42 @@ def parse_prose(text, location):
                 f"{source}->{target}:{interface}",
                 {"source": source, "target": target, "interface": interface},
             )
-        payload = re.search(
+        payload_matches = re.finditer(
             rf"({NAME})\s+interface\s+(?:carries|contains|transmits)\s+"
             rf"(?:the\s+)?({NAME})\s+signal",
             sentence,
         )
-        if payload:
+        for payload in payload_matches:
+            covered.append(payload.span())
             add("interface", payload[1], {"payload": payload[2]})
             add("signal", payload[2])
-        signal = re.search(
+        signal_matches = re.finditer(
             rf"({NAME})\s+signal\s+(?:has|uses|is\s+of)\s+(?:data\s+)?type\s+"
             r"([A-Za-z][A-Za-z0-9_]*)"
             r"(?:\s+(?:and|with)\s+unit\s+([A-Za-z°/]+))?",
             sentence,
         )
-        if signal:
+        for signal in signal_matches:
+            covered.append(signal.span())
             attrs = {"type": signal[2]}
             if signal[3]:
                 attrs["unit"] = signal[3]
             add("signal", signal[1], attrs)
-        flow = re.search(
+        flow_matches = re.finditer(
             rf"({NAME})\s+flow\s+(?:runs|goes)\s+from\s+(?:the\s+)?({NAME})(?:\s+component)?\s+to\s+(?:the\s+)?({NAME})",
             sentence,
         )
-        if flow:
+        for flow in flow_matches:
+            covered.append(flow.span())
             add("flow", flow[1], {"source": flow[2], "target": flow[3]})
-        port = re.search(
+        port_matches = re.finditer(
             rf"({NAME})\s+(?:component\s+)?(provides|requires)\s+(?:the\s+)?"
             rf"({NAME})\s+interface\s+(?:through|via|using)\s+(?:the\s+)?"
             rf"(?:port\s+({NAME})|({NAME})\s+port)",
             sentence,
         )
-        if port:
+        for port in port_matches:
+            covered.append(port.span())
             owner, direction, interface, name1, name2 = port.groups()
             add("component", owner)
             add("interface", interface)
@@ -111,11 +130,34 @@ def parse_prose(text, location):
                 name1 or name2,
                 {"owner": owner, "direction": direction, "interface": interface},
             )
-        if not any((relationship, payload, signal, flow, port)) and re.search(
-            r"\b(?:provides|requires|connects|consumes|publishes|carries|sends|receives)\b",
+        # Account for every action, including actions after an extracted edge.
+        # This vocabulary is intentionally conservative, not a completeness claim.
+        actions = re.finditer(
+            r"\b(?:provides|requires|connects|consumes|publishes|carries|contains|transmits|"
+            r"sends|receives|transfers|routes|exchanges|forwards|delivers|communicates)\b",
             sentence,
             re.I,
-        ):
+        )
+        # A component predicate or a coordinated lowercase verb outside the
+        # supported grammar also needs review. Avoid pretending a finite verb
+        # list recognizes all engineering prose.
+        predicates = re.finditer(
+            r"\b(?=(?:component|SWC)\s+([a-z]+)\b|and\s+([a-z]+)\b)",
+            sentence,
+        )
+        ignored = {"is", "a", "an", "the", "and", "unit", "with", "of", "in", "to", "from"}
+        actions = [(m.group(), *m.span()) for m in actions]
+        if re.search(r"\b(?:component|SWC)\b", sentence):
+            for match in predicates:
+                group = 1 if match[1] else 2
+                if match[group] not in ignored:
+                    actions.append((match[group], *match.span(group)))
+        uncovered = [
+            word
+            for word, first, last in actions
+            if not any(start <= first and last <= end for start, end in covered)
+        ]
+        if uncovered:
             issues.append(
                 {
                     "code": "unsupported_relationship",
@@ -125,6 +167,7 @@ def parse_prose(text, location):
                         "by the current extraction patterns"
                     ),
                     "text": sentence,
+                    "unresolved_actions": uncovered,
                     "location": location.model_dump(),
                 }
             )

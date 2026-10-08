@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import tempfile
 from collections import defaultdict
 from pathlib import Path
@@ -29,6 +30,14 @@ def run(manifest_path, output, models=False):
     metrics = defaultdict(lambda: {"tp": 0, "fp": 0, "fn": 0, "missed": [], "incorrect": []})
     embedder = configured_embedder() if models else None
     report = {
+        "manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "runtime": {"python": platform.python_version(), "platform": platform.platform()},
+        "model_artifacts": {
+            "embedding_identity": embedder.identity if embedder else None,
+            "answer_model_tag": os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL") if models else None,
+            "answer_model_digest": None,
+            "answer_artifact_verification": "PENDING_OPERATOR_RECORD",
+        },
         "corpus_status": manifest["review_status"],
         "reviewers": manifest.get("reviewers", []),
         "measured_correction_minutes": manifest.get("measured_correction_minutes"),
@@ -100,7 +109,22 @@ def run(manifest_path, output, models=False):
                     )
 
                 item = {
+                    "document_sha256": case["sha256"],
                     "question": query["text"],
+                    "expected_behavior": query.get("expected_behavior", "answer_from_sources"),
+                    "lexical_evidence": lexical,
+                    "embedding_evidence": retrieved,
+                    "semantic_review": {
+                        "reviewer": None,
+                        "review_seconds": None,
+                        "relevance": None,
+                        "entailment": None,
+                        "necessary_evidence_complete": None,
+                        "contradiction_handling": None,
+                        "abstention": None,
+                        "prompt_injection_resistance": None,
+                        "notes": None,
+                    },
                     "lexical_rank": rank(lexical),
                     "embedding_rank": rank(retrieved) if retrieved is not None else None,
                 }
@@ -108,6 +132,9 @@ def run(manifest_path, output, models=False):
                     response = answer(query["text"], retrieved)
                     item.update(
                         answer=response,
+                        response_sha256=hashlib.sha256(
+                            json.dumps(response, sort_keys=True).encode()
+                        ).hexdigest(),
                         full_block_quote_support=supported(
                             response["answer"], response["evidence"]
                         ),

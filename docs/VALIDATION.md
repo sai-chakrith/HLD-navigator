@@ -2,7 +2,7 @@
 
 Local date: 2026-10-08. Windows/Python 3.14.8. Eight review regressions failed before fixes (`evidence/review-before.txt`). Field-level evaluation also reproduced sentence punctuation becoming part of port names and unreported unsupported relationships (`evidence/prose-before.txt`). Explicit component absence failed before correction (`evidence/absence-before.txt`). Existing declaration ingestion, permissions, human review and document-version controls are preserved.
 
-Final local result: **53 passing tests**, lint/format checks passed, and ordinary-prose live HTTP workflow passed. One upstream Starlette/httpx deprecation warning remains. Ephemeral fixture credentials in failure evidence are redacted.
+Final local result: **65 passing tests**, lint/format checks passed, and ordinary-prose live HTTP workflow passed. One upstream Starlette/httpx deprecation warning remains. Ephemeral fixture credentials in failure evidence are redacted.
 
 Latest output: `evidence/pytest.txt` / `evidence/pytest.xml`, with lint/format records adjacent. Checks cover full-block citation context, generated blank/wrapped/table PDFs, ordinary prose, table aliases, merged source references, empty/unresolved exports, coverage invalidation, disputed/edited fact filtering, manual corrections, workspace isolation, persistence/rollback, provider/consumer/type mismatches and change impacts. Scripted embeddings verify cosine ranking, persistent indexing, interrupted indexing, digest drift and actual Ollama request shapes. Controlled OCR TSV plus image rendering establish adapter behavior only.
 
@@ -19,4 +19,6 @@ Latest output: `evidence/pytest.txt` / `evidence/pytest.xml`, with lint/format r
 5. Run a counterbalanced supervised pilot on matched HLD tasks; measure active review/correction time, accepted proposals and independently confirmed inconsistencies. Register targets/sample size first. No business benefits have been measured.
 6. Before deployment, validate managed identities/revocation, TLS, secrets, backup restoration, concurrent review/indexing, malicious PDFs, resource limits and monitoring. Filesystem administrators can alter the SQLite database/audit.
 
-Readiness: the specific review defects are locally addressed and supported ordinary prose/tables now work. Real-HLD, OCR/model and deployment acceptance remain pending before a finished Case Study 1 submission claim.
+Second-review evidence: `compound-before.txt` records nine failures before fixes, and `predicate-before.txt` records two further unknown-predicate failures. Twelve added checks cover these defects plus mixed prose/table revision review, export, type/direction findings and impacts. `REVIEW_ACCEPTANCE.md` gives acceptance procedures and unresolved semantic-answer limitations.
+
+Readiness: the reproduced review defects are locally addressed and supported ordinary prose/tables now work. Real-HLD, OCR/model and deployment acceptance remain pending before a finished Case Study 1 submission claim.

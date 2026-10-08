@@ -78,3 +78,5 @@ uv run ruff format --check src tests tools
 The manifest freezes file hashes and field annotations. Reports separate extraction precision/recall, missed/incorrect facts, correction actions, lexical/embedding recall@5/MRR and full-block quote support. Measured correction minutes and human semantic groundedness remain null. The included corpus is development data, not an independently reviewed holdout. Supply `--manifest <approved-manifest.json> --output <report.json>` for external evaluation; never tune on that holdout afterward.
 
 [STATUS](STATUS.md) and [validation record](docs/VALIDATION.md) distinguish local checks from external acceptance.
+
+The second review and reproducible failure cases are tracked in [REVIEW_ACCEPTANCE](docs/REVIEW_ACCEPTANCE.md). Conditional statements are blocked for interpretation; they never become unconditional edges. The mixed prose/table revision demonstration is in `examples/revision-review/`. Evaluation reports include separate, initially unscored semantic review fields; model citation correctness is not answer quality.

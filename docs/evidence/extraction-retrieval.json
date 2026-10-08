@@ -1,4 +1,15 @@
 {
+  "manifest_sha256": "6f8f5a8a624747624c85fefd5a995e62f0b88db8c911345b1b8efb2386dcc4fe",
+  "runtime": {
+    "python": "3.14.8",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "model_artifacts": {
+    "embedding_identity": null,
+    "answer_model_tag": null,
+    "answer_model_digest": null,
+    "answer_artifact_verification": "PENDING_OPERATOR_RECORD"
+  },
   "corpus_status": "synthetic_development_unreviewed",
   "reviewers": [],
   "measured_correction_minutes": null,
@@ -7,12 +18,188 @@
   "answer_model_evaluation": "NOT_RUN",
   "retrieval": [
     {
+      "document_sha256": "52545d878260f9343455c85a059dacf891422ffda5b7c786c01af34b86e69297",
       "question": "Which component publishes torque to the display?",
+      "expected_behavior": "answer_from_sources",
+      "lexical_evidence": [
+        {
+          "id": "5c97805e-39eb-48f7-a230-cba9cba7947b",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "# Torque coordination HLD \u2014 synthetic development fixture",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "9713d904-eb81-4686-b202-3dc39f45ecbc",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 4,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "f3236f77-1fca-4185-a6b4-255654bc6213",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The Torque signal has type uint16 and unit Nm.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 5,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "d7a2dfd3-a145-4f98-b7ce-75615d0bd70e",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "1477d14f-166c-4f16-ace5-e83d4cbf7b47",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 8,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": null,
+      "semantic_review": {
+        "reviewer": null,
+        "review_seconds": null,
+        "relevance": null,
+        "entailment": null,
+        "necessary_evidence_complete": null,
+        "contradiction_handling": null,
+        "abstention": null,
+        "prompt_injection_resistance": null,
+        "notes": null
+      },
       "lexical_rank": 4,
       "embedding_rank": null
     },
     {
+      "document_sha256": "52545d878260f9343455c85a059dacf891422ffda5b7c786c01af34b86e69297",
       "question": "What data type and physical unit does Torque have?",
+      "expected_behavior": "answer_from_sources",
+      "lexical_evidence": [
+        {
+          "id": "f3236f77-1fca-4185-a6b4-255654bc6213",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The Torque signal has type uint16 and unit Nm.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 5,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "5c97805e-39eb-48f7-a230-cba9cba7947b",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "# Torque coordination HLD \u2014 synthetic development fixture",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "9713d904-eb81-4686-b202-3dc39f45ecbc",
+          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 4,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": null,
+      "semantic_review": {
+        "reviewer": null,
+        "review_seconds": null,
+        "relevance": null,
+        "entailment": null,
+        "necessary_evidence_complete": null,
+        "contradiction_handling": null,
+        "abstention": null,
+        "prompt_injection_resistance": null,
+        "notes": null
+      },
       "lexical_rank": 1,
       "embedding_rank": null
     }
@@ -494,8 +681,8 @@
     }
   ],
   "fields": {
-    "flow.target": {
-      "tp": 1,
+    "port.interface": {
+      "tp": 2,
       "fp": 0,
       "fn": 0,
       "missed": [],
@@ -516,7 +703,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.source": {
+    "flow.source": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -527,51 +714,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.target": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "port.interface": {
-      "tp": 2,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "port.entity": {
-      "tp": 2,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "signal.type": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "dependency.interface": {
+    "flow.target": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -593,7 +736,29 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.entity": {
+    "signal.type": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.target": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.payload": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -626,8 +791,8 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "interface.payload": {
-      "tp": 1,
+    "port.entity": {
+      "tp": 2,
       "fp": 0,
       "fn": 0,
       "missed": [],
@@ -637,18 +802,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "signal.unit": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "signal.entity": {
+    "dependency.source": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -670,7 +824,40 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "flow.source": {
+    "signal.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.unit": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.interface": {
       "tp": 1,
       "fp": 0,
       "fn": 0,

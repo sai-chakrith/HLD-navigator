@@ -1,0 +1,134 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+________________ test_receive_clause_retains_original_subject _________________
+
+    def test_receive_clause_retains_original_subject():
+        found, warnings = edges("The Engine component provides the TorqueInterface interface to the Cluster component and receives the BrakeInterface interface from the ABS component.")
+>       assert found == [
+            {"source": "Engine", "target": "Cluster", "interface": "TorqueInterface"},
+            {"source": "ABS", "target": "Engine", "interface": "BrakeInterface"},
+        ]
+E       AssertionError: assert [{'source': '...ueInterface'}] == [{'source': '...keInterface'}]
+E
+E         Right contains one more item: {'source': 'ABS', 'target': 'Engine', 'interface': 'BrakeInterface'}
+E         Use -v to get more diff
+
+tests\test_compound_prose.py:15: AssertionError
+_______________________ test_multiple_explicit_senders ________________________
+
+    def test_multiple_explicit_senders():
+        found, warnings = edges("The Engine component sends the Torque interface to the Cluster component and the ABS component sends the Brake interface to the Engine component.")
+>       assert len(found) == 2
+E       AssertionError: assert 1 == 2
+E        +  where 1 = len([{'source': 'Engine', 'target': 'Cluster', 'interface': 'Torque'}])
+
+tests\test_compound_prose.py:24: AssertionError
+_ test_unmodeled_clause_is_blocking_even_after_supported_clause[The Engine component transfers Torque to the Cluster component.] _
+
+text = 'The Engine component transfers Torque to the Cluster component.'
+
+    @pytest.mark.parametrize("text", [
+        "The Engine component transfers Torque to the Cluster component.",
+        "The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.",
+    ])
+    def test_unmodeled_clause_is_blocking_even_after_supported_clause(text):
+        _, warnings = edges(text)
+>       assert any(w["code"] == "unsupported_relationship" and w["severity"] == "blocking" for w in warnings)
+E       assert False
+E        +  where False = any(<generator object test_unmodeled_clause_is_blocking_even_after_supported_clause.<locals>.<genexpr> at 0x00000239C7155F20>)
+
+tests\test_compound_prose.py:35: AssertionError
+_ test_unmodeled_clause_is_blocking_even_after_supported_clause[The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.] _
+
+text = 'The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.'
+
+    @pytest.mark.parametrize("text", [
+        "The Engine component transfers Torque to the Cluster component.",
+        "The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.",
+    ])
+    def test_unmodeled_clause_is_blocking_even_after_supported_clause(text):
+        _, warnings = edges(text)
+>       assert any(w["code"] == "unsupported_relationship" and w["severity"] == "blocking" for w in warnings)
+E       assert False
+E        +  where False = any(<generator object test_unmodeled_clause_is_blocking_even_after_supported_clause.<locals>.<genexpr> at 0x00000239C7157510>)
+
+tests\test_compound_prose.py:35: AssertionError
+__ test_qualified_edge_never_becomes_unconditional[only when ignition is ON] __
+
+qualifier = 'only when ignition is ON'
+
+    @pytest.mark.parametrize("qualifier", ["only when ignition is ON", "except in limp mode", "while ignition is ON", "provided that speed is zero"])
+    def test_qualified_edge_never_becomes_unconditional(qualifier):
+        text = f"The Engine component provides the Torque interface to the Cluster component {qualifier}."
+        found, warnings = edges(text)
+>       assert not found
+E       AssertionError: assert not [{'source': 'Engine', 'target': 'Cluster', 'interface': 'Torque'}]
+
+tests\test_compound_prose.py:42: AssertionError
+____ test_qualified_edge_never_becomes_unconditional[except in limp mode] _____
+
+qualifier = 'except in limp mode'
+
+    @pytest.mark.parametrize("qualifier", ["only when ignition is ON", "except in limp mode", "while ignition is ON", "provided that speed is zero"])
+    def test_qualified_edge_never_becomes_unconditional(qualifier):
+        text = f"The Engine component provides the Torque interface to the Cluster component {qualifier}."
+        found, warnings = edges(text)
+>       assert not found
+E       AssertionError: assert not [{'source': 'Engine', 'target': 'Cluster', 'interface': 'Torque'}]
+
+tests\test_compound_prose.py:42: AssertionError
+____ test_qualified_edge_never_becomes_unconditional[while ignition is ON] ____
+
+qualifier = 'while ignition is ON'
+
+    @pytest.mark.parametrize("qualifier", ["only when ignition is ON", "except in limp mode", "while ignition is ON", "provided that speed is zero"])
+    def test_qualified_edge_never_becomes_unconditional(qualifier):
+        text = f"The Engine component provides the Torque interface to the Cluster component {qualifier}."
+        found, warnings = edges(text)
+>       assert not found
+E       AssertionError: assert not [{'source': 'Engine', 'target': 'Cluster', 'interface': 'Torque'}]
+
+tests\test_compound_prose.py:42: AssertionError
+_ test_qualified_edge_never_becomes_unconditional[provided that speed is zero] _
+
+qualifier = 'provided that speed is zero'
+
+    @pytest.mark.parametrize("qualifier", ["only when ignition is ON", "except in limp mode", "while ignition is ON", "provided that speed is zero"])
+    def test_qualified_edge_never_becomes_unconditional(qualifier):
+        text = f"The Engine component provides the Torque interface to the Cluster component {qualifier}."
+        found, warnings = edges(text)
+>       assert not found
+E       AssertionError: assert not [{'source': 'Engine', 'target': 'Cluster', 'interface': 'Torque'}]
+
+tests\test_compound_prose.py:42: AssertionError
+_________________ test_unresolved_second_clause_blocks_export _________________
+
+api = (<starlette.testclient.TestClient object at 0x00000239C7073B60>, <hld_navigator.store.Store object at 0x00000239C7132D...fIvq78S01irx93mfFyKYjDCWQieGpayg'}, {'Authorization': 'Bearer REDACTED'})
+
+    def test_unresolved_second_clause_blocks_export(api):
+        client, _, reviewer, _ = api
+        document = upload(api, content=b"The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.")
+        approve(api, document)
+        response = client.get("/workspaces/pilot/export", headers=reviewer, params={"document_id": document})
+>       assert response.status_code == 409
+E       assert 200 == 409
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests\test_compound_prose.py:51: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\peddi\Downloads\chakrithdump\HLD-navigator\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_compound_prose.py::test_receive_clause_retains_original_subject
+FAILED tests/test_compound_prose.py::test_multiple_explicit_senders - Asserti...
+FAILED tests/test_compound_prose.py::test_unmodeled_clause_is_blocking_even_after_supported_clause[The Engine component transfers Torque to the Cluster component.]
+FAILED tests/test_compound_prose.py::test_unmodeled_clause_is_blocking_even_after_supported_clause[The Engine component provides the Torque interface to the Cluster component and transfers Brake to the ABS component.]
+FAILED tests/test_compound_prose.py::test_qualified_edge_never_becomes_unconditional[only when ignition is ON]
+FAILED tests/test_compound_prose.py::test_qualified_edge_never_becomes_unconditional[except in limp mode]
+FAILED tests/test_compound_prose.py::test_qualified_edge_never_becomes_unconditional[while ignition is ON]
+FAILED tests/test_compound_prose.py::test_qualified_edge_never_becomes_unconditional[provided that speed is zero]
+FAILED tests/test_compound_prose.py::test_unresolved_second_clause_blocks_export
+9 failed, 1 warning in 1.09s

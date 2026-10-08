@@ -1,6 +1,6 @@
 # Engineering status
 
-The review's concrete defects were reproduced and corrected. This is an improved Case Study 1 pilot, not a completed or production-validated submission.
+The first review defects and the second review's reproduced compound/unsupported/conditional prose defects were corrected locally. This is an improved Case Study 1 pilot, not a completed or production-validated submission.
 
 | Area | Implemented | Boundary |
 |---|---|---|
@@ -16,3 +16,5 @@ The review's concrete defects were reproduced and corrected. This is an improved
 Additive schema version 2 retains original users/documents/history. Legacy documents retain earlier extraction; ingest a new revision to use improved extraction. Enterprise IAM, deployment/load tests, backups/restore acceptance and tamper-resistant auditing remain unfinished.
 
 Latest authoritative counts and acceptance procedures: docs/VALIDATION.md and docs/evidence/. No percentage reliability, grade or measured productivity benefit is claimed.
+
+Second review: compound edges, unmatched clause warnings and qualifier blockers are covered by regressions. Mixed prose/table revisions exercise review, export, mismatches and impact comparison. See docs/REVIEW_ACCEPTANCE.md for failure evidence and pending independent/model/OCR/value acceptance. Semantic answer quality is still unresolved.
