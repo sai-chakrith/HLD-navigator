@@ -1,0 +1,39 @@
+{
+  "repo": "eclipse-kuksa/kuksa-databroker",
+  "revision": "7a210d01fd00a8035cf68c05336bd0860777e892",
+  "source_base": "https://github.com/eclipse-kuksa/kuksa-databroker/blob/7a210d01fd00a8035cf68c05336bd0860777e892/doc/",
+  "status": "unfamiliar_public_baseline_agent_annotation_pending_architect_review",
+  "tuning_on_results": false,
+  "assets": [
+    {
+      "file": "pictures/client-taxonomy.svg",
+      "sha256": "a41df8e22e0b716c1f13ae18c4ef7ea4b7ea28c5461404ee43a066e6d4071627",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/client-taxonomy.svg"
+    },
+    {
+      "file": "pictures/sysarch_basic.svg",
+      "sha256": "f3c2aea831a36d6b5d00a3313e5f53a252c1e0d404b9a2ed421d6ccaa718ea8d",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/sysarch_basic.svg"
+    },
+    {
+      "file": "pictures/sysarch_consumers.svg",
+      "sha256": "2e3288e99f6b86cfafe480ff9f9937f8790f94f72d4e16ffb645c727c95249f0",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/sysarch_consumers.svg"
+    },
+    {
+      "file": "pictures/sysarch_deployment.svg",
+      "sha256": "2a76c858ba00567e0f226be67c89fa1edd3c98ac43fdfe7dd962305c0f545858",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/sysarch_deployment.svg"
+    },
+    {
+      "file": "pictures/sysarch_providers.svg",
+      "sha256": "55d4a7d2fb4b5060ea599d52f80e94967bfd7eb79a58ed3bf6bf500d53eb7ec9",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/sysarch_providers.svg"
+    },
+    {
+      "file": "pictures/terminology.svg",
+      "sha256": "a300f1565d4d562c8c532576133138a4bb9517d8ac4ee3897c777ba125f168ca",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/pictures/terminology.svg"
+    }
+  ]
+}

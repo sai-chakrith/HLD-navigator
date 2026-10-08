@@ -1,0 +1,204 @@
+FFFFFFFFF..F                                                             [100%]
+================================== FAILURES ===================================
+_ test_every_recipient_is_preserved[the Cluster component and the Logger component] _
+
+recipients = 'the Cluster component and the Logger component'
+
+    @pytest.mark.parametrize("recipients", [
+        "the Cluster component and the Logger component",
+        "Cluster, Logger and Gateway components",
+        "Cluster, Logger, and Gateway components",
+    ])
+    def test_every_recipient_is_preserved(recipients):
+        text = f"The Engine component provides the Torque interface to {recipients}."
+        _, entities, warnings = extract("recipients.md", text.encode())
+        expected = {"Cluster", "Logger"} | ({"Gateway"} if "Gateway" in recipients else set())
+        edges = [e for e in entities if e.kind == "dependency"]
+>       assert {e.attributes["target"] for e in edges} == expected
+E       AssertionError: assert {'Cluster'} == {'Cluster', 'Logger'}
+E
+E         Extra items in the right set:
+E         'Logger'
+E         Use -v to get more diff
+
+tests\test_recipients_units.py:16: AssertionError
+__ test_every_recipient_is_preserved[Cluster, Logger and Gateway components] __
+
+recipients = 'Cluster, Logger and Gateway components'
+
+    @pytest.mark.parametrize("recipients", [
+        "the Cluster component and the Logger component",
+        "Cluster, Logger and Gateway components",
+        "Cluster, Logger, and Gateway components",
+    ])
+    def test_every_recipient_is_preserved(recipients):
+        text = f"The Engine component provides the Torque interface to {recipients}."
+        _, entities, warnings = extract("recipients.md", text.encode())
+        expected = {"Cluster", "Logger"} | ({"Gateway"} if "Gateway" in recipients else set())
+        edges = [e for e in entities if e.kind == "dependency"]
+>       assert {e.attributes["target"] for e in edges} == expected
+E       AssertionError: assert {'Cluster'} == {'Cluster', '...ay', 'Logger'}
+E
+E         Extra items in the right set:
+E         'Gateway'
+E         'Logger'
+E         Use -v to get more diff
+
+tests\test_recipients_units.py:16: AssertionError
+_ test_every_recipient_is_preserved[Cluster, Logger, and Gateway components] __
+
+recipients = 'Cluster, Logger, and Gateway components'
+
+    @pytest.mark.parametrize("recipients", [
+        "the Cluster component and the Logger component",
+        "Cluster, Logger and Gateway components",
+        "Cluster, Logger, and Gateway components",
+    ])
+    def test_every_recipient_is_preserved(recipients):
+        text = f"The Engine component provides the Torque interface to {recipients}."
+        _, entities, warnings = extract("recipients.md", text.encode())
+        expected = {"Cluster", "Logger"} | ({"Gateway"} if "Gateway" in recipients else set())
+        edges = [e for e in entities if e.kind == "dependency"]
+>       assert {e.attributes["target"] for e in edges} == expected
+E       AssertionError: assert {'Cluster'} == {'Cluster', '...ay', 'Logger'}
+E
+E         Extra items in the right set:
+E         'Gateway'
+E         'Logger'
+E         Use -v to get more diff
+
+tests\test_recipients_units.py:16: AssertionError
+_________________ test_multiple_senders_and_subsequent_clause _________________
+
+    def test_multiple_senders_and_subsequent_clause():
+        text = (
+            "The Engine component receives the Brake interface from ABS and BrakeController "
+            "components and sends the Torque interface to Cluster and Logger components."
+        )
+        _, entities, warnings = extract("peers.md", text.encode())
+        edges = [e.attributes for e in entities if e.kind == "dependency"]
+>       assert {(e["source"], e["target"]) for e in edges} == {
+            ("ABS", "Engine"), ("BrakeController", "Engine"),
+            ("Engine", "Cluster"), ("Engine", "Logger"),
+        }
+E       AssertionError: assert {('ABS', 'Eng...', 'Cluster')} == {('ABS', 'Eng...e', 'Logger')}
+E
+E         Extra items in the right set:
+E         ('Engine', 'Logger')
+E         ('BrakeController', 'Engine')
+E         Use -v to get more diff
+
+tests\test_recipients_units.py:28: AssertionError
+____________________ test_complete_unit_expression[m/s^2] _____________________
+
+unit = 'm/s^2'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+E       AssertionError: assert 'm/s' == 'm/s^2'
+E
+E         - m/s^2
+E         ?    --
+E         + m/s
+
+tests\test_recipients_units.py:41: AssertionError
+____________________ test_complete_unit_expression[N\xb7m] ____________________
+
+unit = 'N�m'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+E       AssertionError: assert 'N' == 'N�m'
+E
+E         - N�m
+E         + N
+
+tests\test_recipients_units.py:41: AssertionError
+_________________ test_complete_unit_expression[kg m^2 / s^3] _________________
+
+unit = 'kg m^2 / s^3'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+E       AssertionError: assert 'kg' == 'kg m^2 / s^3'
+E
+E         - kg m^2 / s^3
+E         + kg
+
+tests\test_recipients_units.py:41: AssertionError
+_____________________ test_complete_unit_expression[1/s] ______________________
+
+unit = '1/s'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'unit'
+
+tests\test_recipients_units.py:41: KeyError
+________________ test_complete_unit_expression[m s\u207b\xb2] _________________
+
+unit = 'm s\u207b\xb2'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+E       AssertionError: assert 'm' == 'm s\u207b\xb2'
+E
+E         - m s\u207b\xb2
+E         + m
+
+tests\test_recipients_units.py:41: AssertionError
+____________________ test_complete_unit_expression[m/s**2] ____________________
+
+unit = 'm/s**2'
+
+    @pytest.mark.parametrize("unit", ["m/s^2", "N\xb7m", "kg m^2 / s^3", "1/s", "m s\u207b\xb2", "\xb0C", "rad/s", "m/s**2"])
+    def test_complete_unit_expression(unit):
+        _, entities, warnings = extract(
+            "units.md", f"The Acceleration signal has type float32 and unit {unit}.".encode()
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == unit
+E       AssertionError: assert 'm/s' == 'm/s**2'
+E
+E         - m/s**2
+E         + m/s
+
+tests\test_recipients_units.py:41: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_recipients_units.py::test_every_recipient_is_preserved[the Cluster component and the Logger component]
+FAILED tests/test_recipients_units.py::test_every_recipient_is_preserved[Cluster, Logger and Gateway components]
+FAILED tests/test_recipients_units.py::test_every_recipient_is_preserved[Cluster, Logger, and Gateway components]
+FAILED tests/test_recipients_units.py::test_multiple_senders_and_subsequent_clause
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[m/s^2]
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[N\xb7m]
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[kg m^2 / s^3]
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[1/s] - K...
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[m s\u207b\xb2]
+FAILED tests/test_recipients_units.py::test_complete_unit_expression[m/s**2]
+10 failed, 2 passed in 0.38s

@@ -2,7 +2,7 @@
 
 Local date: 2026-10-08. Windows/Python 3.14.8. Eight review regressions failed before fixes (`evidence/review-before.txt`). Field-level evaluation also reproduced sentence punctuation becoming part of port names and unreported unsupported relationships (`evidence/prose-before.txt`). Explicit component absence failed before correction (`evidence/absence-before.txt`). Existing declaration ingestion, permissions, human review and document-version controls are preserved.
 
-Final local result: **65 passing tests**, lint/format checks passed, and ordinary-prose live HTTP workflow passed. One upstream Starlette/httpx deprecation warning remains. Ephemeral fixture credentials in failure evidence are redacted.
+Final local result: **87 passing tests**, lint/format checks passed, and ordinary-prose live HTTP workflow passed. One upstream Starlette/httpx deprecation warning remains. Ephemeral fixture credentials in failure evidence are redacted.
 
 Latest output: `evidence/pytest.txt` / `evidence/pytest.xml`, with lint/format records adjacent. Checks cover full-block citation context, generated blank/wrapped/table PDFs, ordinary prose, table aliases, merged source references, empty/unresolved exports, coverage invalidation, disputed/edited fact filtering, manual corrections, workspace isolation, persistence/rollback, provider/consumer/type mismatches and change impacts. Scripted embeddings verify cosine ranking, persistent indexing, interrupted indexing, digest drift and actual Ollama request shapes. Controlled OCR TSV plus image rendering establish adapter behavior only.
 
@@ -22,3 +22,19 @@ Latest output: `evidence/pytest.txt` / `evidence/pytest.xml`, with lint/format r
 Second-review evidence: `compound-before.txt` records nine failures before fixes, and `predicate-before.txt` records two further unknown-predicate failures. Twelve added checks cover these defects plus mixed prose/table revision review, export, type/direction findings and impacts. `REVIEW_ACCEPTANCE.md` gives acceptance procedures and unresolved semantic-answer limitations.
 
 Readiness: the reproduced review defects are locally addressed and supported ordinary prose/tables now work. Real-HLD, OCR/model and deployment acceptance remain pending before a finished Case Study 1 submission claim.
+
+## Multiple recipients, units and unfamiliar baseline
+
+`recipients-units-before.txt` records ten failures before correction; two simple units already passed. Twelve recipient/unit regressions cover coordinated recipients, incoming senders, subsequent clauses, exponents, multiplication and spaced units. Additional warning-accounting and controlled CPU adapter tests bring the suite to 87 (including plural-unit coverage).
+
+`public-baseline.json` freezes a three-document public KUKSA baseline with commit/license/hashes. Against selected provisional agent annotations it records 18 missed facts, one unexpected fact, 20 matched warning locations, 12 unexpected warnings and 19 missed warning locations. The selected annotations were authored after inspection and are not exhaustive or architect-reviewed; these counts expose limitations, not independently established precision/recall. No extraction tuning was applied to these documents.
+
+`local-embedding.json` records an actual BGE-small-en-v1.5 f16 CPU run via the verified llama.cpp b11490 runtime. Four selected public-document questions: lexical and learned recall@5 are both 3/4; lexical MRR is 0.75, learned MRR is 0.625. This configuration does not demonstrate a retrieval advantage. The benchmark includes original retrieved passages; human semantic review is pending. Reproduction is in LOCAL_MODEL_VALIDATION.md.
+
+The architecture reviewer packet has blank identities, annotations and active correction-time records; no independent review or measured benefit has occurred.
+
+## Actual answer model run
+
+`local-model.json` records a complete verified Qwen2.5-0.5B-Instruct Q4_K_M CPU run: ten cases, zero quote-contract passes, required passage text present in five of six answerable cases, and zero raw abstentions among four cases requiring abstention. All outputs are rejected by the existing citation contract. The passages present count is not semantic answer accuracy: the public API response includes unnecessary TLS evidence and the injection case copies a malicious instruction. `local-model-assessment.json` separately documents relevance, omissions, contradictory echoes, abstention failures and injection contamination. These are agent assessments; architecture review remains pending. This small model configuration is rejected for pilot answers.
+
+Exact artifact hashes, prompt, parameters, raw responses and elapsed times are retained. Diagram assets are frozen with the public sources. The reviewer packet includes ten blank semantic review rows tied to response hashes. No architect sign-off or correction-time measurement has occurred. The local model execution dependency is now satisfied for this experiment; independent usefulness/acceptance remains unresolved.

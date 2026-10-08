@@ -1,0 +1,836 @@
+{
+  "status": "REAL_LOCAL_CPU_RUN",
+  "runtime": "Windows-11-10.0.26300-SP0",
+  "python": "3.14.8",
+  "artifact_sha256": {
+    "runtime.zip": "ed69a9e87713b84c63940b2f0e708c8e698e82b3d74dfa1364e94d97e334720c",
+    "bge.gguf": "f0b2fef971e8366438bfd2d9aefea1b0115919389448806d290237f638bae999"
+  },
+  "embedding": "BGE-small-en-v1.5 f16; mean pooling; no query prefix",
+  "answer": null,
+  "review_status": "AGENT_RULE_ASSESSMENT_PENDING_ARCHITECT_REVIEW",
+  "answers": [],
+  "retrieval": [
+    {
+      "document": "system-architecture.md",
+      "question": "Which APIs expose network access to VSS datapoints?",
+      "relevant_quote": "The VSS server exposes a network based API to let consumers interact with VSS datapoints. This is either W3C VISS (currently only available in KUKSA server) or the KUKSA GRPC API (currently supported by KUKSA databroker).",
+      "lexical_rank": 1,
+      "embedding_rank": 1,
+      "lexical_evidence": [
+        {
+          "id": "d8e8f481-3cbe-4acb-9fc1-b6ea72393734",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "The VSS server exposes a network based API to let consumers interact with VSS datapoints. This is either W3C VISS (currently only available in KUKSA server) or the KUKSA GRPC API (currently supported by KUKSA databroker).",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 15,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "4efeb1fc-9fc0-4fed-9bf6-0ac942251a71",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "We assume running a KUKSA VSS server on a vehicle computer. Some signals might originate in an embedded ECU only connected via CAN (e.g. ECU 1). If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 37,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "de9f1eaf-dbcd-4ebf-9ab5-4adc65a4c5ae",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "Connections to the VSS server can be protected via TLS. Authorization to access specific VSS data is managed via JWT tokens (in KUKSA server, KUKSA databroker implementation is ongoing).",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 17,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "161b1e36-776b-47b8-ad3f-9523e36041e7",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A KUKSA VSS server runs on a vehicle computer with a given VSS model. Applications can interact with the VSS model by setting, getting or subscribing to VSS datapoints.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 13,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "2c99d94f-b3ce-4d0b-9731-d67f84c86fd8",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A standard consumer (\"Application)\"  will interact with VSS datapoints from the VSS server to realize a vehicle functionality. A simple example is gathering some signals and visualizing them.",
+          "location": {
+            "page": null,
+            "section": "Consumers",
+            "line": 54,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": [
+        {
+          "id": "d8e8f481-3cbe-4acb-9fc1-b6ea72393734",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "The VSS server exposes a network based API to let consumers interact with VSS datapoints. This is either W3C VISS (currently only available in KUKSA server) or the KUKSA GRPC API (currently supported by KUKSA databroker).",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 15,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7835662219154699
+        },
+        {
+          "id": "de9f1eaf-dbcd-4ebf-9ab5-4adc65a4c5ae",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "Connections to the VSS server can be protected via TLS. Authorization to access specific VSS data is managed via JWT tokens (in KUKSA server, KUKSA databroker implementation is ongoing).",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 17,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7206507105790142
+        },
+        {
+          "id": "161b1e36-776b-47b8-ad3f-9523e36041e7",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A KUKSA VSS server runs on a vehicle computer with a given VSS model. Applications can interact with the VSS model by setting, getting or subscribing to VSS datapoints.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 13,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7113577400750997
+        },
+        {
+          "id": "2c99d94f-b3ce-4d0b-9731-d67f84c86fd8",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A standard consumer (\"Application)\"  will interact with VSS datapoints from the VSS server to realize a vehicle functionality. A simple example is gathering some signals and visualizing them.",
+          "location": {
+            "page": null,
+            "section": "Consumers",
+            "line": 54,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6849890312929406
+        },
+        {
+          "id": "4efeb1fc-9fc0-4fed-9bf6-0ac942251a71",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "We assume running a KUKSA VSS server on a vehicle computer. Some signals might originate in an embedded ECU only connected via CAN (e.g. ECU 1). If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 37,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6846145294398519
+        }
+      ]
+    },
+    {
+      "document": "system-architecture.md",
+      "question": "How does a data provider convert gathered vehicle data?",
+      "relevant_quote": "Components providing data for leaves in the VSS tree are called  *data-providers*. Technically they are just normal KUKSA clients. Sometimes you will see data-providers to be referred to as \"feeders\".",
+      "lexical_rank": null,
+      "embedding_rank": null,
+      "lexical_evidence": [
+        {
+          "id": "2cc1b2bd-089f-4cc0-bca5-b09d7081a92e",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A data-provider will gather some data from a vehicle  using whatever standard or proprietary protocol is needed to access the data. It will then convert the gathered data to the representation defined in a VSS model and provide those standard signals to the VSS server using the VISS or GRPC protocol.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 29,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "9e8aa732-dcd7-4eee-a0f9-d2f93c6573d2",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "To sync the desired state in the VSS server to the Vehicle, actuation-providers are used. Similar to the data-provider, an actuation provider also needs to access lower-level Vehicle systems.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 20,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "55b52571-e910-4631-bf3c-e22aaa239abd",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "If a provider also supports affecting vehicle systems, based on a desired state being set via the VSS server, it is an *actuation-provider*. Depending on the system design, a provider can be designed to fulfil both the roles as data-provider and actuation-provider.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 31,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "a6b59949-4352-4fb0-ad21-4f2fe59cb0b6",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "To sync the VSS model to the actual state of the vehicle, providers are used. A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack. Historically, data-providers are often called \"feeders\".",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 19,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "02dafb71-451a-423d-98f6-4ee5422ef4e1",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "The [DBC Feeder](https://github.com/eclipse-kuksa/kuksa-can-provider) is an example of a CAN data-provider. It allows mapping of data from a CAN bus based on a DBC description and some mapping rules.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 39,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": [
+        {
+          "id": "2cc1b2bd-089f-4cc0-bca5-b09d7081a92e",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A data-provider will gather some data from a vehicle  using whatever standard or proprietary protocol is needed to access the data. It will then convert the gathered data to the representation defined in a VSS model and provide those standard signals to the VSS server using the VISS or GRPC protocol.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 29,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7975911251428058
+        },
+        {
+          "id": "a6b59949-4352-4fb0-ad21-4f2fe59cb0b6",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "To sync the VSS model to the actual state of the vehicle, providers are used. A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack. Historically, data-providers are often called \"feeders\".",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 19,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7197237271366995
+        },
+        {
+          "id": "2a3e78a1-729a-4271-ab12-9dc912e7f0a4",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "Another common use case is providing telemetry to the cloud. With cellular networks, being hidden behind NATs or using dynamic IP addresses, the VISS/GRPC pattern of contacting a VSS server is not a suitable. The common pattern is, that the vehicle pushes relevant data, using suitable IoT protocols and potentially dealing with buffering and connection loss. This is the \"Cloud Adapter\" pattern.",
+          "location": {
+            "page": null,
+            "section": "Consumers",
+            "line": 56,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6495306017090616
+        },
+        {
+          "id": "2c99d94f-b3ce-4d0b-9731-d67f84c86fd8",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "A standard consumer (\"Application)\"  will interact with VSS datapoints from the VSS server to realize a vehicle functionality. A simple example is gathering some signals and visualizing them.",
+          "location": {
+            "page": null,
+            "section": "Consumers",
+            "line": 54,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6476432848833501
+        },
+        {
+          "id": "9e8aa732-dcd7-4eee-a0f9-d2f93c6573d2",
+          "document_id": "971b6711-c5f6-4d4d-a861-173d83233a07",
+          "text": "To sync the desired state in the VSS server to the Vehicle, actuation-providers are used. Similar to the data-provider, an actuation provider also needs to access lower-level Vehicle systems.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 20,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "system-architecture.md",
+          "version": "1",
+          "name": "system-architecture.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6468642896108286
+        }
+      ]
+    },
+    {
+      "document": "terminology.md",
+      "question": "What does an actuation-provider subscribe to?",
+      "relevant_quote": "To this end, an actuation-provider can subscribe to the value of a VSS actuator in the server.",
+      "lexical_rank": 1,
+      "embedding_rank": 2,
+      "lexical_evidence": [
+        {
+          "id": "3e2f6de9-ebb7-4c8e-85c2-a7b1e25aba08",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "To this end, an actuation-provider can subscribe to the value of a VSS actuator in the server.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 71,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "b6e57379-e475-4bb5-b0b5-fd8eb3d7c274",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "    - [actuation-provider](#actuation-provider)",
+          "location": {
+            "page": null,
+            "section": "Terminology",
+            "line": 12,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "53ea573d-50d7-4541-bf0f-17d713be9439",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "### actuation-provider",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 68,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "d7bf9331-19d5-4d93-b1af-474b90876e62",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems. Therefore, considering safety in an actuation-provider or underlying systems is very important.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 74,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "8a97e5db-6477-4022-9be0-eb7bb9093a78",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "An actuation-provider is trying to ensure that the value (called `target_value` for `kuksa.val.v1`) of a VSS actuator is reflected by the actual state of a vehicle.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 69,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": [
+        {
+          "id": "53ea573d-50d7-4541-bf0f-17d713be9439",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "### actuation-provider",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 68,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.8739394994589227
+        },
+        {
+          "id": "3e2f6de9-ebb7-4c8e-85c2-a7b1e25aba08",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "To this end, an actuation-provider can subscribe to the value of a VSS actuator in the server.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 71,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.8033704440877961
+        },
+        {
+          "id": "b6e57379-e475-4bb5-b0b5-fd8eb3d7c274",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "    - [actuation-provider](#actuation-provider)",
+          "location": {
+            "page": null,
+            "section": "Terminology",
+            "line": 12,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7955452464922383
+        },
+        {
+          "id": "d7bf9331-19d5-4d93-b1af-474b90876e62",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems. Therefore, considering safety in an actuation-provider or underlying systems is very important.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 74,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7617447237796193
+        },
+        {
+          "id": "8daaf922-9d73-4f07-ad01-418de6c28048",
+          "document_id": "c5269138-f29f-45c9-b038-011d5156def6",
+          "text": "There are two classes of VSS providers: data-providers and actuation-providers. In practice, a single component might combine both roles.",
+          "location": {
+            "page": null,
+            "section": "Clients: VSS Providers",
+            "line": 62,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "terminology.md",
+          "version": "1",
+          "name": "terminology.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.7268397506788252
+        }
+      ]
+    },
+    {
+      "document": "protocol.md",
+      "question": "Is TLS supported?",
+      "relevant_quote": "TLS is currently not supported.",
+      "lexical_rank": 1,
+      "embedding_rank": 1,
+      "lexical_evidence": [
+        {
+          "id": "bbcecd14-9781-45c2-8a9f-ffa3c8244507",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "TLS is currently not supported.",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 71,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "2642ba9e-520c-4537-825b-fec2abf30e6b",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "Perspective        | Meaning | Set Supported | Get Supported | Subscribe Supported",
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 6,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "577d1d20-5b5e-4802-b58c-8d7cd8678a94",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "# Supported protocols in Kuksa Databroker",
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "fbf13123-dd39-4b85-a7fc-b9017be6ec1b",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "This file contains an overview of the protocols supported by Kuksa Databroker.",
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source"
+        },
+        {
+          "id": "8ae07655-d6b3-4be4-8532-25bfaada5c5b",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "This is an overview of the APIs supported described using the perspectives above",
+          "location": {
+            "page": null,
+            "section": "Overview",
+            "line": 20,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source"
+        }
+      ],
+      "embedding_evidence": [
+        {
+          "id": "bbcecd14-9781-45c2-8a9f-ffa3c8244507",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "TLS is currently not supported.",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 71,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.9024052386807435
+        },
+        {
+          "id": "577d1d20-5b5e-4802-b58c-8d7cd8678a94",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "# Supported protocols in Kuksa Databroker",
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.6135127194831101
+        },
+        {
+          "id": "8a0c7ebc-8639-4674-84e5-cb5f73e5ea1a",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "It supports authorization using the access token format specified in [authorization.md](authorization.md).",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 48,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.5830894040947094
+        },
+        {
+          "id": "8ae07655-d6b3-4be4-8532-25bfaada5c5b",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "This is an overview of the APIs supported described using the perspectives above",
+          "location": {
+            "page": null,
+            "section": "Overview",
+            "line": 20,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.578339483852825
+        },
+        {
+          "id": "af67e076-29fa-42a2-b88c-b20ec775d211",
+          "document_id": "30e293ab-448a-40cb-b8b9-d87a9f77e81b",
+          "text": "The `kuksa.val.v2` is the newest protocol supported by Kuksa Databroker, and the only protocol which may be further developed.",
+          "location": {
+            "page": null,
+            "section": "`kuksa.val.v2` gRPC Protocol",
+            "line": 34,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "protocol.md",
+          "version": "1",
+          "name": "protocol.md",
+          "review_state": "unreviewed_source",
+          "vector_similarity": 0.5685760222588345
+        }
+      ]
+    }
+  ],
+  "embedding_command": [
+    "C:\\Users\\peddi\\Downloads\\chakrithdump\\HLD-navigator\\.data\\local-inference\\llama-server.exe",
+    "-m",
+    "C:\\Users\\peddi\\Downloads\\chakrithdump\\HLD-navigator\\.data\\local-inference\\bge.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "58346",
+    "-t",
+    "4",
+    "-np",
+    "1",
+    "-c",
+    "512",
+    "--alias",
+    "bge",
+    "-ngl",
+    "0",
+    "--embedding",
+    "--pooling",
+    "mean",
+    "-b",
+    "512",
+    "-ub",
+    "512"
+  ],
+  "lexical_metrics": {
+    "questions": 4,
+    "recall_at_5": 0.75,
+    "mrr": 0.75
+  },
+  "embedding_metrics": {
+    "questions": 4,
+    "recall_at_5": 0.75,
+    "mrr": 0.625
+  },
+  "limitation": "Four agent-selected public-document retrieval queries and ten controlled answer cases are not an independent OEM benchmark. Exact relevant evidence selection and raw abstention are assessed separately from citation integrity. Human semantic review and correction effort are pending; model size is intentionally small."
+}

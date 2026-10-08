@@ -63,7 +63,7 @@ $env:HLD_NAVIGATOR_OLLAMA_MODEL='<installed answer model:tag>'
 
 Restart the API and use Index this revision in Review. Configured embedding retrieval requires a complete index; failure leaves previous vectors intact. Artifact drift, invalid vectors and dimension mismatch are rejected. The embedding endpoint must be loopback. Oversized model inputs error instead of silently truncating. [Ollama API reference](https://github.com/ollama/ollama/blob/main/docs/openapi.yaml).
 
-Answer models must quote entire retrieved blocks with citations. Cropping negation or qualifiers fails support checks. This rejects fragments and paraphrases; it does not establish semantic entailment or relevance. Insufficient evidence abstains; mixed revisions require selection; configured model failures are explicit. Ollama was unavailable here: model quality remains unmeasured.
+Answer models must quote entire retrieved blocks with citations. Cropping negation or qualifiers fails support checks. This rejects fragments and paraphrases; it does not establish semantic entailment or relevance. Empty evidence and invalid quote output abstain; mixed revisions require selection; configured model failures are explicit. Ollama remains unavailable. A verified llama.cpp CPU backend and real BGE benchmark are now available; independent model usefulness remains unproven. See the local validation instructions below.
 
 ## Reproduce checks and evaluation
 
@@ -80,3 +80,7 @@ The manifest freezes file hashes and field annotations. Reports separate extract
 [STATUS](STATUS.md) and [validation record](docs/VALIDATION.md) distinguish local checks from external acceptance.
 
 The second review and reproducible failure cases are tracked in [REVIEW_ACCEPTANCE](docs/REVIEW_ACCEPTANCE.md). Conditional statements are blocked for interpretation; they never become unconditional edges. The mixed prose/table revision demonstration is in `examples/revision-review/`. Evaluation reports include separate, initially unscored semantic review fields; model citation correctness is not answer quality.
+
+[Local model and unfamiliar-document validation](docs/LOCAL_MODEL_VALIDATION.md) reproduces pinned CPU artifact setup, actual learned retrieval and controlled answer checks. The [architecture reviewer packet](docs/reviewer-packet/INSTRUCTIONS.md) contains blank independent annotation and correction-time records. Recipient lists retain every named peer, and scientific unit expressions retain exponents, multiplication and spacing. Public baseline misses and nuisance warnings remain visible.
+
+The actual Qwen CPU run failed the controlled answer contract and expected raw abstention cases. It is not enabled by default or accepted for pilot answers. See `docs/evidence/local-model.json` and the separate relevance/contradiction assessment in `docs/evidence/local-model-assessment.json`. Real model execution does not imply suitable model behavior.

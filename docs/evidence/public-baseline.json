@@ -1,0 +1,1882 @@
+{
+  "manifest_sha256": "16fe81e99e775923b518c4314092637c9ac51121200aba7eb7c0daebd2b8812a",
+  "runtime": {
+    "python": "3.14.8",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "model_artifacts": {
+    "embedding_identity": null,
+    "answer_model_tag": null,
+    "answer_model_digest": null,
+    "answer_artifact_verification": "PENDING_OPERATOR_RECORD"
+  },
+  "corpus_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED",
+  "reviewers": [],
+  "measured_correction_minutes": null,
+  "model_evaluation": "NOT_RUN",
+  "human_semantic_groundedness": null,
+  "answer_model_evaluation": "NOT_RUN",
+  "retrieval": [],
+  "cases": [
+    {
+      "file": "system-architecture.md",
+      "warnings": [
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The data model follows the [COVESA Vehicle Signal Specification](https://github.com/COVESA/vehicle_signal_specification) while the data is accessed using either a variant of the [W3C VISS protocol](https://github.com/w3c/automotive) or a [GRPC](https://grpc.io)-based protocol.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 7,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack.",
+          "location": {
+            "page": null,
+            "section": "Kuksa System Components and Deployment",
+            "line": 19,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "If a provider also supports affecting vehicle systems, based on a desired state being set via the VSS server, it is an *actuation-provider*.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 31,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Depending on the system design, a provider can be designed to fulfil both the roles as data-provider and actuation-provider.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 31,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Some signals might originate in an embedded ECU only connected via CAN (e.g.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 37,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 37,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Other ECUs with Ethernet connectivity might publish data as SOME/IP (ECU 2 in the example) or DDS (ECU 3 in the example) services.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 41,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "unsupported_relationship",
+          "severity": "blocking",
+          "message": "Architecture relationship is not covered by the current extraction patterns",
+          "text": "The KUKSA project provides an [example SOME/IP provider](https://github.com/eclipse-kuksa/kuksa-someip-provider) based on [vsomeip](https://github.com/COVESA/vsomeip) emulating a SOME/IP controllable wiper.",
+          "unresolved_actions": [
+            "provides"
+          ],
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 41,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The Vehicle Computer running the VSS server might run other (automotive) middlewares that provides raw data and signals.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 43,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "In that case a provider using the APIs of the underlying system can be created, without the need to parse a specific serialization first.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 43,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "In case of AUTOSAR Adaptive, signals might be accessed using the `ara::com` API.",
+          "location": {
+            "page": null,
+            "section": "Providers",
+            "line": 43,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Thus an  application might use data from some signals to calculate the value of of others (\"Signal Refinement\").",
+          "location": {
+            "page": null,
+            "section": "Consumers",
+            "line": 58,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "unsupported_relationship",
+          "severity": "blocking",
+          "message": "Architecture relationship is not covered by the current extraction patterns",
+          "text": "The simplest expected deployment assumes that the primary vehicle computer contains the fully populated VSS model for a vehicle.",
+          "unresolved_actions": [
+            "contains"
+          ],
+          "location": {
+            "page": null,
+            "section": "(Distributed) KUKSA deployment",
+            "line": 73,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "We assume an optimized VSS Sync component to be used that might deal with one-way or two-way syncs.",
+          "location": {
+            "page": null,
+            "section": "(Distributed) KUKSA deployment",
+            "line": 75,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "At the same time it is accessing VSS signals relevant to powertrain functionality provided by the VSS server on the central vehicle computer as well as providing higher level powertrain signals to the vehicle computer.",
+          "location": {
+            "page": null,
+            "section": "(Distributed) KUKSA deployment",
+            "line": 77,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "no_entities",
+          "severity": "blocking",
+          "message": "No template entities or supported prose patterns recognized"
+        }
+      ],
+      "locations": [],
+      "warning_accuracy": {
+        "tp": 9,
+        "fp": 7,
+        "fn": 9,
+        "precision": 0.5625,
+        "recall": 0.5,
+        "matched": [
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 19
+              },
+              "requirement": "To sync the VSS model to the actual state of the vehicle, providers are used. A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack. Historically, data-providers are often called \"feeders\"."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack.",
+              "location": {
+                "page": null,
+                "section": "Kuksa System Components and Deployment",
+                "line": 19,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 31
+              },
+              "requirement": "If a provider also supports affecting vehicle systems, based on a desired state being set via the VSS server, it is an *actuation-provider*. Depending on the system design, a provider can be designed to fulfil both the roles as data-provider and actuation-provider."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "If a provider also supports affecting vehicle systems, based on a desired state being set via the VSS server, it is an *actuation-provider*.",
+              "location": {
+                "page": null,
+                "section": "Providers",
+                "line": 31,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 37
+              },
+              "requirement": "We assume running a KUKSA VSS server on a vehicle computer. Some signals might originate in an embedded ECU only connected via CAN (e.g. ECU 1). If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "Some signals might originate in an embedded ECU only connected via CAN (e.g.",
+              "location": {
+                "page": null,
+                "section": "Providers",
+                "line": 37,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 41
+              },
+              "requirement": "Other ECUs with Ethernet connectivity might publish data as SOME/IP (ECU 2 in the example) or DDS (ECU 3 in the example) services. The KUKSA project provides an [example SOME/IP provider](https://github.com/eclipse-kuksa/kuksa-someip-provider) based on [vsomeip](https://github.com/COVESA/vsomeip) emulating a SOME/IP controllable wiper."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "Other ECUs with Ethernet connectivity might publish data as SOME/IP (ECU 2 in the example) or DDS (ECU 3 in the example) services.",
+              "location": {
+                "page": null,
+                "section": "Providers",
+                "line": 41,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 43
+              },
+              "requirement": "The Vehicle Computer running the VSS server might run other (automotive) middlewares that provides raw data and signals. In this example we assume the Vehicle Computer runs an AUTOSAR Adaptive subsystem. In that case a provider using the APIs of the underlying system can be created, without the need to parse a specific serialization first. In case of AUTOSAR Adaptive, signals might be accessed using the `ara::com` API."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "The Vehicle Computer running the VSS server might run other (automotive) middlewares that provides raw data and signals.",
+              "location": {
+                "page": null,
+                "section": "Providers",
+                "line": 43,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 58
+              },
+              "requirement": "As a VSS data catalogue can contain signals of different abstraction levels, often higher level signals depend on lower level ones. Thus an  application might use data from some signals to calculate the value of of others (\"Signal Refinement\"). An example is, taking current battery voltage and other low level signals from the battery system to calculate a state-of-charge and pushing it back. Another service might use state of-charge, system and ambient temperature to calculate remaining range. Such a client combines the roles of consumer and data-provider."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "Thus an  application might use data from some signals to calculate the value of of others (\"Signal Refinement\").",
+              "location": {
+                "page": null,
+                "section": "Consumers",
+                "line": 58,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 73
+              },
+              "requirement": "The simplest expected deployment assumes that the primary vehicle computer contains the fully populated VSS model for a vehicle. This is the only possible deployment in vehicles, that only have one computer capable to run KUKSA and protocols such as GRPC or VISS."
+            },
+            "actual": {
+              "code": "unsupported_relationship",
+              "severity": "blocking",
+              "message": "Architecture relationship is not covered by the current extraction patterns",
+              "text": "The simplest expected deployment assumes that the primary vehicle computer contains the fully populated VSS model for a vehicle.",
+              "unresolved_actions": [
+                "contains"
+              ],
+              "location": {
+                "page": null,
+                "section": "(Distributed) KUKSA deployment",
+                "line": 73,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 75
+              },
+              "requirement": "In a redundancy scenario there may be a backup vehicle computer with a KUKSA instance that is kept in sync, so that in case of a failover, the last known data is immediately available  for all VSS datapoints. We assume an optimized VSS Sync component to be used that might deal with one-way or two-way syncs. Currently KUKSA does not include a sync mechanism."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "We assume an optimized VSS Sync component to be used that might deal with one-way or two-way syncs.",
+              "location": {
+                "page": null,
+                "section": "(Distributed) KUKSA deployment",
+                "line": 75,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 77
+              },
+              "requirement": "A vehicle can have additional  domain controllers such as the powertrain controller. The Powertrain controller might use VSS to manage private internal datapoints not relevant to other domains. At the same time it is accessing VSS signals relevant to powertrain functionality provided by the VSS server on the central vehicle computer as well as providing higher level powertrain signals to the vehicle computer."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "At the same time it is accessing VSS signals relevant to powertrain functionality provided by the VSS server on the central vehicle computer as well as providing higher level powertrain signals to the vehicle computer.",
+              "location": {
+                "page": null,
+                "section": "(Distributed) KUKSA deployment",
+                "line": 77,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          }
+        ],
+        "missed": [
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 11
+            },
+            "requirement": "![Basic architecture](./pictures/sysarch_basic.svg)"
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 15
+            },
+            "requirement": "The VSS server exposes a network based API to let consumers interact with VSS datapoints. This is either W3C VISS (currently only available in KUKSA server) or the KUKSA GRPC API (currently supported by KUKSA databroker)."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 25
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 27
+            },
+            "requirement": "Components providing data for leaves in the VSS tree are called  *data-providers*. Technically they are just normal KUKSA clients. Sometimes you will see data-providers to be referred to as \"feeders\"."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 35
+            },
+            "requirement": "![Provider options](./pictures/sysarch_providers.svg)"
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 39
+            },
+            "requirement": "The [DBC Feeder](https://github.com/eclipse-kuksa/kuksa-can-provider) is an example of a CAN data-provider. It allows mapping of data from a CAN bus based on a DBC description and some mapping rules."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 45
+            },
+            "requirement": "Finally, there may be other  processor based platforms in a vehicle such as another vehicle computer (VCU in the example), a domain, or zone controller or an infotainment system. These systems can run any kind of provider themselves and connect to a VSS server running on a different compute unit directly through the VISS or GRPC directly."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 53
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 55
+            },
+            "requirement": ""
+          }
+        ],
+        "unexpected": [
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "The data model follows the [COVESA Vehicle Signal Specification](https://github.com/COVESA/vehicle_signal_specification) while the data is accessed using either a variant of the [W3C VISS protocol](https://github.com/w3c/automotive) or a [GRPC](https://grpc.io)-based protocol.",
+            "location": {
+              "page": null,
+              "section": "Kuksa System Components and Deployment",
+              "line": 7,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "Depending on the system design, a provider can be designed to fulfil both the roles as data-provider and actuation-provider.",
+            "location": {
+              "page": null,
+              "section": "Providers",
+              "line": 31,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints.",
+            "location": {
+              "page": null,
+              "section": "Providers",
+              "line": 37,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "unsupported_relationship",
+            "severity": "blocking",
+            "message": "Architecture relationship is not covered by the current extraction patterns",
+            "text": "The KUKSA project provides an [example SOME/IP provider](https://github.com/eclipse-kuksa/kuksa-someip-provider) based on [vsomeip](https://github.com/COVESA/vsomeip) emulating a SOME/IP controllable wiper.",
+            "unresolved_actions": [
+              "provides"
+            ],
+            "location": {
+              "page": null,
+              "section": "Providers",
+              "line": 41,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "In that case a provider using the APIs of the underlying system can be created, without the need to parse a specific serialization first.",
+            "location": {
+              "page": null,
+              "section": "Providers",
+              "line": 43,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "In case of AUTOSAR Adaptive, signals might be accessed using the `ara::com` API.",
+            "location": {
+              "page": null,
+              "section": "Providers",
+              "line": 43,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "no_entities",
+            "severity": "blocking",
+            "message": "No template entities or supported prose patterns recognized"
+          }
+        ]
+      },
+      "warning_annotation_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED"
+    },
+    {
+      "file": "terminology.md",
+      "warnings": [
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "This pages gives an overview about the terms we use, when talking about KUKSA components or systems built with KUKSA.",
+          "location": {
+            "page": null,
+            "section": "Terminology",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "unsupported_relationship",
+          "severity": "blocking",
+          "message": "Architecture relationship is not covered by the current extraction patterns",
+          "text": "This is a server that provides the KUKSA.val APIs to interact with VSS signals.",
+          "unresolved_actions": [
+            "provides"
+          ],
+          "location": {
+            "page": null,
+            "section": "VSS Server",
+            "line": 32,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "unsupported_relationship",
+          "severity": "blocking",
+          "message": "Architecture relationship is not covered by the current extraction patterns",
+          "text": "Any application that connects to the server and uses the KUKSA.VAL APIs is a client.",
+          "unresolved_actions": [
+            "connects"
+          ],
+          "location": {
+            "page": null,
+            "section": "Client",
+            "line": 42,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Examples for VSS consumers might be \"apps\" or functions running on vehicle computers, the infotainment system, or maybe even a user's personal device.",
+          "location": {
+            "page": null,
+            "section": "Clients: VSS Consumers",
+            "line": 55,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "In practice, a single component might combine both roles.",
+          "location": {
+            "page": null,
+            "section": "Clients: VSS Providers",
+            "line": 62,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Historically you also may still find the term \"feeder\", when referring to a data-provider.",
+          "location": {
+            "page": null,
+            "section": "data-provider",
+            "line": 66,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "If a VSS consumer requests the _desired_ state of the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` to be `true`, the actuation-provider for `Vehicle.Body.Trunk.Rear.IsOpen` would try to interact with a vehicle's system trying to unlock and open the trunk.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 72,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems.",
+          "location": {
+            "page": null,
+            "section": "actuation-provider",
+            "line": 74,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "Metadata of a VSS signal is data belonging to a signal, that is not the value.",
+          "location": {
+            "page": null,
+            "section": "Metadata",
+            "line": 111,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "A layer may add signals to an existing VSS tree or extending and overriding existing signal entries.",
+          "location": {
+            "page": null,
+            "section": "Overlay",
+            "line": 114,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        }
+      ],
+      "locations": [
+        {
+          "kind": "signal",
+          "name": "VSS",
+          "attributes": {},
+          "evidence": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk.",
+          "location": {
+            "page": null,
+            "section": "data-provider",
+            "line": 65,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk.",
+              "location": {
+                "page": null,
+                "section": "data-provider",
+                "line": 65,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk.",
+              "location": {
+                "page": null,
+                "section": "data-provider",
+                "line": 65,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk.",
+              "location": {
+                "page": null,
+                "section": "data-provider",
+                "line": 65,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 7,
+        "fp": 3,
+        "fn": 6,
+        "precision": 0.7,
+        "recall": 0.5384615384615384,
+        "matched": [
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 32
+              },
+              "requirement": "This is a server that provides the KUKSA.val APIs to interact with VSS signals."
+            },
+            "actual": {
+              "code": "unsupported_relationship",
+              "severity": "blocking",
+              "message": "Architecture relationship is not covered by the current extraction patterns",
+              "text": "This is a server that provides the KUKSA.val APIs to interact with VSS signals.",
+              "unresolved_actions": [
+                "provides"
+              ],
+              "location": {
+                "page": null,
+                "section": "VSS Server",
+                "line": 32,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 42
+              },
+              "requirement": "Any application that connects to the server and uses the KUKSA.VAL APIs is a client."
+            },
+            "actual": {
+              "code": "unsupported_relationship",
+              "severity": "blocking",
+              "message": "Architecture relationship is not covered by the current extraction patterns",
+              "text": "Any application that connects to the server and uses the KUKSA.VAL APIs is a client.",
+              "unresolved_actions": [
+                "connects"
+              ],
+              "location": {
+                "page": null,
+                "section": "Client",
+                "line": 42,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 55
+              },
+              "requirement": "Examples for VSS consumers might be \"apps\" or functions running on vehicle computers, the infotainment system, or maybe even a user's personal device."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "Examples for VSS consumers might be \"apps\" or functions running on vehicle computers, the infotainment system, or maybe even a user's personal device.",
+              "location": {
+                "page": null,
+                "section": "Clients: VSS Consumers",
+                "line": 55,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 62
+              },
+              "requirement": "There are two classes of VSS providers: data-providers and actuation-providers. In practice, a single component might combine both roles."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "In practice, a single component might combine both roles.",
+              "location": {
+                "page": null,
+                "section": "Clients: VSS Providers",
+                "line": 62,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 72
+              },
+              "requirement": "If a VSS consumer requests the _desired_ state of the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` to be `true`, the actuation-provider for `Vehicle.Body.Trunk.Rear.IsOpen` would try to interact with a vehicle's system trying to unlock and open the trunk."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "If a VSS consumer requests the _desired_ state of the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` to be `true`, the actuation-provider for `Vehicle.Body.Trunk.Rear.IsOpen` would try to interact with a vehicle's system trying to unlock and open the trunk.",
+              "location": {
+                "page": null,
+                "section": "actuation-provider",
+                "line": 72,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 74
+              },
+              "requirement": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems. Therefore, considering safety in an actuation-provider or underlying systems is very important."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems.",
+              "location": {
+                "page": null,
+                "section": "actuation-provider",
+                "line": 74,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 114
+              },
+              "requirement": "VSS has the concept of layering different signal trees on top of each other. This is called [overlay](https://covesa.github.io/vehicle_signal_specification/extensions/overlay/index.html). A layer may add signals to an existing VSS tree or extending and overriding existing signal entries."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "A layer may add signals to an existing VSS tree or extending and overriding existing signal entries.",
+              "location": {
+                "page": null,
+                "section": "Overlay",
+                "line": 114,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          }
+        ],
+        "missed": [
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 26
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 34
+            },
+            "requirement": "Usually, for KUKSA.val this is the KUKSA.val databroker. The server keeps the current state of all known VSS signals and enables clients to get information regarding those signals or changing their state. It is also responsible of for checking whether a client has sufficient authorization to access or modify certain signals."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 39
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 60
+            },
+            "requirement": "Therefore, a VSS provider will always connect two interfaces: Northbound it uses the KUKSA.val API to interact with a VSS server, southbound it will interact with some other system, typically an in-vehicle bus or API."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 65
+            },
+            "requirement": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk."
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 69
+            },
+            "requirement": "An actuation-provider is trying to ensure that the value (called `target_value` for `kuksa.val.v1`) of a VSS actuator is reflected by the actual state of a vehicle."
+          }
+        ],
+        "unexpected": [
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "This pages gives an overview about the terms we use, when talking about KUKSA components or systems built with KUKSA.",
+            "location": {
+              "page": null,
+              "section": "Terminology",
+              "line": 3,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "Historically you also may still find the term \"feeder\", when referring to a data-provider.",
+            "location": {
+              "page": null,
+              "section": "data-provider",
+              "line": 66,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "Metadata of a VSS signal is data belonging to a signal, that is not the value.",
+            "location": {
+              "page": null,
+              "section": "Metadata",
+              "line": 111,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          }
+        ]
+      },
+      "warning_annotation_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED"
+    },
+    {
+      "file": "protocol.md",
+      "warnings": [
+        {
+          "code": "unsupported_relationship",
+          "severity": "blocking",
+          "message": "Architecture relationship is not covered by the current extraction patterns",
+          "text": "This file contains an overview of the protocols supported by Kuksa Databroker.",
+          "unresolved_actions": [
+            "contains"
+          ],
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "This means that if a someone provides a wanted value to Databroker using an Actuation method, only subscribers for Actuation will be notified.",
+          "location": {
+            "page": null,
+            "section": "Supported protocols in Kuksa Databroker",
+            "line": 13,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The `enable-viss` flag must be provided at startup in order to enable the VISSv2 websocket interface.",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 56,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The arguments `--viss-address` and `--viss-port` can be used if you want to use a different address or port than default for VISS.",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 62,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "If not specified, the address `127.0.0.1` will be used unless otherwise specified with `--address`, and the port 8090 will be used.",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 63,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "unsupported_table",
+          "severity": "blocking",
+          "message": "No recognized architecture table header",
+          "table": 1
+        }
+      ],
+      "locations": [
+        {
+          "kind": "interface",
+          "name": "VISSv2",
+          "attributes": {},
+          "evidence": "Using kuksa-client, the VISSv2 interface of databroker is available using the `ws` protocol in the uri, i.e.:",
+          "location": {
+            "page": null,
+            "section": "VISS v2",
+            "line": 65,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "Using kuksa-client, the VISSv2 interface of databroker is available using the `ws` protocol in the uri, i.e.:",
+              "location": {
+                "page": null,
+                "section": "VISS v2",
+                "line": 65,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 4,
+        "fp": 2,
+        "fn": 4,
+        "precision": 0.6666666666666666,
+        "recall": 0.5,
+        "matched": [
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 13
+              },
+              "requirement": "This means that if a someone provides a wanted value to Databroker using an Actuation method, only subscribers for Actuation will be notified."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "This means that if a someone provides a wanted value to Databroker using an Actuation method, only subscribers for Actuation will be notified.",
+              "location": {
+                "page": null,
+                "section": "Supported protocols in Kuksa Databroker",
+                "line": 13,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 56
+              },
+              "requirement": "The `enable-viss` flag must be provided at startup in order to enable the VISSv2 websocket interface."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "The `enable-viss` flag must be provided at startup in order to enable the VISSv2 websocket interface.",
+              "location": {
+                "page": null,
+                "section": "VISS v2",
+                "line": 56,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "codes": [
+                "unsupported_relationship",
+                "ambiguous_prose",
+                "unsupported_diagram",
+                "unsupported_table"
+              ],
+              "location": {
+                "line": 63
+              },
+              "requirement": "If not specified, the address `127.0.0.1` will be used unless otherwise specified with `--address`, and the port 8090 will be used."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "If not specified, the address `127.0.0.1` will be used unless otherwise specified with `--address`, and the port 8090 will be used.",
+              "location": {
+                "page": null,
+                "section": "VISS v2",
+                "line": 63,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          },
+          {
+            "expected": {
+              "code": "unsupported_table",
+              "location": {
+                "table": 1
+              },
+              "requirement": "Protocol capability table is outside architecture inventory schema"
+            },
+            "actual": {
+              "code": "unsupported_table",
+              "severity": "blocking",
+              "message": "No recognized architecture table header",
+              "table": 1
+            }
+          }
+        ],
+        "missed": [
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 7
+            },
+            "requirement": "-------------------|---------|---------------|---------------|--------------------"
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 33
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 47
+            },
+            "requirement": ""
+          },
+          {
+            "codes": [
+              "unsupported_relationship",
+              "ambiguous_prose",
+              "unsupported_diagram",
+              "unsupported_table"
+            ],
+            "location": {
+              "line": 71
+            },
+            "requirement": "TLS is currently not supported."
+          }
+        ],
+        "unexpected": [
+          {
+            "code": "unsupported_relationship",
+            "severity": "blocking",
+            "message": "Architecture relationship is not covered by the current extraction patterns",
+            "text": "This file contains an overview of the protocols supported by Kuksa Databroker.",
+            "unresolved_actions": [
+              "contains"
+            ],
+            "location": {
+              "page": null,
+              "section": "Supported protocols in Kuksa Databroker",
+              "line": 3,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          },
+          {
+            "code": "ambiguous_prose",
+            "severity": "blocking",
+            "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+            "text": "The arguments `--viss-address` and `--viss-port` can be used if you want to use a different address or port than default for VISS.",
+            "location": {
+              "page": null,
+              "section": "VISS v2",
+              "line": 62,
+              "table": null,
+              "row": null,
+              "origin": "text",
+              "confidence": null
+            }
+          }
+        ]
+      },
+      "warning_annotation_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED"
+    }
+  ],
+  "fields": {
+    "component.entity": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 7,
+      "missed": [
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "component",
+            "Cloud Adapter",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "component",
+            "KUKSA databroker",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "component",
+            "DBC Feeder",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "component",
+            "data-provider",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "component",
+            "actuation-provider",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "component",
+            "VSS Server",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "component",
+            "Client",
+            "entity",
+            "present"
+          ]
+        }
+      ],
+      "incorrect": [],
+      "precision": null,
+      "recall": 0.0,
+      "correction_actions": 7,
+      "measured_correction_minutes": null
+    },
+    "interface.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 6,
+      "missed": [
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "interface",
+            "KUKSA GRPC API",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "interface",
+            "W3C VISS",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "interface",
+            "KUKSA.val API",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "protocol.md",
+          "fact": [
+            "interface",
+            "kuksa.val.v2",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "protocol.md",
+          "fact": [
+            "interface",
+            "sdv.databroker.v1",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "protocol.md",
+          "fact": [
+            "interface",
+            "kuksa.val.v1",
+            "entity",
+            "present"
+          ]
+        }
+      ],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 0.14285714285714285,
+      "correction_actions": 6,
+      "measured_correction_minutes": null
+    },
+    "dependency.entity": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "missed": [
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "dependency",
+            "data-provider->VSS server",
+            "entity",
+            "present"
+          ]
+        }
+      ],
+      "incorrect": [],
+      "precision": null,
+      "recall": 0.0,
+      "correction_actions": 1,
+      "measured_correction_minutes": null
+    },
+    "dependency.source": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "missed": [
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "dependency",
+            "data-provider->VSS server",
+            "source",
+            "data-provider"
+          ]
+        }
+      ],
+      "incorrect": [],
+      "precision": null,
+      "recall": 0.0,
+      "correction_actions": 1,
+      "measured_correction_minutes": null
+    },
+    "dependency.target": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "missed": [
+        {
+          "file": "system-architecture.md",
+          "fact": [
+            "dependency",
+            "data-provider->VSS server",
+            "target",
+            "VSS server"
+          ]
+        }
+      ],
+      "incorrect": [],
+      "precision": null,
+      "recall": 0.0,
+      "correction_actions": 1,
+      "measured_correction_minutes": null
+    },
+    "signal.entity": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 2,
+      "missed": [
+        {
+          "file": "terminology.md",
+          "fact": [
+            "signal",
+            "Vehicle.Body.Trunk.Rear.IsOpen",
+            "entity",
+            "present"
+          ]
+        },
+        {
+          "file": "terminology.md",
+          "fact": [
+            "signal",
+            "Vehicle.Speed",
+            "entity",
+            "present"
+          ]
+        }
+      ],
+      "incorrect": [
+        {
+          "file": "terminology.md",
+          "fact": [
+            "signal",
+            "VSS",
+            "entity",
+            "present"
+          ]
+        }
+      ],
+      "precision": 0.0,
+      "recall": 0.0,
+      "correction_actions": 3,
+      "measured_correction_minutes": null
+    }
+  },
+  "warning_metrics": {
+    "annotated_documents": 3,
+    "tp": 20,
+    "fp": 12,
+    "fn": 19,
+    "precision": 0.625,
+    "recall": 0.5128205128205128,
+    "annotation_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED",
+    "annotation_scope": "selected named architecture facts and unresolved requirements; not exhaustive inventory ground truth",
+    "human_warning_semantics_review": "PENDING"
+  },
+  "lexical_metrics": null,
+  "embedding_metrics": null,
+  "model_dependency": "Available local Ollama endpoint, embedding model and verified artifact digest; answer model required for model-answer quality measurement",
+  "limitation": "Only independently reviewed, frozen holdouts support acceptance conclusions. Quote support does not establish relevance or semantic entailment. Correction actions are not measured effort."
+}

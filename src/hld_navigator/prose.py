@@ -60,14 +60,20 @@ def parse_prose(text, location):
                 add(kind, match[1])
         covered = []
         subject = None
+        peer = (
+            rf"(?:the\s+)?{NAME}\b(?:\s+(?:components?|SWCs?))?"
+            r"(?!\s+(?:(?:components?|SWCs?)\s+)?"
+            r"(?:provides|publishes|sends|receives|consumes|requires|transfers)\b)"
+        )
+        peers = rf"{peer}(?:\s*(?:,\s*(?:and\s+)?|\band\s+){peer})*"
         relationships = re.finditer(
-            rf"(?:(?:The\s+|the\s+)?({NAME})\s+(?:component\s+|SWC\s+)?|\band\s+)"
+            rf"\b(?:(?:The\s+|the\s+)?({NAME})\s+(?:component\s+|SWC\s+)?|\band\s+)"
             rf"(provides|publishes|sends|receives|consumes)\s+(?:the\s+)?({NAME})\s+interface\s+"
-            rf"(to|for|from)\s+(?:the\s+)?({NAME})(?:\s+(?:component|SWC))?",
+            rf"(to|for|from)\s+({peers})",
             sentence,
         )
         for relationship in relationships:
-            explicit_subject, verb, interface, preposition, peer = relationship.groups()
+            explicit_subject, verb, interface, preposition, peer_text = relationship.groups()
             subject = explicit_subject or subject
             receiving = verb in {"receives", "consumes"}
             if (
@@ -76,16 +82,20 @@ def parse_prose(text, location):
                 or (not receiving and preposition == "from")
             ):
                 continue
-            source, target = (peer, subject) if receiving else (subject, peer)
             covered.append(relationship.span())
-            add("component", source)
-            add("component", target)
-            add("interface", interface)
-            add(
-                "dependency",
-                f"{source}->{target}:{interface}",
-                {"source": source, "target": target, "interface": interface},
-            )
+            for peer_match in re.finditer(
+                rf"(?:the\s+)?({NAME})(?:\s+(?:components?|SWCs?))?", peer_text
+            ):
+                peer_name = peer_match[1]
+                source, target = (peer_name, subject) if receiving else (subject, peer_name)
+                add("component", source)
+                add("component", target)
+                add("interface", interface)
+                add(
+                    "dependency",
+                    f"{source}->{target}:{interface}",
+                    {"source": source, "target": target, "interface": interface},
+                )
         payload_matches = re.finditer(
             rf"({NAME})\s+interface\s+(?:carries|contains|transmits)\s+"
             rf"(?:the\s+)?({NAME})\s+signal",
@@ -98,14 +108,15 @@ def parse_prose(text, location):
         signal_matches = re.finditer(
             rf"({NAME})\s+signal\s+(?:has|uses|is\s+of)\s+(?:data\s+)?type\s+"
             r"([A-Za-z][A-Za-z0-9_]*)"
-            r"(?:\s+(?:and|with)\s+unit\s+([A-Za-z°/]+))?",
+            r"(?:\s+(?:and|with)\s+units?\s+(.+?)"
+            rf"(?=[.!?](?:\s|$)|\s+and\s+(?:the\s+)?{NAME}\s+signal\b|$))?",
             sentence,
         )
         for signal in signal_matches:
             covered.append(signal.span())
             attrs = {"type": signal[2]}
             if signal[3]:
-                attrs["unit"] = signal[3]
+                attrs["unit"] = signal[3].strip()
             add("signal", signal[1], attrs)
         flow_matches = re.finditer(
             rf"({NAME})\s+flow\s+(?:runs|goes)\s+from\s+(?:the\s+)?({NAME})(?:\s+component)?\s+to\s+(?:the\s+)?({NAME})",

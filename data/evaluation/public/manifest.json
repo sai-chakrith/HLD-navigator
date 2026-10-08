@@ -1,0 +1,587 @@
+{
+  "review_status": "public_unfamiliar_provisional_agent_annotations_NOT_ARCHITECT_REVIEWED",
+  "reviewers": [],
+  "measured_correction_minutes": null,
+  "annotations_authored_after_baseline_inspection": true,
+  "scope": "selected named architecture facts and unresolved requirements; not exhaustive inventory ground truth",
+  "documents": [
+    {
+      "file": "system-architecture.md",
+      "sha256": "38c031acf7ac5c2bffc1d41ea05a465b026c8b978efae2b2e4169b5e1bf7b343",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "KUKSA databroker",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "DBC Feeder",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "Cloud Adapter",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "KUKSA GRPC API",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "W3C VISS",
+          "attributes": {}
+        },
+        {
+          "kind": "dependency",
+          "name": "data-provider->VSS server",
+          "attributes": {
+            "source": "data-provider",
+            "target": "VSS server"
+          }
+        }
+      ],
+      "expected_warnings": [
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 11
+          },
+          "requirement": "![Basic architecture](./pictures/sysarch_basic.svg)"
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 15
+          },
+          "requirement": "The VSS server exposes a network based API to let consumers interact with VSS datapoints. This is either W3C VISS (currently only available in KUKSA server) or the KUKSA GRPC API (currently supported by KUKSA databroker)."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 19
+          },
+          "requirement": "To sync the VSS model to the actual state of the vehicle, providers are used. A data-provider might get its information directly from a sensor, from  vehicle busses available to the provider, or from lower parts of the software stack. Historically, data-providers are often called \"feeders\"."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 25
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 27
+          },
+          "requirement": "Components providing data for leaves in the VSS tree are called  *data-providers*. Technically they are just normal KUKSA clients. Sometimes you will see data-providers to be referred to as \"feeders\"."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 31
+          },
+          "requirement": "If a provider also supports affecting vehicle systems, based on a desired state being set via the VSS server, it is an *actuation-provider*. Depending on the system design, a provider can be designed to fulfil both the roles as data-provider and actuation-provider."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 35
+          },
+          "requirement": "![Provider options](./pictures/sysarch_providers.svg)"
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 37
+          },
+          "requirement": "We assume running a KUKSA VSS server on a vehicle computer. Some signals might originate in an embedded ECU only connected via CAN (e.g. ECU 1). If the Vehicle Computer running the VSS Server has access to the bus, it can run a provider component to map VSS Datapoints."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 39
+          },
+          "requirement": "The [DBC Feeder](https://github.com/eclipse-kuksa/kuksa-can-provider) is an example of a CAN data-provider. It allows mapping of data from a CAN bus based on a DBC description and some mapping rules."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 41
+          },
+          "requirement": "Other ECUs with Ethernet connectivity might publish data as SOME/IP (ECU 2 in the example) or DDS (ECU 3 in the example) services. The KUKSA project provides an [example SOME/IP provider](https://github.com/eclipse-kuksa/kuksa-someip-provider) based on [vsomeip](https://github.com/COVESA/vsomeip) emulating a SOME/IP controllable wiper."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 43
+          },
+          "requirement": "The Vehicle Computer running the VSS server might run other (automotive) middlewares that provides raw data and signals. In this example we assume the Vehicle Computer runs an AUTOSAR Adaptive subsystem. In that case a provider using the APIs of the underlying system can be created, without the need to parse a specific serialization first. In case of AUTOSAR Adaptive, signals might be accessed using the `ara::com` API."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 45
+          },
+          "requirement": "Finally, there may be other  processor based platforms in a vehicle such as another vehicle computer (VCU in the example), a domain, or zone controller or an infotainment system. These systems can run any kind of provider themselves and connect to a VSS server running on a different compute unit directly through the VISS or GRPC directly."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 53
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 55
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 58
+          },
+          "requirement": "As a VSS data catalogue can contain signals of different abstraction levels, often higher level signals depend on lower level ones. Thus an  application might use data from some signals to calculate the value of of others (\"Signal Refinement\"). An example is, taking current battery voltage and other low level signals from the battery system to calculate a state-of-charge and pushing it back. Another service might use state of-charge, system and ambient temperature to calculate remaining range. Such a client combines the roles of consumer and data-provider."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 73
+          },
+          "requirement": "The simplest expected deployment assumes that the primary vehicle computer contains the fully populated VSS model for a vehicle. This is the only possible deployment in vehicles, that only have one computer capable to run KUKSA and protocols such as GRPC or VISS."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 75
+          },
+          "requirement": "In a redundancy scenario there may be a backup vehicle computer with a KUKSA instance that is kept in sync, so that in case of a failover, the last known data is immediately available  for all VSS datapoints. We assume an optimized VSS Sync component to be used that might deal with one-way or two-way syncs. Currently KUKSA does not include a sync mechanism."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 77
+          },
+          "requirement": "A vehicle can have additional  domain controllers such as the powertrain controller. The Powertrain controller might use VSS to manage private internal datapoints not relevant to other domains. At the same time it is accessing VSS signals relevant to powertrain functionality provided by the VSS server on the central vehicle computer as well as providing higher level powertrain signals to the vehicle computer."
+        }
+      ],
+      "queries": []
+    },
+    {
+      "file": "terminology.md",
+      "sha256": "60cc22256998dac0cc1fc26fd29883ab4f410a38c65716bdc17f4f29f959cad1",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "VSS Server",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "Client",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "data-provider",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "actuation-provider",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "KUKSA.val API",
+          "attributes": {}
+        },
+        {
+          "kind": "signal",
+          "name": "Vehicle.Speed",
+          "attributes": {}
+        },
+        {
+          "kind": "signal",
+          "name": "Vehicle.Body.Trunk.Rear.IsOpen",
+          "attributes": {}
+        }
+      ],
+      "expected_warnings": [
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 26
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 32
+          },
+          "requirement": "This is a server that provides the KUKSA.val APIs to interact with VSS signals."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 34
+          },
+          "requirement": "Usually, for KUKSA.val this is the KUKSA.val databroker. The server keeps the current state of all known VSS signals and enables clients to get information regarding those signals or changing their state. It is also responsible of for checking whether a client has sufficient authorization to access or modify certain signals."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 39
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 42
+          },
+          "requirement": "Any application that connects to the server and uses the KUKSA.VAL APIs is a client."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 55
+          },
+          "requirement": "Examples for VSS consumers might be \"apps\" or functions running on vehicle computers, the infotainment system, or maybe even a user's personal device."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 60
+          },
+          "requirement": "Therefore, a VSS provider will always connect two interfaces: Northbound it uses the KUKSA.val API to interact with a VSS server, southbound it will interact with some other system, typically an in-vehicle bus or API."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 62
+          },
+          "requirement": "There are two classes of VSS providers: data-providers and actuation-providers. In practice, a single component might combine both roles."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 65
+          },
+          "requirement": "A data-provider intends to make sure that the actual state of a vehicle is currently represented in the VSS model of the server. A data-provider will update the current value of a VSS signal (sensor, actuator or attribute) in the server. A data-provider for the VSS sensor `Vehicle.Speed` will update that VSS signal in the server based on the actual speed of the vehicle. A data-provider for the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` would update that VSS signal in the server based on the _currently_ observed state of the vehicle's trunk."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 69
+          },
+          "requirement": "An actuation-provider is trying to ensure that the value (called `target_value` for `kuksa.val.v1`) of a VSS actuator is reflected by the actual state of a vehicle."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 72
+          },
+          "requirement": "If a VSS consumer requests the _desired_ state of the VSS actuator `Vehicle.Body.Trunk.Rear.IsOpen` to be `true`, the actuation-provider for `Vehicle.Body.Trunk.Rear.IsOpen` would try to interact with a vehicle's system trying to unlock and open the trunk."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 74
+          },
+          "requirement": "While from the server's point of view, an actuation provider is just a client, actuation-providers can not be passive towards other in-vehicle systems. Therefore, considering safety in an actuation-provider or underlying systems is very important."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 114
+          },
+          "requirement": "VSS has the concept of layering different signal trees on top of each other. This is called [overlay](https://covesa.github.io/vehicle_signal_specification/extensions/overlay/index.html). A layer may add signals to an existing VSS tree or extending and overriding existing signal entries."
+        }
+      ],
+      "queries": []
+    },
+    {
+      "file": "protocol.md",
+      "sha256": "52af02544d4317b5706e02f536e1d142315cfa23c1ec0018dee95316d168b334",
+      "entities": [
+        {
+          "kind": "interface",
+          "name": "kuksa.val.v2",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "kuksa.val.v1",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "sdv.databroker.v1",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "VISSv2",
+          "attributes": {}
+        }
+      ],
+      "expected_warnings": [
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 7
+          },
+          "requirement": "-------------------|---------|---------------|---------------|--------------------"
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 13
+          },
+          "requirement": "This means that if a someone provides a wanted value to Databroker using an Actuation method, only subscribers for Actuation will be notified."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 33
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 47
+          },
+          "requirement": ""
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 56
+          },
+          "requirement": "The `enable-viss` flag must be provided at startup in order to enable the VISSv2 websocket interface."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 63
+          },
+          "requirement": "If not specified, the address `127.0.0.1` will be used unless otherwise specified with `--address`, and the port 8090 will be used."
+        },
+        {
+          "codes": [
+            "unsupported_relationship",
+            "ambiguous_prose",
+            "unsupported_diagram",
+            "unsupported_table"
+          ],
+          "location": {
+            "line": 71
+          },
+          "requirement": "TLS is currently not supported."
+        },
+        {
+          "code": "unsupported_table",
+          "location": {
+            "table": 1
+          },
+          "requirement": "Protocol capability table is outside architecture inventory schema"
+        }
+      ],
+      "queries": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Architecture reviewer packet — not yet completed
+
+Review the frozen source files in `data/evaluation/public/`, with license and provenance. These are real public Eclipse KUKSA architecture/protocol documents, not OEM HLD acceptance material. The frozen code baseline has already been run; the provisional agent annotations were written after inspecting its output. They are NOT independent ground truth and are not exhaustive. Do not treat their scores as acceptance results.
+
+For an independent annotation exercise, do not open `manifest.json` or `docs/evidence/public-baseline.json` until your own initial annotations are saved. Fill `reviewer-input.json`: reviewer identity, relevant architecture qualifications, each entity with kind/name/attributes and exact evidence text/location, unsupported requirements, and every sentence/table/diagram that requires an extraction warning. Warning annotations use `code` or `codes`, plus `location` (line/page/table) and optionally `text_contains`. Include benign sentences that should not warn in reviewer_notes. Preserve identifiers and qualifiers; do not silently adapt names to this parser's grammar.
+
+Use a monotonic stopwatch or an approved time recorder. Pause for interruptions. Record actual active annotation, review and correction seconds separately. Use comparable manual and assisted tasks with a counterbalanced order for productivity measurement; annotating one corpus is not a productivity pilot. Leave unmeasured values null, never zero.
+
+Save initial annotations before looking at proposals. Then open baseline output and classify false positives, missed requirements, incorrect source locations, missed warnings and nuisance warnings. Record corrections and active correction time. Have a second architecture reviewer adjudicate disagreements. Unsupported requirements remain in the denominator even when the entity schema cannot represent them.
+
+Copy adjudicated entities and expected_warnings into a new frozen manifest; record reviewer identities and scope. Run `uv run python tools/evaluate.py --manifest <reviewed-manifest.json> --output <reviewed-report.json>`. Preserve the before/after annotations, source hashes and time records. Report field and warning metrics, with denominators and annotation scope. This packet currently has no reviewer signature or measured effort.

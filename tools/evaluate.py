@@ -9,6 +9,7 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
+from hld_navigator.evaluation import warning_scores
 from hld_navigator.extraction import extract
 from hld_navigator.models import SourceReview
 from hld_navigator.rag import answer, supported
@@ -29,12 +30,13 @@ def run(manifest_path, output, models=False):
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     metrics = defaultdict(lambda: {"tp": 0, "fp": 0, "fn": 0, "missed": [], "incorrect": []})
     embedder = configured_embedder() if models else None
+    chat_model = os.getenv("HLD_NAVIGATOR_CHAT_MODEL") or os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
     report = {
         "manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
         "runtime": {"python": platform.python_version(), "platform": platform.platform()},
         "model_artifacts": {
             "embedding_identity": embedder.identity if embedder else None,
-            "answer_model_tag": os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL") if models else None,
+            "answer_model_tag": chat_model if models else None,
             "answer_model_digest": None,
             "answer_artifact_verification": "PENDING_OPERATOR_RECORD",
         },
@@ -44,7 +46,7 @@ def run(manifest_path, output, models=False):
         "model_evaluation": "NOT_RUN" if embedder is None else "RUN_ON_MANIFEST",
         "human_semantic_groundedness": None,
         "answer_model_evaluation": "NOT_RUN"
-        if not embedder or not os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
+        if not embedder or not chat_model
         else "RUN_ON_MANIFEST",
         "retrieval": [],
         "cases": [],
@@ -65,7 +67,7 @@ def run(manifest_path, output, models=False):
                     "locations": [e.model_dump() for e in entities],
                 }
             except Exception as error:
-                blocks, entities = [], []
+                blocks, entities, warnings = [], [], []
                 actual = set()
                 result = {"file": case["file"], "extraction_error": str(error)}
             expected = facts(case["entities"])
@@ -79,6 +81,11 @@ def run(manifest_path, output, models=False):
                 else:
                     group["fp"] += 1
                     group["incorrect"].append({"file": case["file"], "fact": fact})
+            if "expected_warnings" in case:
+                result["warning_accuracy"] = warning_scores(warnings, case["expected_warnings"])
+                result["warning_annotation_status"] = case.get(
+                    "warning_annotation_status", manifest["review_status"]
+                )
             report["cases"].append(result)
             if not blocks:
                 continue
@@ -88,7 +95,10 @@ def run(manifest_path, output, models=False):
             store.review(
                 "eval",
                 document,
-                SourceReview(approved=True, reason="Synthetic evaluation fixture"),
+                SourceReview(
+                    approved=True,
+                    reason="Isolated evaluation source access; not engineering approval",
+                ),
                 "evaluation",
                 source=True,
             )
@@ -150,6 +160,21 @@ def run(manifest_path, output, models=False):
             measured_correction_minutes=None,
         )
     report["fields"] = dict(metrics)
+    warning_cases = [c["warning_accuracy"] for c in report["cases"] if "warning_accuracy" in c]
+    tp, fp, fn = (sum(c[key] for c in warning_cases) for key in ("tp", "fp", "fn"))
+    report["warning_metrics"] = {
+        "annotated_documents": len(warning_cases),
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "precision": tp / (tp + fp) if tp + fp else None,
+        "recall": tp / (tp + fn) if tp + fn else None,
+        "annotation_status": manifest["review_status"],
+        "annotation_scope": manifest.get("scope", "declared manifest scope"),
+        "human_warning_semantics_review": "PENDING"
+        if not manifest.get("reviewers")
+        else "SEE_REVIEW_RECORD",
+    }
     for name, key in [("lexical", "lexical_rank"), ("embedding", "embedding_rank")]:
         ranks = [r[key] for r in report["retrieval"]]
         report[name + "_metrics"] = (
@@ -166,7 +191,7 @@ def run(manifest_path, output, models=False):
             "answer model required for model-answer quality measurement"
         )
     report["limitation"] = (
-        "Synthetic development fixtures are not held-out OEM validation. "
+        "Only independently reviewed, frozen holdouts support acceptance conclusions. "
         "Quote support does not establish relevance or semantic entailment. "
         "Correction actions are not measured effort."
     )

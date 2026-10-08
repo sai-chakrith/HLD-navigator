@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 
@@ -29,16 +30,40 @@ def answer(question, evidence):
             "answer": "Insufficient approved source evidence.",
             "evidence": [],
         }
-    model = os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
+    model = os.getenv("HLD_NAVIGATOR_CHAT_MODEL") or os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
     if not model:
         return {
             "mode": "lexical_source_excerpts",
             "answer": "\n".join(f"{item['text']} [{i}]" for i, item in enumerate(evidence, 1)),
             "evidence": evidence,
         }
-    base = os.getenv("HLD_NAVIGATOR_OLLAMA_URL")
+    result = generate(question, evidence)
+    if not isinstance(result, str) or not supported(result, evidence):
+        return {
+            "mode": "insufficient_evidence",
+            "answer": "Insufficient approved source evidence.",
+            "evidence": evidence,
+        }
+    return {"mode": "local_model_extracts", "answer": result, "evidence": evidence}
+
+
+def generate(question, evidence):
+    """Raw local output for evaluation before application citation filtering."""
+    model = os.getenv("HLD_NAVIGATOR_CHAT_MODEL") or os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
+    if not model:
+        raise ValueError("Configure a local answer model")
+    base = os.getenv("HLD_NAVIGATOR_LOCAL_URL") or os.getenv("HLD_NAVIGATOR_OLLAMA_URL")
     if not base:
         raise ValueError("HLD_NAVIGATOR_OLLAMA_URL is required when a model is configured")
+    if urlparse(base).scheme not in {"http", "https"} or urlparse(base).hostname not in {
+        "localhost",
+        "127.0.0.1",
+        "::1",
+    }:
+        raise ValueError("Answer endpoint must be local loopback")
+    backend = os.getenv("HLD_NAVIGATOR_CHAT_BACKEND", "ollama")
+    if backend not in {"ollama", "llama_cpp"}:
+        raise ValueError("Unsupported local chat backend")
     context = "\n".join(f"[{i}] {item['text']}" for i, item in enumerate(evidence, 1))
     payload = {
         "model": model,
@@ -51,7 +76,8 @@ def answer(question, evidence):
                     "Return only complete source-block "
                     "quotes without trimming negation or qualifiers, "
                     "one quote per line followed by [source number]. "
-                    "If insufficient, return INSUFFICIENT. "
+                    "Choose only blocks relevant to the question and include necessary evidence. "
+                    "If evidence is irrelevant, missing, or contradictory, return INSUFFICIENT. "
                     "Do not combine different versions as one architecture."
                 ),
             },
@@ -59,17 +85,18 @@ def answer(question, evidence):
         ],
         "options": {"temperature": 0},
     }
+    if backend == "llama_cpp":
+        payload.pop("options")
+        payload.update(temperature=0, max_tokens=512)
     request = Request(
-        base.rstrip("/") + "/api/chat",
+        base.rstrip("/") + ("/api/chat" if backend == "ollama" else "/v1/chat/completions"),
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
     with urlopen(request, timeout=45) as response:
-        result = json.load(response)["message"]["content"]
-    if not isinstance(result, str) or not supported(result, evidence):
-        return {
-            "mode": "insufficient_evidence",
-            "answer": "Insufficient approved source evidence.",
-            "evidence": evidence,
-        }
-    return {"mode": "local_model_extracts", "answer": result, "evidence": evidence}
+        body = json.load(response)
+    return (
+        body["message"]["content"]
+        if backend == "ollama"
+        else body["choices"][0]["message"]["content"]
+    )

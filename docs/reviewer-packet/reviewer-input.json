@@ -1,0 +1,49 @@
+{
+  "status": "PENDING_ARCHITECT_REVIEW",
+  "reviewer": null,
+  "qualifications": null,
+  "documents": [
+    {
+      "file": "system-architecture.md",
+      "sha256": "38c031acf7ac5c2bffc1d41ea05a465b026c8b978efae2b2e4169b5e1bf7b343",
+      "entities": [],
+      "expected_warnings": [],
+      "unsupported_requirements": [],
+      "effort": {
+        "method": null,
+        "active_annotation_seconds": null,
+        "active_review_seconds": null,
+        "active_correction_seconds": null
+      },
+      "reviewer_notes": null
+    },
+    {
+      "file": "terminology.md",
+      "sha256": "60cc22256998dac0cc1fc26fd29883ab4f410a38c65716bdc17f4f29f959cad1",
+      "entities": [],
+      "expected_warnings": [],
+      "unsupported_requirements": [],
+      "effort": {
+        "method": null,
+        "active_annotation_seconds": null,
+        "active_review_seconds": null,
+        "active_correction_seconds": null
+      },
+      "reviewer_notes": null
+    },
+    {
+      "file": "protocol.md",
+      "sha256": "52af02544d4317b5706e02f536e1d142315cfa23c1ec0018dee95316d168b334",
+      "entities": [],
+      "expected_warnings": [],
+      "unsupported_requirements": [],
+      "effort": {
+        "method": null,
+        "active_annotation_seconds": null,
+        "active_review_seconds": null,
+        "active_correction_seconds": null
+      },
+      "reviewer_notes": null
+    }
+  ]
+}

@@ -23,8 +23,8 @@
       "expected_behavior": "answer_from_sources",
       "lexical_evidence": [
         {
-          "id": "5c97805e-39eb-48f7-a230-cba9cba7947b",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "72aaa719-4756-4e94-9b01-fed3284addfa",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "# Torque coordination HLD \u2014 synthetic development fixture",
           "location": {
             "page": null,
@@ -41,8 +41,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "9713d904-eb81-4686-b202-3dc39f45ecbc",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "5a5ed723-9ed4-490b-b08e-dae1834ba8f6",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The TorqueInterface interface carries the Torque signal.",
           "location": {
             "page": null,
@@ -59,8 +59,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "f3236f77-1fca-4185-a6b4-255654bc6213",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "cfcf55a8-2c62-49d2-8470-dc0fb93bc883",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The Torque signal has type uint16 and unit Nm.",
           "location": {
             "page": null,
@@ -77,8 +77,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "d7a2dfd3-a145-4f98-b7ce-75615d0bd70e",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "b4d603f0-2d71-4265-99d1-85c84ee6de9b",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
           "location": {
             "page": null,
@@ -95,8 +95,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "1477d14f-166c-4f16-ace5-e83d4cbf7b47",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "d8514b5b-e885-4725-9dcd-35d4c9ca82d1",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
           "location": {
             "page": null,
@@ -134,8 +134,8 @@
       "expected_behavior": "answer_from_sources",
       "lexical_evidence": [
         {
-          "id": "f3236f77-1fca-4185-a6b4-255654bc6213",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "cfcf55a8-2c62-49d2-8470-dc0fb93bc883",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The Torque signal has type uint16 and unit Nm.",
           "location": {
             "page": null,
@@ -152,8 +152,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "5c97805e-39eb-48f7-a230-cba9cba7947b",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "72aaa719-4756-4e94-9b01-fed3284addfa",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "# Torque coordination HLD \u2014 synthetic development fixture",
           "location": {
             "page": null,
@@ -170,8 +170,8 @@
           "review_state": "unreviewed_source"
         },
         {
-          "id": "9713d904-eb81-4686-b202-3dc39f45ecbc",
-          "document_id": "1fe54689-2c1a-41fc-bd48-0175bfa3ce4d",
+          "id": "5a5ed723-9ed4-490b-b08e-dae1834ba8f6",
+          "document_id": "b0ee226a-f6cd-4f05-a90b-e3807bdb726d",
           "text": "The TorqueInterface interface carries the Torque signal.",
           "location": {
             "page": null,
@@ -681,40 +681,7 @@
     }
   ],
   "fields": {
-    "port.interface": {
-      "tp": 2,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "component.entity": {
-      "tp": 2,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "flow.source": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "flow.target": {
+    "interface.entity": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -736,17 +703,6 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "signal.type": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
     "dependency.target": {
       "tp": 1,
       "fp": 0,
@@ -758,18 +714,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "interface.payload": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 0,
-      "missed": [],
-      "incorrect": [],
-      "precision": 1.0,
-      "recall": 1.0,
-      "correction_actions": 0,
-      "measured_correction_minutes": null
-    },
-    "port.owner": {
+    "port.direction": {
       "tp": 2,
       "fp": 0,
       "fn": 0,
@@ -780,7 +725,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "port.direction": {
+    "component.entity": {
       "tp": 2,
       "fp": 0,
       "fn": 0,
@@ -802,7 +747,18 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.source": {
+    "port.interface": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.entity": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -813,8 +769,8 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "interface.entity": {
-      "tp": 1,
+    "port.owner": {
+      "tp": 2,
       "fp": 0,
       "fn": 0,
       "missed": [],
@@ -835,7 +791,7 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.entity": {
+    "dependency.interface": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -857,7 +813,51 @@
       "correction_actions": 0,
       "measured_correction_minutes": null
     },
-    "dependency.interface": {
+    "flow.source": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.source": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.type": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "flow.target": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.payload": {
       "tp": 1,
       "fp": 0,
       "fn": 0,
@@ -869,11 +869,22 @@
       "measured_correction_minutes": null
     }
   },
+  "warning_metrics": {
+    "annotated_documents": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "annotation_status": "synthetic_development_unreviewed",
+    "annotation_scope": "declared manifest scope",
+    "human_warning_semantics_review": "PENDING"
+  },
   "lexical_metrics": {
     "recall_at_5": 1.0,
     "mrr": 0.625
   },
   "embedding_metrics": null,
   "model_dependency": "Available local Ollama endpoint, embedding model and verified artifact digest; answer model required for model-answer quality measurement",
-  "limitation": "Synthetic development fixtures are not held-out OEM validation. Quote support does not establish relevance or semantic entailment. Correction actions are not measured effort."
+  "limitation": "Only independently reviewed, frozen holdouts support acceptance conclusions. Quote support does not establish relevance or semantic entailment. Correction actions are not measured effort."
 }

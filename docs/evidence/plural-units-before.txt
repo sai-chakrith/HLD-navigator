@@ -1,0 +1,17 @@
+............F                                                            [100%]
+================================== FAILURES ===================================
+___________________ test_plural_units_and_outer_whitespace ____________________
+
+    def test_plural_units_and_outer_whitespace():
+        _, entities, warnings = extract(
+            "units.md", b"The Acceleration signal has type float32 with units kg m^2 / s^3   ."
+        )
+        signal = next(e for e in entities if e.kind == "signal")
+>       assert signal.attributes["unit"] == "kg m^2 / s^3"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'unit'
+
+tests\test_recipients_units.py:57: KeyError
+=========================== short test summary info ===========================
+FAILED tests/test_recipients_units.py::test_plural_units_and_outer_whitespace
+1 failed, 12 passed in 0.50s
