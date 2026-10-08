@@ -7,6 +7,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from uuid import uuid4
 
+from .models import Location
+
 
 class Store:
     def __init__(self, path: str):
@@ -40,7 +42,8 @@ class Store:
                     FOREIGN KEY(block_id) REFERENCES blocks(id));
                 INSERT OR IGNORE INTO entity_evidence
                     SELECT e.id,b.id FROM entities e JOIN blocks b
-                    ON e.document_id=b.document_id AND e.evidence=b.text;
+                    ON e.document_id=b.document_id AND e.evidence=b.text
+                    AND (json_extract(e.location,'$.table') IS NULL OR e.location=b.location);
                 CREATE TABLE IF NOT EXISTS coverage_reviews(document_id TEXT PRIMARY KEY,
                     fingerprint TEXT NOT NULL, scope TEXT NOT NULL, reason TEXT NOT NULL, actor TEXT NOT NULL,
                     FOREIGN KEY(document_id) REFERENCES documents(id));
@@ -133,10 +136,20 @@ class Store:
                         entity.location.model_dump_json(),
                     ),
                 )
-                for source in [entity.evidence, *[source["text"] for source in entity.sources]]:
+                for source in [
+                    {"text": entity.evidence, "location": entity.location.model_dump()},
+                    *entity.sources,
+                ]:
+                    source_location = Location.model_validate(source["location"])
                     db.execute(
-                        "INSERT OR IGNORE INTO entity_evidence SELECT ?,id FROM blocks WHERE document_id=? AND text=?",
-                        (entity_identifier, document, source),
+                        "INSERT OR IGNORE INTO entity_evidence SELECT ?,id FROM blocks WHERE document_id=? AND text=? AND (? IS NULL OR location=?)",
+                        (
+                            entity_identifier,
+                            document,
+                            source["text"],
+                            source_location.table,
+                            source_location.model_dump_json(),
+                        ),
                     )
             self.audit(
                 db, actor, "upload", document, {"sha256": hashlib.sha256(content).hexdigest()}

@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pdfplumber
 
-from .models import Block, Entity, Location
+from .models import Block, Entity, Location, TableDeclaration
 from .ocr import page_ocr
-from .prose import merge_entities, parse_prose
+from .prose import merge_entities, parse_pdf_prose, parse_prose
 from .tables import table_lines
 
 KINDS = {"component", "interface", "signal", "port", "dependency", "flow"}
@@ -52,6 +52,21 @@ def parse_line(text: str, location: Location) -> tuple[Entity | None, str | None
     ), None
 
 
+def _pdf_prose_block(page, tables, location: Location) -> Block:
+    """Separate table cells from prose using original page coordinates."""
+    bounds = [table.bbox for table in tables]
+
+    def outside_tables(obj):
+        if obj.get("object_type") != "char":
+            return True
+        x = (obj["x0"] + obj["x1"]) / 2
+        y = (obj["top"] + obj["bottom"]) / 2
+        return not any(left <= x <= right and top <= y <= bottom
+                       for left, top, right, bottom in bounds)
+
+    return Block(text=page.filter(outside_tables).extract_text() or "", location=location)
+
+
 def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[dict]]:
     blocks: list[Block] = []
     entities: list[Entity] = []
@@ -76,6 +91,22 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
                 }
             )
 
+    def accept_table(source: TableDeclaration) -> None:
+        blocks.append(Block(text=source.evidence, location=source.location))
+        entity, error = parse_line(source.declaration, source.location)
+        if entity:
+            entities.append(entity.model_copy(update={"evidence": source.evidence}))
+        if error:
+            warnings.append(
+                {
+                    "code": "invalid_declaration",
+                    "severity": "blocking",
+                    "message": error,
+                    "location": source.location.model_dump(),
+                    "text": source.evidence,
+                }
+            )
+
     suffix = Path(name).suffix.lower()
     if suffix in {".md", ".txt"}:
         text = content.decode("utf-8-sig")
@@ -84,7 +115,7 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
         pending = []
         for number, line in enumerate(text.splitlines(), 1):
             if line.strip().startswith("|"):
-                pending.append((number, line))
+                pending.append((number, line, section))
             elif pending:
                 markdown_tables.append(pending)
                 pending = []
@@ -99,7 +130,7 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
             markdown_tables.append(pending)
         for table_index, rows in enumerate(markdown_tables, 1):
             table = []
-            for _, line in rows:
+            for _, line, _ in rows:
                 cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
                 table.append(
                     [None] * len(cells) if all(re.fullmatch(r":?-+:?", c) for c in cells) else cells
@@ -107,9 +138,16 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
             declarations, issues = table_lines(table, text, {"table": table_index})
             warnings.extend(issues)
             for declaration, row in declarations:
-                location = Location(table=table_index, row=row, line=rows[row - 1][0])
-                blocks.append(Block(text=declaration, location=location))
-                accept(declaration, location)
+                number, raw_line, row_section = rows[row - 1]
+                accept_table(
+                    TableDeclaration(
+                        declaration=declaration,
+                        evidence=raw_line,
+                        location=Location(
+                            section=row_section, table=table_index, row=row, line=number
+                        ),
+                    )
+                )
     elif suffix == ".pdf":
         with pdfplumber.open(io.BytesIO(content)) as pdf:
             for page_number, page in enumerate(pdf.pages, 1):
@@ -148,24 +186,45 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
                         location = Location(page=page_number, line=number)
                         blocks.append(Block(text=line, location=location))
                         accept(line, location, prose=False)
-                # Combine wrapped prose for interpretation; retain original lines independently.
-                joined = " ".join(text.split())
-                parsed, issues = parse_prose(joined, Location(page=page_number))
+                # Interpretation normalizes whitespace; quotations retain the
+                # literal extracted page context, including every qualifier.
+                page_source = Block(text=text, location=Location(page=page_number))
+                captured_tables = page.find_tables()
+                prose_source = _pdf_prose_block(page, captured_tables, page_source.location)
+                parsed, issues = parse_pdf_prose(page_source, interpretation=prose_source)
                 if parsed or issues:
-                    blocks.append(Block(text=joined, location=Location(page=page_number)))
+                    blocks.append(page_source)
                     entities.extend(parsed)
                     warnings.extend(issues)
-                for index, table in enumerate(page.extract_tables(), 1):
+                for index, captured_table in enumerate(captured_tables, 1):
+                    table = captured_table.extract()
                     if not table or not table[0]:
                         continue
                     declarations, issues = table_lines(
                         table, text, {"page": page_number, "table": index}
                     )
                     warnings.extend(issues)
-                    for line, row_number in declarations:
+                    for declaration, row_number in declarations:
                         location = Location(page=page_number, table=index, row=row_number)
-                        blocks.append(Block(text=line, location=location))
-                        accept(line, location)
+                        # Capture the actual row span; joining cells fabricates source text.
+                        evidence = page.crop(
+                            captured_table.rows[row_number - 1].bbox
+                        ).extract_text()
+                        if not evidence or not evidence.strip():
+                            warnings.append(
+                                {
+                                    "code": "unsupported_table",
+                                    "severity": "blocking",
+                                    "message": "Table row has no captured source text",
+                                    "location": location.model_dump(),
+                                }
+                            )
+                            continue
+                        accept_table(
+                            TableDeclaration(
+                                declaration=declaration, evidence=evidence, location=location
+                            )
+                        )
     else:
         raise ValueError("Supported files are text PDFs, UTF-8 Markdown and TXT")
     if not blocks:

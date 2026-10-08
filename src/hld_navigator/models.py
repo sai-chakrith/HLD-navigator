@@ -18,6 +18,14 @@ class Block(BaseModel):
     location: Location
 
 
+class TableDeclaration(BaseModel):
+    """Parsing input and captured source are distinct; only evidence may be quoted."""
+
+    declaration: str
+    evidence: str = Field(min_length=1)
+    location: Location
+
+
 class Entity(BaseModel):
     kind: Literal["component", "interface", "signal", "port", "dependency", "flow"]
     name: str

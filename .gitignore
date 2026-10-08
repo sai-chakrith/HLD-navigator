@@ -11,3 +11,9 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+
+# Local independent-test captures; reports and harness source stay versioned.
+tester_acceptance/evidence/
+
+# Supervisor-only rendering of the external case-study specification.
+docs/spec-page-5.png

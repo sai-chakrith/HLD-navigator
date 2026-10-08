@@ -91,7 +91,8 @@ def table_lines(table, context, location):
     for row_index, row in enumerate(table[header_index + 1 :], header_index + 2):
         if [normal(c or "") for c in row] == raw_headers or not any(row):
             continue
-        values = [(c or "").strip() for c in row]
+        # Wrapped cells become single-line parsing values, never source quotations.
+        values = [" ".join((c or "").split()) for c in row]
         if len(values) != len(headers) or any(
             v for h, v in zip(headers, values, strict=False) if h is None
         ):

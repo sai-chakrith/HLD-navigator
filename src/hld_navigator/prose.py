@@ -2,13 +2,48 @@
 
 import re
 
-from .models import Entity
+from .models import Block, Entity
 
 NAME = r"[A-Z](?:[A-Za-z0-9_./-]*[A-Za-z0-9_])?"
 SKIP = {"The", "This", "That", "Each", "An", "A", "AUTOSAR"}
 
+# These are noun-phrase heads, not architecture verbs. Bound the phrase at a
+# caption terminator or a following capitalized label (PDF prose can include
+# table headers). An ordinary lowercase continuation still requires review.
+CAPTION_VERSION = (
+    r"(?:for\s+)?(?:release|version|revision)(?:\s+|\s*[:=]\s*)"
+    r"[vr]?\d+(?:[._-]\d+)*(?!\w|[.-]\w)"
+)
+INVENTORY_CAPTION = re.compile(
+    r"\b(?:components?|interfaces?|ports?|SWCs?|signals?|flows?|dependencies)"
+    r"(?:\s*(?:,\s*(?:and\s+)?|\band\s+|&\s*|/\s*)"
+    r"(?:components?|interfaces?|ports?|SWCs?|signals?|flows?|dependencies))*"
+    r"\s+(?:inventory|catalogue|catalog|list|table|overview|summary|index|definitions)\b"
+    rf"(?:\s+{CAPTION_VERSION}|\s*\(\s*{CAPTION_VERSION}\s*\))?"
+    r"(?=\s*(?:$|[:|,;.!?\u2014\u2013-]|\d)|\s+(?-i:[A-Z]))",
+    re.I,
+)
+
 
 def parse_prose(text, location):
+    return _parse_prose(text, Block(text=text, location=location), page_context=False)
+
+
+def parse_pdf_prose(source: Block, *, interpretation: Block | None = None):
+    """Interpret normalized PDF text, quoting its literal original page context.
+
+    The source unit is explicitly the extracted page, not a sentence quote.
+    Interpretation may exclude geometrically detected table contents. The
+    quotation remains the original complete page; no source search is needed.
+    """
+    if interpretation is not None and interpretation.location != source.location:
+        raise ValueError("PDF prose interpretation and original source must refer to the same page")
+    text = source.text if interpretation is None else interpretation.text
+    return _parse_prose(" ".join(text.split()), source, page_context=True)
+
+
+def _parse_prose(text, original: Block, *, page_context):
+    location = original.location
     proposals = []
     issues = []
 
@@ -19,7 +54,7 @@ def parse_prose(text, location):
                     kind=kind,
                     name=name,
                     attributes=attributes or {},
-                    evidence=text,
+                    evidence=original.text,
                     location=location,
                 )
             )
@@ -44,18 +79,24 @@ def parse_prose(text, location):
                             "Negated, uncertain or qualified architecture statement needs "
                             "interpretation"
                         ),
-                        "text": sentence,
+                        "text": original.text if page_context else sentence,
                         "location": location.model_dump(),
                     }
                 )
             continue
+        nominal_spans = [match.span() for match in INVENTORY_CAPTION.finditer(sentence)]
         for kind, nouns in (
             ("component", r"(?:software\s+component|component|SWC)"),
             ("interface", r"interface"),
             ("signal", r"signal"),
         ):
             for match in re.finditer(rf"\b({NAME})\s+{nouns}\b", sentence):
-                add(kind, match[1])
+                # A label before a nominal caption head does not assert an
+                # architecture entity. Keep scanning other mentions in context.
+                if not any(
+                    start < match.end() and match.start() < end for start, end in nominal_spans
+                ):
+                    add(kind, match[1])
             for match in re.finditer(rf"\b({NAME})\s+is\s+(?:an?\s+)?{nouns}\b", sentence):
                 add(kind, match[1])
         covered = []
@@ -161,7 +202,10 @@ def parse_prose(text, location):
         if re.search(r"\b(?:component|SWC)\b", sentence):
             for match in predicates:
                 group = 1 if match[1] else 2
-                if match[group] not in ignored:
+                first, last = match.span(group)
+                if match[group] not in ignored and not any(
+                    start <= first and last <= end for start, end in nominal_spans
+                ):
                     actions.append((match[group], *match.span(group)))
         uncovered = [
             word
@@ -177,7 +221,7 @@ def parse_prose(text, location):
                         "Architecture relationship is not covered "
                         "by the current extraction patterns"
                     ),
-                    "text": sentence,
+                    "text": original.text if page_context else sentence,
                     "unresolved_actions": uncovered,
                     "location": location.model_dump(),
                 }

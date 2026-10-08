@@ -1,0 +1,4 @@
+evidence/uv-cache/
+evidence/pytest-*/
+evidence/pytest-current
+__pycache__/
