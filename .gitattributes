@@ -1,5 +1,5 @@
 
 # Preserve bytes of hashed evaluation inputs and signed review references.
-data/evaluation/** -text
-docs/evidence/*.json -text
-docs/reviewer-packet/*.json -text
+data/evaluation/** -text whitespace=cr-at-eol
+docs/evidence/*.json -text whitespace=cr-at-eol
+docs/reviewer-packet/*.json -text whitespace=cr-at-eol
