@@ -1,0 +1,26 @@
+{
+  "product_files": {
+    "src/hld_navigator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/hld_navigator/admin.py": "3ec734d577dfc07c7c637682d5db6ff97fe735f5f1dcd1e1fb2d30dee1689997",
+    "src/hld_navigator/analysis.py": "8c1d8879d46ec0f150b020234ed279b850d784d3798f365181529cb76b9e7b85",
+    "src/hld_navigator/api_destination.py": "b8f6b9ff7ac276f16c8df86f60db31f0f74230ca60362d7f7a42fc137e972c19",
+    "src/hld_navigator/app.py": "5d43aa3738c7590b7c37b14049f9d4f9093a68ca029b2b45ae11be60f6777b1e",
+    "src/hld_navigator/backup.py": "c0951ba03c4b2198a17fb3d418a4358ccea4398e8a8c3ce92e9f38c58cbcc251",
+    "src/hld_navigator/evaluation.py": "fe5272f9119479b8a9fba12d5679aefb11a7bc124ee88202743cff1a94403992",
+    "src/hld_navigator/extraction.py": "8dba45010fadf1c0f1e5b976fe929c24a07d4ceb0882c39e50a7dc95c843c896",
+    "src/hld_navigator/fact_answers.py": "1ce729c987efa8869e3c1b1d0b4c4dc10b0a80abbafc895832a0b574ae0c877a",
+    "src/hld_navigator/models.py": "a0f8829d10d203f911fe00a0c29aa43ed0246bbcd18f28389f2433aa5f615eab",
+    "src/hld_navigator/named_docs.py": "09342aa484903c2aadbbe943810d48d3991e9ec4b4be2ce4adb0a77deb463de6",
+    "src/hld_navigator/ocr.py": "7d83bcdcb315182790884d3f0c8c372d2d365c501fe4c6c0df6de22e0d117416",
+    "src/hld_navigator/prose.py": "f0952d605e9f1dbe05b31d7cb6a9e5f222b997079ef3287331790cfed854ceda",
+    "src/hld_navigator/rag.py": "0ad2f5eba79766c056f1efd894099720d375e0d50a1f249bbaf6fac4371955a6",
+    "src/hld_navigator/reports.py": "ec53e2062586681304123245b92063567f482cddbef3b01c2b80a38684561b7b",
+    "src/hld_navigator/store.py": "1ff4789bd6c428b5ed972a8d7b9dcd2b09355177ff4feae9376a06134d0ce8f0",
+    "src/hld_navigator/tables.py": "ae3d77e71429998081d4bb4fec95c7aa4eb1388cd747be71b0ac25c444c638f8",
+    "src/hld_navigator/ui.py": "35b175ff806db022f93bdb9b0b2340ed2f75ee802df7598231a7532238e47584",
+    "src/hld_navigator/vectors.py": "02f13f1a631f1b7ec209cfc71ddc1fa795d90f4fdea0bf86a5ecddf454f593ab"
+  },
+  "product_manifest_sha256": "db48b66973bd52cc220890e516add3453211a359b81f2c8192ce2e6c16d274c9",
+  "status": "READY_FOR_TEST",
+  "scope": "Remediation developer measurement; same 30 development cases, not holdout"
+}

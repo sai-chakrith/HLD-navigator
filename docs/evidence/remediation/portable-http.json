@@ -1,0 +1,49 @@
+{
+  "health": {
+    "status": "ok",
+    "retrieval": "sqlite_fts5",
+    "pilot": true
+  },
+  "unauthenticated_status": 401,
+  "approved_entities": 8,
+  "findings": 0,
+  "retrieval_mode": "lexical_source_excerpts",
+  "runtime": "3.14.8",
+  "validation": "Ordinary-prose synthetic live HTTP workflow; no real HLD or model benchmark",
+  "fixture": "data/evaluation/torque-prose.md",
+  "mixed_review_probe": {
+    "fact_result": {
+      "mode": "insufficient_evidence",
+      "answer": "Insufficient approved source evidence.",
+      "evidence": [],
+      "retrieval": "sqlite_fts5"
+    },
+    "source_result": {
+      "mode": "source_review_required",
+      "answer": "Source statements are unreviewed or disputed; they are not approved design facts.",
+      "evidence": [
+        {
+          "id": "986872fb-4b15-46ec-8b7d-a9ea475a2349",
+          "document_id": "9b2094f1-e4e7-4745-a7e7-bfef4ea68f37",
+          "text": "The Torque signal has type uint16 and unit Nm. Engine has ASIL D.",
+          "location": {
+            "page": null,
+            "section": null,
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "Mixed assertions",
+          "version": "1",
+          "name": "mixed.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": [
+            "4732c8dc-0bd1-4f77-b16b-01b147f64c45"
+          ]
+        }
+      ]
+    }
+  }
+}

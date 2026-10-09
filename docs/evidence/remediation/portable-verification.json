@@ -1,0 +1,24 @@
+{
+  "packaged_tests": 286,
+  "failures": 0,
+  "errors": 0,
+  "python": "3.14.8",
+  "dependency_sync": "uv sync --frozen --extra dev --python 3.14",
+  "environment": "new virtual environment on same Windows host, cached dependency artifacts, short-path UV_PROJECT_ENVIRONMENT",
+  "commands": [
+    "python -m pytest -q --junitxml=portable-final-pytest.xml",
+    "python -m ruff check src tests tools",
+    "python -m ruff format --check src tests tools",
+    "python tools/smoke.py --output portable-http.json"
+  ],
+  "lint": "PASS",
+  "format": "PASS",
+  "http": "PASS",
+  "source_matches_submitted_identity": true,
+  "prior_failure": "Initial deep venv: 284 passed, 2 Streamlit imports failed; module path length 263. Preserved portable-long-path-failure.xml.",
+  "legacy_generator_ast_matches_commit_7e90273": true,
+  "independent_acceptance": false,
+  "final_source_manifest_sha256": "6cdf63fa0f781dc4332ae5dbfe82580e2539df83a2b4fd2b2737c491e834f703",
+  "final_test_xml": "portable-current-fields-pytest.xml",
+  "final_http": "portable-current-fields-http.json"
+}

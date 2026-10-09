@@ -1,6 +1,6 @@
 # Academic integrity and AI-tool usage declaration — unsigned draft
 
-Student: Sai Chakrith Sulluru. University: Amrita Viswa Vidyapeetham. Faculty guide: Dr. D. Palmani. Register/team ID: pending student-supplied details. Case study: CS1, HLD Navigator — AUTOSAR HLD Document Analysis Assistant.
+Student: Sai Chakrith Sulluru. University: Amrita Viswa Vidyapeetham. Faculty guide: Dr. D. Palmani. Register/team ID: CB.AI.U4AID23143. Case study: CS1, HLD Navigator — AUTOSAR HLD Document Analysis Assistant.
 
 This draft records known assistance and does not assert that the student has personally verified or can explain every artifact. The student must review, correct and personally sign the final declarations. No faculty approval or student signature has been supplied.
 

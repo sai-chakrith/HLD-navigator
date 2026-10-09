@@ -1,0 +1,135 @@
+{
+  "health": {
+    "status": "ok",
+    "retrieval": "sqlite_fts5",
+    "pilot": true
+  },
+  "unauthenticated_status": 401,
+  "approved_entities": 8,
+  "findings": 0,
+  "retrieval_mode": "reviewed_field_answer",
+  "runtime": "3.14.8",
+  "validation": "Synthetic live API/retrieval/model integration; not an independent semantic benchmark",
+  "fixture": "data/evaluation/torque-prose.md",
+  "question": "What type and unit does Torque have?",
+  "response": {
+    "mode": "reviewed_field_answer",
+    "answer": "Torque: unit=Nm, type=uint16 (revision 1).\nTorque: unit=Nm, type=uint16 (revision 1).",
+    "claims": [
+      {
+        "text": "Torque: unit=Nm, type=uint16 (revision 1).",
+        "citations": [
+          {
+            "source_id": "S1",
+            "block_id": "5f1989af-fe99-41fc-b759-1d95c7419472",
+            "entity_id": "63252fef-a248-421f-b557-9306ea7b96ee",
+            "snippet": "Signal: Torque | type=uint16 | unit=Nm",
+            "basis": "reviewed_fields"
+          }
+        ]
+      },
+      {
+        "text": "Torque: unit=Nm, type=uint16 (revision 1).",
+        "citations": [
+          {
+            "source_id": "S2",
+            "block_id": "ccb13e9b-748b-4f84-a736-d1383db046d3",
+            "entity_id": "63252fef-a248-421f-b557-9306ea7b96ee",
+            "snippet": "Signal: Torque | type=uint16 | unit=Nm",
+            "basis": "reviewed_fields"
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "5f1989af-fe99-41fc-b759-1d95c7419472",
+        "document_id": "152aea61-75f1-4eb9-beb7-712d046ae94f",
+        "text": "Signal: Torque | type=uint16 | unit=Nm",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 5,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "63252fef-a248-421f-b557-9306ea7b96ee"
+        ],
+        "facts": [
+          {
+            "entity_id": "63252fef-a248-421f-b557-9306ea7b96ee",
+            "kind": "signal",
+            "name": "Torque",
+            "attributes": {
+              "type": "uint16",
+              "unit": "Nm"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The Torque signal has type uint16 and unit Nm.",
+          "review_state": "unreviewed_source"
+        }
+      },
+      {
+        "id": "ccb13e9b-748b-4f84-a736-d1383db046d3",
+        "document_id": "152aea61-75f1-4eb9-beb7-712d046ae94f",
+        "text": "Interface: TorqueInterface | payload=Torque\nSignal: Torque | type=uint16 | unit=Nm",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 4,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "d434984e-daf2-4d82-abc6-431c6d5ecc7f",
+          "63252fef-a248-421f-b557-9306ea7b96ee"
+        ],
+        "facts": [
+          {
+            "entity_id": "d434984e-daf2-4d82-abc6-431c6d5ecc7f",
+            "kind": "interface",
+            "name": "TorqueInterface",
+            "attributes": {
+              "payload": "Torque"
+            }
+          },
+          {
+            "entity_id": "63252fef-a248-421f-b557-9306ea7b96ee",
+            "kind": "signal",
+            "name": "Torque",
+            "attributes": {
+              "type": "uint16",
+              "unit": "Nm"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "review_state": "unreviewed_source"
+        }
+      }
+    ],
+    "reason": "",
+    "human_review_required": false,
+    "guarantee_scope": "selected approved structured fields only",
+    "retrieval": "sqlite_fts5"
+  },
+  "model": "qwen7b"
+}

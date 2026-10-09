@@ -1,0 +1,306 @@
+{
+  "health": {
+    "status": "ok",
+    "retrieval": "sqlite_fts5",
+    "pilot": true
+  },
+  "unauthenticated_status": 401,
+  "approved_entities": 8,
+  "findings": 0,
+  "retrieval_mode": "local_model_synthesis",
+  "runtime": "3.14.8",
+  "validation": "Synthetic live API/retrieval/answer workflow; not an independent semantic benchmark",
+  "fixture": "data/evaluation/torque-prose.md",
+  "question": "Which component provides TorqueInterface?",
+  "response": {
+    "mode": "local_model_synthesis",
+    "answer": "EngineControl provides TorqueInterface through TorqueOut. [S1]",
+    "evidence": [
+      {
+        "id": "1952e4d7-4da5-402d-89a4-94b9d9f49872",
+        "document_id": "f2837247-ef6f-49e1-8b74-56cc6a0888dc",
+        "text": "Component: EngineControl\nInterface: TorqueInterface | payload=Torque\nPort: TorqueOut | direction=provides | interface=TorqueInterface | owner=EngineControl",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 6,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+          "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+          "1c9b4594-21fd-4f51-872d-ba0eb5be1d0e"
+        ],
+        "facts": [
+          {
+            "entity_id": "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+            "kind": "component",
+            "name": "EngineControl",
+            "attributes": {}
+          },
+          {
+            "entity_id": "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+            "kind": "interface",
+            "name": "TorqueInterface",
+            "attributes": {
+              "payload": "Torque"
+            }
+          },
+          {
+            "entity_id": "1c9b4594-21fd-4f51-872d-ba0eb5be1d0e",
+            "kind": "port",
+            "name": "TorqueOut",
+            "attributes": {
+              "direction": "provides",
+              "interface": "TorqueInterface",
+              "owner": "EngineControl"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+          "review_state": "unreviewed_source"
+        }
+      },
+      {
+        "id": "59146d4d-95f2-454c-be59-b5e8febad0e9",
+        "document_id": "f2837247-ef6f-49e1-8b74-56cc6a0888dc",
+        "text": "Component: EngineControl\nComponent: InstrumentCluster\nInterface: TorqueInterface | payload=Torque\nDependency: EngineControl->InstrumentCluster:TorqueInterface | interface=TorqueInterface | source=EngineControl | target=InstrumentCluster",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 3,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+          "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+          "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+          "8945c243-63e0-4a1f-8552-b71494d315b2"
+        ],
+        "facts": [
+          {
+            "entity_id": "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+            "kind": "component",
+            "name": "EngineControl",
+            "attributes": {}
+          },
+          {
+            "entity_id": "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+            "kind": "component",
+            "name": "InstrumentCluster",
+            "attributes": {}
+          },
+          {
+            "entity_id": "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+            "kind": "interface",
+            "name": "TorqueInterface",
+            "attributes": {
+              "payload": "Torque"
+            }
+          },
+          {
+            "entity_id": "8945c243-63e0-4a1f-8552-b71494d315b2",
+            "kind": "dependency",
+            "name": "EngineControl->InstrumentCluster:TorqueInterface",
+            "attributes": {
+              "interface": "TorqueInterface",
+              "source": "EngineControl",
+              "target": "InstrumentCluster"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "review_state": "unreviewed_source"
+        }
+      },
+      {
+        "id": "7f2d662e-962c-4d21-8ed8-76db98e596ac",
+        "document_id": "f2837247-ef6f-49e1-8b74-56cc6a0888dc",
+        "text": "Component: InstrumentCluster\nInterface: TorqueInterface | payload=Torque\nPort: TorqueIn | direction=requires | interface=TorqueInterface | owner=InstrumentCluster",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 7,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+          "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+          "244df02f-441a-4ba4-b6ff-23eb25dfa59a"
+        ],
+        "facts": [
+          {
+            "entity_id": "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+            "kind": "component",
+            "name": "InstrumentCluster",
+            "attributes": {}
+          },
+          {
+            "entity_id": "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+            "kind": "interface",
+            "name": "TorqueInterface",
+            "attributes": {
+              "payload": "Torque"
+            }
+          },
+          {
+            "entity_id": "244df02f-441a-4ba4-b6ff-23eb25dfa59a",
+            "kind": "port",
+            "name": "TorqueIn",
+            "attributes": {
+              "direction": "requires",
+              "interface": "TorqueInterface",
+              "owner": "InstrumentCluster"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+          "review_state": "unreviewed_source"
+        }
+      },
+      {
+        "id": "ffbb710e-ad55-4de8-b6ff-feee937ac297",
+        "document_id": "f2837247-ef6f-49e1-8b74-56cc6a0888dc",
+        "text": "Component: EngineControl\nComponent: InstrumentCluster\nFlow: TorqueDelivery | source=EngineControl | target=InstrumentCluster",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 8,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+          "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+          "0fa6b6c5-8418-4923-8e60-2a6b292e13e2"
+        ],
+        "facts": [
+          {
+            "entity_id": "c08433d3-92c3-42ec-b7e4-4389c1e077c7",
+            "kind": "component",
+            "name": "EngineControl",
+            "attributes": {}
+          },
+          {
+            "entity_id": "4316c5ef-be89-4fd9-8651-8765b379b2a4",
+            "kind": "component",
+            "name": "InstrumentCluster",
+            "attributes": {}
+          },
+          {
+            "entity_id": "0fa6b6c5-8418-4923-8e60-2a6b292e13e2",
+            "kind": "flow",
+            "name": "TorqueDelivery",
+            "attributes": {
+              "source": "EngineControl",
+              "target": "InstrumentCluster"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+          "review_state": "unreviewed_source"
+        }
+      },
+      {
+        "id": "27719fb9-0afe-4678-8d01-a616e4683b90",
+        "document_id": "f2837247-ef6f-49e1-8b74-56cc6a0888dc",
+        "text": "Interface: TorqueInterface | payload=Torque\nSignal: Torque | type=uint16 | unit=Nm",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 4,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts",
+        "approved_entity_ids": [
+          "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+          "3514194a-cde0-44b9-803a-a73dcd9a8c82"
+        ],
+        "facts": [
+          {
+            "entity_id": "26ec829b-a161-4f0e-b40e-304bb24f3b63",
+            "kind": "interface",
+            "name": "TorqueInterface",
+            "attributes": {
+              "payload": "Torque"
+            }
+          },
+          {
+            "entity_id": "3514194a-cde0-44b9-803a-a73dcd9a8c82",
+            "kind": "signal",
+            "name": "Torque",
+            "attributes": {
+              "type": "uint16",
+              "unit": "Nm"
+            }
+          }
+        ],
+        "text_basis": "reviewed structured fields, not a literal source quote",
+        "source_context": {
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "review_state": "unreviewed_source"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "text": "EngineControl provides TorqueInterface through TorqueOut.",
+        "citations": [
+          {
+            "source_id": "S1",
+            "snippet": "Component: EngineControl\nInterface: TorqueInterface | payload=Torque\nPort: TorqueOut | direction=provides | interface=TorqueInterface | owner=EngineControl",
+            "block_id": "1952e4d7-4da5-402d-89a4-94b9d9f49872"
+          }
+        ]
+      }
+    ],
+    "reason": "",
+    "quarantined_source_ids": [],
+    "human_review_required": true,
+    "guarantee_scope": "literal citations and bounded field checks; general entailment unverified",
+    "retrieval": "sqlite_fts5"
+  },
+  "model_invoked": true,
+  "model": "qwen7b"
+}

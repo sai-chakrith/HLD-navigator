@@ -1,0 +1,898 @@
+{
+  "manifest_sha256": "6f8f5a8a624747624c85fefd5a995e62f0b88db8c911345b1b8efb2386dcc4fe",
+  "runtime": {
+    "python": "3.14.8",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "model_artifacts": {
+    "embedding_identity": null,
+    "answer_model_tag": null,
+    "answer_model_digest": null,
+    "answer_artifact_verification": "PENDING_OPERATOR_RECORD"
+  },
+  "corpus_status": "synthetic_development_unreviewed",
+  "reviewers": [],
+  "measured_correction_minutes": null,
+  "model_evaluation": "NOT_RUN",
+  "human_semantic_groundedness": null,
+  "answer_model_evaluation": "NOT_RUN",
+  "retrieval": [
+    {
+      "document_sha256": "52545d878260f9343455c85a059dacf891422ffda5b7c786c01af34b86e69297",
+      "question": "Which component publishes torque to the display?",
+      "expected_behavior": "answer_from_sources",
+      "lexical_evidence": [
+        {
+          "id": "83c6e51c-d511-4fa6-bb30-35d8db26c373",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "# Torque coordination HLD \u2014 synthetic development fixture",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "34de63bc-f030-482c-bf29-2597c13efd3e",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 4,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "a23aaca4-15f4-4c41-81c0-c4145e647eba",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The Torque signal has type uint16 and unit Nm.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 5,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "8df1d7fb-8999-420b-bfac-f9688c96083f",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "6c3ee00b-ffc2-450b-bf13-205ab7e98678",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 8,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        }
+      ],
+      "embedding_evidence": null,
+      "semantic_review": {
+        "reviewer": null,
+        "review_seconds": null,
+        "relevance": null,
+        "entailment": null,
+        "necessary_evidence_complete": null,
+        "contradiction_handling": null,
+        "abstention": null,
+        "prompt_injection_resistance": null,
+        "notes": null
+      },
+      "lexical_rank": 4,
+      "embedding_rank": null
+    },
+    {
+      "document_sha256": "52545d878260f9343455c85a059dacf891422ffda5b7c786c01af34b86e69297",
+      "question": "What data type and physical unit does Torque have?",
+      "expected_behavior": "answer_from_sources",
+      "lexical_evidence": [
+        {
+          "id": "a23aaca4-15f4-4c41-81c0-c4145e647eba",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The Torque signal has type uint16 and unit Nm.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 5,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "83c6e51c-d511-4fa6-bb30-35d8db26c373",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "# Torque coordination HLD \u2014 synthetic development fixture",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        },
+        {
+          "id": "34de63bc-f030-482c-bf29-2597c13efd3e",
+          "document_id": "d56ae002-d2ed-4769-8766-f98a5bcc183d",
+          "text": "The TorqueInterface interface carries the Torque signal.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 4,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "title": "torque-prose.md",
+          "version": "1",
+          "name": "torque-prose.md",
+          "review_state": "unreviewed_source",
+          "approved_entity_ids": []
+        }
+      ],
+      "embedding_evidence": null,
+      "semantic_review": {
+        "reviewer": null,
+        "review_seconds": null,
+        "relevance": null,
+        "entailment": null,
+        "necessary_evidence_complete": null,
+        "contradiction_handling": null,
+        "abstention": null,
+        "prompt_injection_resistance": null,
+        "notes": null
+      },
+      "lexical_rank": 1,
+      "embedding_rank": null
+    }
+  ],
+  "cases": [
+    {
+      "file": "torque-prose.md",
+      "warnings": [],
+      "locations": [
+        {
+          "kind": "component",
+          "name": "EngineControl",
+          "attributes": {},
+          "evidence": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 6,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 6,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 8,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "component",
+          "name": "InstrumentCluster",
+          "attributes": {},
+          "evidence": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 7,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 7,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 8,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "TorqueInterface",
+          "attributes": {
+            "payload": "Torque"
+          },
+          "evidence": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The TorqueInterface interface carries the Torque signal.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The TorqueInterface interface carries the Torque signal.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 6,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 6,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 7,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 7,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "dependency",
+          "name": "EngineControl->InstrumentCluster:TorqueInterface",
+          "attributes": {
+            "source": "EngineControl",
+            "target": "InstrumentCluster",
+            "interface": "TorqueInterface"
+          },
+          "evidence": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "signal",
+          "name": "Torque",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          },
+          "evidence": "The TorqueInterface interface carries the Torque signal.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 4,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The TorqueInterface interface carries the Torque signal.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The TorqueInterface interface carries the Torque signal.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Torque signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 5,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Torque signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 5,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "port",
+          "name": "TorqueOut",
+          "attributes": {
+            "owner": "EngineControl",
+            "direction": "provides",
+            "interface": "TorqueInterface"
+          },
+          "evidence": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 6,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The EngineControl component provides the TorqueInterface interface through port TorqueOut.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 6,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "port",
+          "name": "TorqueIn",
+          "attributes": {
+            "owner": "InstrumentCluster",
+            "direction": "requires",
+            "interface": "TorqueInterface"
+          },
+          "evidence": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 7,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The InstrumentCluster component requires the TorqueInterface interface through port TorqueIn.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 7,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "flow",
+          "name": "TorqueDelivery",
+          "attributes": {
+            "source": "EngineControl",
+            "target": "InstrumentCluster"
+          },
+          "evidence": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+          "location": {
+            "page": null,
+            "section": "Torque coordination HLD \u2014 synthetic development fixture",
+            "line": 8,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The TorqueDelivery flow runs from the EngineControl component to the InstrumentCluster component.",
+              "location": {
+                "page": null,
+                "section": "Torque coordination HLD \u2014 synthetic development fixture",
+                "line": 8,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fields": {
+    "port.entity": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.target": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.owner": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.type": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.interface": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "component.entity": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "flow.source": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "flow.target": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.direction": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.payload": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.interface": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "flow.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.entity": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.unit": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.source": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    }
+  },
+  "warning_metrics": {
+    "annotated_documents": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "annotation_status": "synthetic_development_unreviewed",
+    "annotation_scope": "declared manifest scope",
+    "human_warning_semantics_review": "PENDING"
+  },
+  "lexical_metrics": {
+    "recall_at_5": 1.0,
+    "mrr": 0.625
+  },
+  "embedding_metrics": null,
+  "model_dependency": "Available local Ollama endpoint, embedding model and verified artifact digest; answer model required for model-answer quality measurement",
+  "limitation": "Only independently reviewed, frozen holdouts support acceptance conclusions. Quote support does not establish relevance or semantic entailment. Correction actions are not measured effort."
+}

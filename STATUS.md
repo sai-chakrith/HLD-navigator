@@ -1,3 +1,14 @@
+# Remediation in progress — 9 October 2026
+
+Branch: main. Review granularity repaired with approved-field projections and
+separate source context; bounded answer checks and UI destination allowlist added.
+Public extraction improved to 9 TP/3 FP/10 FN on the same 19 annotated facts.
+Frozen agent-authored synthetic set: 41 TP/0 FP/0 FN; warnings 2 TP/2 FP/0 FN.
+See docs/submission/REMEDIATION_REPORT.md for verified results and required actions.
+No independent OEM acceptance, real-time recording or personal signatures claimed.
+
+## Historical status below
+
 # Engineering status
 
 ## Current completion - 09 October 2026

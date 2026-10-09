@@ -3,7 +3,8 @@
 Run from the repository root with the existing virtual environment:
 
 ```powershell
-.venv/Scripts/python.exe tools/demo.py
+uv sync --frozen --extra dev
+uv run python tools/demo.py
 ```
 
 Open http://127.0.0.1:8511. In the sidebar set API to
@@ -13,13 +14,13 @@ overwrite it. For another fresh demonstration use `--database .data/demo-2.db`.
 Ctrl+C stops the services and retains the database. Models are disabled for this
 self-contained workflow; the optional local model setup is documented separately.
 
-## Five-minute demonstration
+## Seven-minute live demonstration (recording still required)
 
 1. Select **Synthetic Powertrain · v1** in Review. Explain that every entity keeps
    literal evidence and a source location. The fictional demo fixtures are seeded
    as approved for demonstration; they are not real engineering sign-offs.
 2. Search that revision for `TorqueInterface`. Open the cited evidence. Explain
-   the difference between retrieved source excerpts and synthesized model answers.
+   the difference between reviewed fields, unreviewed original context and synthesized claims.
 3. In Report / Compare, export **Synthetic Powertrain · v1**. Show the dependency
    graph and the Engine component report, including incoming/outgoing relationships
    and cited ports. Download the complete JSON inventory.
@@ -54,3 +55,24 @@ Use wording that matches your own contribution and understanding. Do not claim
 measured time savings, production deployment, OEM accuracy or independent
 architecture validation without supporting evidence. Follow the supplied
 AI-assistance declaration when submitting the project.
+
+## Timed real-time recording script
+
+Record continuous system behavior with your screen recorder for 5–10 minutes.
+The old still-image sequence is a historical visual backup and does not meet this requirement.
+This environment exposes browser snapshots but no authorized continuous screen-recording
+API; a compliant recording is an outstanding student action, not a completed deliverable.
+
+- 0:00–1:00: launch a fresh demo database and identify revision/source provenance.
+- 1:00–2:30: upload `examples/review-granularity.md`; approve source and only Torque.
+  Ask `What ASIL does Engine have?` in facts mode: show abstention. Switch to source
+  mode: show unreviewed context containing Engine ASIL D.
+- 2:30–3:30: ask `What type and unit does Torque have?`; show deterministic approved
+  fields and separately labeled original context. Explain the review boundary.
+- 3:30–4:30: reject/edit a proposal and show stale text is excluded; show export blocker.
+- 4:30–5:30: review the seeded v1 inventory, graph, export and revision impact.
+- 5:30–7:00: explain one public parser miss, synthetic label limits and the synthesis
+  false-unit check. Explain that general semantic correctness is not guaranteed.
+
+Do not record bearer tokens or other personal desktop content. Student narration and
+code-ownership explanations must be your own. Do not substitute this script for the recording.

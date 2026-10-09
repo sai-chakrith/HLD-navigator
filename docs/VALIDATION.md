@@ -1,3 +1,7 @@
+# Current remediation verification
+
+520 regressions pass; Ruff lint/format pass. See submission/REMEDIATION_REPORT.md and evidence/remediation for exact before/after measurements and raw model failures. Prior records below are historical.
+
 # Validation record
 
 ## Current follow-up - 09 October 2026

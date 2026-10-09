@@ -1,3 +1,9 @@
+# Superseded historical handoff
+
+This describes v1.2 before the technical evaluation. See REMEDIATION_REPORT.md
+for the current state. The project is not administratively eligible until the
+mandatory live recording, personal declarations and faculty approval are supplied.
+
 # Morning handoff - 09 October 2026
 
 The software and reproducible interview demo are implemented. The portable

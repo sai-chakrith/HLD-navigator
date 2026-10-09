@@ -1,0 +1,14 @@
+{
+  "archive": "CB.AI.U4AID23143_Submission_v1.3.zip",
+  "sha256": "d11b9b375f571437f1e33cce440e1c602cc06e5b2be5cecd9b44896580f0f990",
+  "members": 190,
+  "crc_manifest": "PASS",
+  "source_prompt_schema": "PASS",
+  "credentials_databases_weights_excluded": true,
+  "packaged_tests_passed_in_new_short_path_environment": 286,
+  "repository_tests": 520,
+  "independent_acceptance": false,
+  "mandatory_human_actions_pending": true,
+  "bytes": 572622,
+  "packaged_files": 190
+}

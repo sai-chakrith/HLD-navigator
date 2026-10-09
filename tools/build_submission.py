@@ -171,7 +171,7 @@ def main():
         story,
         "4. AI/ML approach",
         "Extraction uses explicit patterns rather than trained entity prediction. Retrieval defaults to FTS lexical search; optional BGE-small-en-v1.5 f16 embeddings use persistent cosine ranking. No training, fine-tuning, PCA or measured feature importance is claimed.",
-            "Optional local llama.cpp answers use a pre-trained Qwen instruct model and retrieved eligible evidence. Schema-constrained generation returns claims, source IDs and literal snippets. Obvious assistant-directed source lines are quarantined from generation and citations, while originals remain available. The guard rejects malformed or unresolvable citations and returns explicit abstention. These controls do not guarantee injection resistance or semantic entailment; a reviewer must check each claim.",
+        "Optional local llama.cpp answers use a pre-trained Qwen instruct model and retrieved eligible evidence. Schema-constrained generation returns claims, source IDs and literal snippets. Obvious assistant-directed source lines are quarantined from generation and citations, while originals remain available. The guard rejects malformed or unresolvable citations and returns explicit abstention. These controls do not guarantee injection resistance or semantic entailment; a reviewer must check each claim.",
         "Model artifacts and CPU runtime are pinned and hash verified. Local endpoints bind to loopback, bypass inherited proxies and reject external redirects. Generation uses temperature zero, bounded context/output and timeout. No cloud model service is required for the default demo.",
     )
     section(story, "5. Verification and measured results")
@@ -181,7 +181,7 @@ def main():
             ["Check", "Recorded result / boundary"],
             [
                 "Regression suite",
-                    "499 passed; one upstream Starlette/httpx deprecation warning. Windows/Python 3.14.8.",
+                "499 passed; one upstream Starlette/httpx deprecation warning. Windows/Python 3.14.8.",
             ],
             [
                 "Live HTTP",
@@ -246,7 +246,7 @@ def main():
         story,
         "Method and evaluation",
         "Use explicit extraction rules, immutable source bytes/locations, separate review states, lexical and optional dense retrieval, and structured answer citation validation. Evaluate with regressions, real HTTP/UI integration, frozen public documents, real OCR and fixed synthetic answer cases.",
-            "The final local regression suite passes 499 tests. Retrieval and public extraction results expose remaining limitations, rather than establishing OEM reliability. No independent automotive validation or measured time saving has occurred.",
+        "The final local regression suite passes 499 tests. Retrieval and public extraction results expose remaining limitations, rather than establishing OEM reliability. No independent automotive validation or measured time saving has occurred.",
     )
     section(
         story,
