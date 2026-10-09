@@ -1,0 +1,19 @@
+{
+  "file": "HLD_Navigator_Walkthrough_v1.1.mp4",
+  "sha256": "40ddc9078f907ed4eb11f54daf53ba19a063dc925adafbc8475af04efccd1337",
+  "duration_seconds_target": 301,
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "presentation": "Captioned sequence of actual UI screenshots; no continuous capture or voice",
+  "source_screenshots": {
+    "00-upload.png": "93d1dcf07765bba06d04f5a089173b9b46ac5e79cd27ab99b7b8426b3d12b111",
+    "01-review.png": "c574e265be25067d759686dd01e027cb680d4775fc6fbbb9af77445ef133a2fc",
+    "02-search.png": "1e97b0c522cc0c969bc8a69bf04b3e9242e422e89650ab2d82408837e1477237",
+    "03-report.png": "e6fbc87eafa1873f4ba67d27150d4f8f6bd4ef95c88c8385809be37aa5487f6c",
+    "04-compare.png": "78036ffe6f1cab9c90e9ce800a6d180c72389ac70c835fbb5bca83173c378483",
+    "05-blocker.png": "cf170b3706030a991f168256acaedaa922cbb905feb60caa05df58a306703908"
+  },
+  "limitations": "Synthetic fixtures and developer validation; not an independent OEM demo",
+  "duration_seconds_observed": 301.0
+}

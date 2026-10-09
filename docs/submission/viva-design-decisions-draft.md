@@ -1,0 +1,17 @@
+# Design decisions and what I would change — study draft
+
+This note was prepared with AI assistance. Rewrite it in your own words after walking through the code. It is not a claim that you already understand or personally designed every part.
+
+The parser is deliberately conservative. It recognizes supported components, interfaces, ports, signals, dependencies and flows in prose and tables, retaining literal text and source locations. Normalizing a port direction helps create a consistent schema, but the evidence must remain literal. Unsupported, negated or qualified clauses produce review warnings rather than unconditional architecture facts. This makes failures visible, but a pattern parser will miss unfamiliar language and diagram topology.
+
+Provenance is attached to an occurrence, not just a string. Identical sentences on two pages are separate sources. New stored proposals must resolve to a block in the same document and workspace. A rejected batch rolls back partial records and retains the original in quarantine with diagnostics. Historical records stay unverified until governed re-ingestion. This gives traceability, not a guarantee that the interpreted fact is semantically correct.
+
+Retrieval first selects eligible evidence: the workspace, revision and human review state matter before ranking. SQLite FTS5 is the lexical baseline; optional BGE embeddings use persistent vectors and cosine ranking. A learned method is not automatically better. Compare recall@5, MRR and latency on the same questions and choose the default from the evidence. The custom store is simple for a pilot; an interface and benchmark or external backend should justify its limits.
+
+The new answer contract allows natural-language claims with source IDs and exact quoted snippets. The guard resolves IDs only to evidence supplied for that request and checks literal substrings. A valid quote can still be irrelevant, omit a qualifier, or support a false paraphrase. Contract validity, semantic groundedness, usefulness, contradictions and injection behavior must therefore be measured separately. Abstaining from every question is safe-looking but fails the product goal.
+
+Revision comparison matches entities by kind and name, then reports additions, removals and changed attributes. Findings check references, provider/consumer directions and types. Impact paths include added and changed relationships in the after graph as well as removed and changed facts in the before graph. Alternative paths are retained, cycles stop and traversal is limited to two declared edges. These are possible consequences, not simulated vehicle behavior. Explicit rename recognition and real-system completeness remain limitations.
+
+I would prioritize independent unfamiliar-document labels, a real timed reviewer study, better treatment of diagrams and ambiguous clauses, and controlled model evaluation before adding governance features. A larger model costs RAM and latency; containers help reproduce configuration but do not prove production readiness. I would keep original source bytes, failed outputs, denominators and known limitations visible.
+
+Practice without an agent: trace one upload through extraction and storage; show why a wrong-page citation fails; explain a valid-but-irrelevant quote; calculate recall@5 and MRR from raw ranks; walk a port-direction mismatch and its source-linked impact path; explain why synthetic regression PASS does not validate an OEM HLD.

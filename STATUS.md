@@ -1,5 +1,61 @@
 # Engineering status
 
+## Current completion - 09 October 2026
+
+The local software and interview demo are implemented and verified. Submission
+artifacts include source, input provenance, configuration, evaluation evidence,
+technical report, synopsis, presentation, captioned walkthrough and unsigned
+declarations. Register/team ID and student/faculty signatures remain blank.
+This is an engineering review pilot; independent OEM qualification is unfinished.
+
+- **499 passing tests**, one upstream deprecation warning; lint passes.
+- Actual authenticated HTTP workflow and browser upload, evidence review,
+  dependency graph, revision comparison and unreviewed export blocker verified.
+- Real Qwen 7B through API/retrieval correctly answered a fictional Torque
+  type/unit question. Final fixed development run: 29/30 raw contract passes,
+  8/8 must-abstentions, zero injection-following in five developer-reviewed cases.
+  Useful complete: 8/12 answerable, 3/5 conflicts, 4/5 injections. Incorrect recipient
+  and revision recommendation claims remain documented semantic failures.
+- BGE CPU reproduced four-question recall@5 0.75 for both methods; MRR lexical
+  0.75 versus embedding 0.625. Lexical source excerpts remain default.
+- Real Tesseract processed seven image-only instruction pages: 312 OCR blocks,
+  seven mandatory page-review blockers. HLD transcription accuracy is unmeasured.
+- Three public KUKSA documents retain 18 missed facts and one unexpected fact
+  against selected provisional agent labels. Two additional public documents
+  and license/provenance are included, without extraction tuning against them.
+
+Delivered: ingestion/provenance, correction/review history, workspace roles and
+token revocation, export blockers, cited component reports/dependency graph,
+architecture findings, before/after impact paths up to two hops, optional BGE
+index/local answers, consistent SQLite recovery, isolated demo and CI configuration.
+
+Obvious assistant-directed source lines are quarantined from generation/citations,
+with originals retained. This conservative heuristic can omit legitimate material
+and cannot detect all injection attacks. Exact snippets do not establish entailment;
+synthesized answers require review. Runs v1/v2 failures are preserved; all judgments
+are developer review by the coding assistant, not independent human validation.
+
+External gaps: authorized OEM family holdouts and independent annotations,
+diagram/completeness and OCR accuracy, measured correction time, enterprise IAM/TLS,
+load qualification, hardened audit and observed hosted CI. No production readiness,
+safety/AUTOSAR conformance, global OEM accuracy or productivity gain is claimed.
+
+Current evidence: `docs/VALIDATION.md`, `docs/evidence/answer-run-v3/`,
+`docs/submission/COMPLETION_REPORT.md`. Historical notes below are superseded where
+current execution is explicitly recorded above.
+
+## Historical notes
+
+2026-10-09 follow-up: local regression suite passes 490 tests. Reviewed exports now
+include dependency visualization and cited component reports. Change-impact paths
+include added relationships and before/after graph evidence, preserve alternative
+paths and stop at two hops. An isolated interview demo, verified SQLite recovery
+tool and Windows/Linux CI workflow have been added. Hosted CI is not yet executed.
+The public corpus includes two additional pinned KUKSA documents with license and
+hashes. The existing public benchmark still exposes parser misses; no independent
+validation or improved OEM accuracy is claimed. The Qwen 7B download/live evaluation
+and real-engine OCR verification remain in progress.
+
 The first review defects and the second review's reproduced compound/unsupported/conditional prose defects were corrected locally. This is an improved Case Study 1 pilot, not a completed or production-validated submission.
 
 | Area | Implemented | Boundary |

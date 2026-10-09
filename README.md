@@ -1,5 +1,16 @@
 # HLD Navigator
 
+Current verification: **499 passing tests**; actual HTTP/browser workflow, local
+Qwen 7B synthesis, BGE retrieval and Tesseract integration executed. See
+[completion report](docs/submission/COMPLETION_REPORT.md) for artifacts and limits.
+The default answers remain cited source excerpts; optional synthesized claims need
+review and still have documented semantic failures.
+
+For a repeatable interview demonstration, run `python tools/demo.py` using the
+project virtual environment. It creates an isolated demo database with two fictional
+reviewed revisions and one public document for manual review. See
+[the walkthrough](docs/INTERVIEW_DEMO.md).
+
 Case Study 1: AUTOSAR HLD Document Analysis Assistant. Ingest supported ordinary prose and tables, review extracted components/interfaces/signals/ports/dependencies/flows, search cited facts and compare architecture revisions. This remains an engineering pilot; broad OEM document quality and learned-model performance are not established.
 
 ## Launch
@@ -22,6 +33,33 @@ uv run streamlit run src/hld_navigator/ui.py --server.port 8510 --server.address
 ```
 
 Open [UI](http://127.0.0.1:8510), workspace `pilot`, your individual token. [API](http://127.0.0.1:8010/docs). Viewers read/query; editors ingest/annotate/index; reviewers decide source/entity/coverage approval. The local operator CLI requires trusted filesystem access. Enterprise IAM, TLS, credential lifecycle and managed deployment remain pending.
+
+Reviewed exports include a dependency graph, cited component reports, declared
+incoming/outgoing relationships, ports and candidate inconsistencies. Revision
+comparison includes additions and before/after evidence for declared impact paths
+up to two hops, retaining alternate paths while excluding cycles.
+
+## Backup and recovery
+
+The local operator can take a consistent SQLite snapshot while the API runs:
+
+```powershell
+python -m hld_navigator.backup backup .data/hld_navigator.db .data/backups/pilot-2026-10-09.db
+python -m hld_navigator.backup restore .data/backups/pilot-2026-10-09.db .data/restored-pilot.db
+```
+
+Both commands refuse to replace an existing destination. The tool uses SQLite's
+backup API, checks integrity and foreign keys, and prints the snapshot SHA256.
+After stopping the API, set `HLD_NAVIGATOR_DB` to the restored database and restart.
+Snapshots contain documents and authentication hashes; keep them private.
+
+Revoke an individual's access across all workspaces without deleting audit history:
+
+```powershell
+python -m hld_navigator.admin engineer --revoke
+```
+
+Provisioning that individual again issues a new token; old tokens stay invalid.
 
 ## Demonstration without rewriting the HLD
 
@@ -78,6 +116,13 @@ uv run ruff format --check src tests tools
 The manifest freezes file hashes and field annotations. Reports separate extraction precision/recall, missed/incorrect facts, correction actions, lexical/embedding recall@5/MRR and full-block quote support. Measured correction minutes and human semantic groundedness remain null. The included corpus is development data, not an independently reviewed holdout. Supply `--manifest <approved-manifest.json> --output <report.json>` for external evaluation; never tune on that holdout afterward.
 
 [STATUS](STATUS.md) and [validation record](docs/VALIDATION.md) distinguish local checks from external acceptance.
+
+The CI workflow runs lint, regression tests and the live HTTP smoke workflow on
+Windows and Linux. Local verification does not establish that hosted CI has run.
+Two additional pinned public KUKSA documents and their license are under
+`data/evaluation/public/additional/`; `tools/fetch_public_documents.py` verifies
+their recorded hashes when reproducing the fetch. These are developer examples,
+not proprietary OEM HLDs or an independent holdout.
 
 The second review and reproducible failure cases are tracked in [REVIEW_ACCEPTANCE](docs/REVIEW_ACCEPTANCE.md). Conditional statements are blocked for interpretation; they never become unconditional edges. The mixed prose/table revision demonstration is in `examples/revision-review/`. Evaluation reports include separate, initially unscored semantic review fields; model citation correctness is not answer quality.
 
