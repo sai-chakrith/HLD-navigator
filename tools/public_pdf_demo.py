@@ -109,7 +109,8 @@ def seed_pdf(database, output):
                 "POST",
                 f"/documents/{identifier}/coverage-review",
                 json={
-                    "scope": "Only manually proposed component names; all edges, diagrams, protocols "
+                    "scope": "Only manually proposed component names; all edges, diagrams, "
+                    "protocols "
                     "and other statements excluded. This inventory is deliberately incomplete.",
                     "reason": reason,
                 },
