@@ -76,15 +76,16 @@ def main():
     parser.add_argument("--seed-only", action="store_true")
     args = parser.parse_args()
     try:
-        token, documents = seed(args.database)
+        _, documents = seed(args.database)
     except FileExistsError:
         parser.exit(1, "Demo database already exists. Choose a new --database path.\n")
     print(json.dumps(documents, indent=2), flush=True)
-    print("Workspace: demo. Individual token (keep private):", token, flush=True)
+    print("Local app ready. No login required.", flush=True)
     if args.seed_only:
         return
     env = os.environ.copy()
     env["HLD_NAVIGATOR_DB"] = str(args.database.resolve())
+    env["HLD_NAVIGATOR_LOCAL_WORKSPACE"] = "demo"
     env["HLD_NAVIGATOR_API_URL"] = f"http://127.0.0.1:{args.api_port}"
     # Default demo is self-contained and needs no model service.
     for key in (

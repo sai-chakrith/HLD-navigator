@@ -11,6 +11,11 @@ project virtual environment. It creates an isolated demo database with two ficti
 reviewed revisions and one public document for manual review. See
 [the walkthrough](docs/INTERVIEW_DEMO.md).
 
+The demo opens without authentication or workspace entry. The launcher sets
+`HLD_NAVIGATOR_LOCAL_WORKSPACE=demo` for both services, which gives the local user
+review access to that workspace. Keep this mode bound to `127.0.0.1`.
+Manual multi-user deployments retain token authentication when this setting is absent.
+
 Case Study 1: AUTOSAR HLD Document Analysis Assistant. Ingest supported ordinary prose and tables, review extracted components/interfaces/signals/ports/dependencies/flows, search cited facts and compare architecture revisions. This remains an engineering pilot; broad OEM document quality and learned-model performance are not established.
 
 ## Launch

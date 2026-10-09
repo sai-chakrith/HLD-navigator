@@ -7,9 +7,9 @@ uv sync --frozen --extra dev
 uv run python tools/demo.py
 ```
 
-Open http://127.0.0.1:8511. In the sidebar set API to
-http://127.0.0.1:8011, workspace to `demo`, and enter the private token printed
-in your terminal. The launcher creates `.data/interview-demo.db` and refuses to
+Open http://127.0.0.1:8511 and start working; no login is required.
+The launcher connects to the local backend and selects the demo workspace automatically.
+It creates `.data/interview-demo.db` and refuses to
 overwrite it. For another fresh demonstration use `--database .data/demo-2.db`.
 Ctrl+C stops the services and retains the database. Models are disabled for this
 self-contained workflow; the optional local model setup is documented separately.

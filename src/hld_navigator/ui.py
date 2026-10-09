@@ -19,9 +19,13 @@ with st.sidebar.expander("Advanced settings", expanded=False):
         help="Connects locally by default. Change this only for a custom setup.",
     ).rstrip("/")
 
-workspace = st.sidebar.text_input("Workspace", "pilot")
-
-token = st.sidebar.text_input("Individual access token", type="password")
+local_workspace = os.environ.get("HLD_NAVIGATOR_LOCAL_WORKSPACE", "").strip()
+if local_workspace:
+    workspace = local_workspace
+    token = ""
+else:
+    workspace = st.sidebar.text_input("Workspace", "pilot")
+    token = st.sidebar.text_input("Individual access token", type="password")
 
 
 def call(method, path, **kwargs):
@@ -31,7 +35,7 @@ def call(method, path, **kwargs):
         response = requests.request(
             method,
             f"{destination}/workspaces/{workspace}{path}",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={"Authorization": f"Bearer {token}"} if token else {},
             timeout=200 if path == "/query" else 60,
             allow_redirects=False,
             **kwargs,
@@ -56,7 +60,7 @@ def call(method, path, **kwargs):
         st.stop()
 
 
-if not token:
+if not local_workspace and not token:
     st.info("Provision a user using the README, then enter their token.")
 
     st.stop()

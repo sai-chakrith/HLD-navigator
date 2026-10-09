@@ -18,8 +18,13 @@ def create_app(path=None):
     store = Store(path or os.getenv("HLD_NAVIGATOR_DB", ".data/hld_navigator.db"))
     app = FastAPI(title="HLD Navigator — HLD Review Pilot")
     app.state.store = store
+    local_workspace = os.getenv("HLD_NAVIGATOR_LOCAL_WORKSPACE", "").strip()
 
     def authorize(workspace, authorization, minimum="viewer"):
+        if local_workspace:
+            if workspace != local_workspace:
+                raise HTTPException(403, "Workspace unavailable in local mode")
+            return "local-user"
         if not authorization or not authorization.startswith("Bearer "):
             raise HTTPException(401, "Individual bearer token required")
         user = store.principal(authorization[7:], workspace)
