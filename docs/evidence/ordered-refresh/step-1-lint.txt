@@ -1,0 +1,12 @@
+E501 Line too long (102 > 100)
+   --> tools\public_pdf_demo.py:112:101
+    |
+110 |                 f"/documents/{identifier}/coverage-review",
+111 |                 json={
+112 |                     "scope": "Only manually proposed component names; all edges, diagrams, protocols "
+    |                                                                                                     ^^
+113 |                     "and other statements excluded. This inventory is deliberately incomplete.",
+114 |                     "reason": reason,
+    |
+
+Found 1 error.
