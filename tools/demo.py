@@ -85,6 +85,7 @@ def main():
         return
     env = os.environ.copy()
     env["HLD_NAVIGATOR_DB"] = str(args.database.resolve())
+    env["HLD_NAVIGATOR_API_URL"] = f"http://127.0.0.1:{args.api_port}"
     # Default demo is self-contained and needs no model service.
     for key in (
         "HLD_NAVIGATOR_CHAT_MODEL",
@@ -133,7 +134,7 @@ def main():
             )
         )
         print(
-            f"Open http://127.0.0.1:{args.ui_port}; set API to http://127.0.0.1:{args.api_port}.",
+            f"Open http://127.0.0.1:{args.ui_port}; backend connected automatically.",
             flush=True,
         )
         print("Press Ctrl+C to stop both services. The demo database is retained.", flush=True)

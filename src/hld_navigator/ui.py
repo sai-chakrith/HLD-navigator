@@ -1,4 +1,5 @@
 import json
+import os
 
 import requests
 import streamlit as st
@@ -11,7 +12,12 @@ st.title("HLD Navigator · AUTOSAR HLD Review")
 
 st.caption("Engineering pilot · Exact source excerpts by default · Human-reviewed architecture")
 
-base = st.sidebar.text_input("API", "http://127.0.0.1:8010").rstrip("/")
+with st.sidebar.expander("Advanced settings", expanded=False):
+    base = st.text_input(
+        "Backend address",
+        os.environ.get("HLD_NAVIGATOR_API_URL", "http://127.0.0.1:8010"),
+        help="Connects locally by default. Change this only for a custom setup.",
+    ).rstrip("/")
 
 workspace = st.sidebar.text_input("Workspace", "pilot")
 
@@ -36,6 +42,10 @@ def call(method, path, **kwargs):
         response.raise_for_status()
 
         return response.json()
+
+    except requests.ConnectionError:
+        st.error("Cannot connect to HLD Navigator. Start the backend, then refresh this page.")
+        st.stop()
 
     except (requests.RequestException, ValueError) as error:
         st.error(str(error))
