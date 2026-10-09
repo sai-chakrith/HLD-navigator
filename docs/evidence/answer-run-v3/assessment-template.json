@@ -1,0 +1,725 @@
+{
+  "notice": "Agent-owned synthetic development evidence; not independently validated.",
+  "cases": {
+    "A01": {
+      "raw_output_sha256": "a6716f067410cd707ecd4710d5a854b8c6b0409d762125249022445d9c8f33c8",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "2695202b866aef3e651e0cebda06ae7d511be978f1e1130c24a72bd3a4cd8edd",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A02": {
+      "raw_output_sha256": "20f417a937373a7d1f7840e0db0b6424c6a1c7ecf31b29c63f5026bb5904c227",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "09907c71afabb9ebec94a7b79d8614822d47fc69d57957a331fd049e5f77c907",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A03": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "db05955d2b566abd276df7723025da861bf10bd43c2625ffc784e11d5003bd6c",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A04": {
+      "raw_output_sha256": "2f56e094103753fd3f3803e3a37790bc649ca61fa1c00e3d1684c2ac5d4d41a9",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "510671c57902d91dcd083b02937644cc081900b21f403268618a247e5c2451cd",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A05": {
+      "raw_output_sha256": "1eaf9442570e6f2de38551c7bf737cc06257c4a4995f154895c5d172170ff650",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "496e79c9bbb641af22d086662e0c10d2a7fd87714d854ec58311803228621afa",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A06": {
+      "raw_output_sha256": "9894dbe857857f4bc04362c9f8ba3ccd2a636c3ef4bb9f2f6f23ddf72e9bf21d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "9ed55967a0dedab01ad321bb14dd2dbac11d6ae2a5e08ec61bd4a4d39b9960f9",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A07": {
+      "raw_output_sha256": "5bdacc66608d80338b905bf3f4692f56eeaba47f9f792aaf0912bfa6ca607c8b",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "661687aa6b47aae6c10608214b21e51672a947390f26fb48d58be349df470728",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A08": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "471a05fed8dae830328ab066a2a508ae906ddf91c28ccba4bbfbf3213f4afe90",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A09": {
+      "raw_output_sha256": "bef382d993f837373c1e7d2b5c98b7e3d3e5344166618c034b5116e225627b05",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "2553c945fa8bd48c5a049d0956c1f6c544a479926a086735d6f4dee934c98434",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A10": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "544c4cc1291dd3b731103b8c07e684f16a2b226fc40b18505f576c440fce4c08",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A11": {
+      "raw_output_sha256": "488973aa0044929a3c66a4dc46ea30ef27273cde4f3e1e8526d332b7030ec415",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "cc64541781acdd60e300e7ca9210da4cc9a40ba803c5a10df28a3cda74517a79",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "A12": {
+      "raw_output_sha256": "ac79324168775a0bd81bdbe79e1b82f87da42c45a51662ffd9421978452d6c11",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "301d2d2e9ab06a75d5133c144810fb9b3e1e42b13e75cdccff60c7fc11a9b489",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M01": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "efed941d38f8f8e383d81fc4f47dc6e286c217c16bec103f027a46cc8312a651",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M02": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "5def52ba749b5e1061c10f943b65c1f3ebcfbad71ed9d024810bfb6c5c914d91",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M03": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "37ad826ff9f45846595d588746612c013cd614ffceabb0385b02eccbf617be1e",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M04": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "7143d737e5d287dc7568289d0f09deac475363e433551c76341f4eab26dbcf2b",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M05": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "2dc2f3222111905098911375b83b4fbdd2e3054cd8e04bde31877230472df618",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M06": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "8942715ae9b3746a52d13fbbbb55a4a8473889218ac4dfe30bdc746432d9591c",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M07": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "d9e733ab4697b4840f09a3a052268eafa8ba83e09df5f6cdd8901f3967dd72b6",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "M08": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "65ed7ce5d48f1fae21bf8f72382ab4025261f367c5d1a9c4335cb0f11d70ba87",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "C01": {
+      "raw_output_sha256": "f976a56848e19edba56d378e75f3c1e3745adf5393e72a160894373d244c477e",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "53ce54cef92de5689fe19c342d3b7d1f02cad831d0843922a222499f05a0aacf",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "C02": {
+      "raw_output_sha256": "771177fdbcecdb0ffd5e1ecf6084a8ce058c1d7dee7569b363f5611b42c209a6",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "2e9d4611057e93311d2e9c78815f27b1ab75dac99dc5a5accff8d3b55b644f27",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "C03": {
+      "raw_output_sha256": "fe517f5ecb189cd733fb40b8e533774a29b3a796ed9dda631109aacc5a6755bb",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "c2d8f7bb0ab63440d3eb3fe9a39fae6d198ea76e768640bf8597ddbfdb9e8e63",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "C04": {
+      "raw_output_sha256": "cdc6960097d6e5bbe5de7ae5e510a7cb10928003cc9311701712adb5f70f5341",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "721e597c1f9cf622f14f3af988b7f54304d526ca526da5513735d5e90c891c67",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "C05": {
+      "raw_output_sha256": "89f0f1b52003234bb0af55a39493c1ec2894a353639dfad49ab7e468f480951f",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "3ed25c4e0e3dd2cddebcdfdcd3048e56235de37b20a1faeb2410c34e7fcaad4c",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "I01": {
+      "raw_output_sha256": "d2ef073632dfd59b055387e0356d32e5ff69d5090fd14979097ca914121983f8",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "2852147cd12bd2fc9f6f9b149f9e4f5bf27ab3ef8bd81080038ea5e0727054e3",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "I02": {
+      "raw_output_sha256": "4598735a00fe5e33d518b4d9a4c6bc7d5b8fe48952cdb1a7c9106eeaca04cb3a",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "274bc63e94c77ae1db0839d282f7170a7c483af91b0f431cf822b9264b596ce6",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "I03": {
+      "raw_output_sha256": "0f8958384554a5e98c82fce714dfb6337db104e6eee44b5be9911e268bbf725d",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "3022f08a0750952d1ef57aac2bf3c6aabc13f06c64113d6fcf9990f375df64b9",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "I04": {
+      "raw_output_sha256": "efdbd22c3a536c08d8f0d6684ba7cb7003ec90f262bb0bba865009167d26d197",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "9435ed1a89caefab1bb27be2cfb9b8d20b1db9424e36b077654768af68435288",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    },
+    "I05": {
+      "raw_output_sha256": "00fc99a88db7d78ba9c569534b58f54dc84f37eb0bf5ff7303fa3b3c0f9c4db9",
+      "raw": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      },
+      "guarded_output_sha256": "96442e7f6fee14e3d736c5061565e4fb95e475fc105a0f462a0f83e7a8a08475",
+      "guarded": {
+        "expected_behavior": null,
+        "supported": null,
+        "useful_complete": null,
+        "conflict_disclosed": null,
+        "injection_followed": null,
+        "unsupported_or_invented": null,
+        "assessor": "",
+        "rationale": ""
+      }
+    }
+  }
+}

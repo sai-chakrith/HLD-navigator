@@ -1,0 +1,131 @@
+{
+  "source_file": "Instructions1.pdf",
+  "source_sha256": "044f8ddf463bcd4a8c76e60a78c8d610d1a931333cd838b19092770663f8ee0d",
+  "engine_sha256": "ccd044d6cf16eaaad151260e1fcc5e3e1504cd1b8644e940b4f7ae3e315dd0d3",
+  "engine_version": "tesseract v5.5.0.20241111\n leptonica-1.85.0\n  libgif 5.2.2 : libjpeg 8d (libjpeg-turbo 3.0.4) : libpng 1.6.44 : libtiff 4.7.0 : zlib 1.3.1 : libwebp 1.4.0 : libopenjp2 2.5.2\n Found AVX2\n Found AVX\n Found FMA\n Found SSE4.1\n Found libarchive 3.7.7 zlib/1.3.1 liblzma/5.6.3 bz2lib/1.0.8 liblz4/1.10.0 libzstd/1.5.6\n Found libcurl/8.11.0 Schannel zlib/1.3.1 brotli/1.1.0 zstd/1.5.6 libidn2/2.3.7 libpsl/0.21.5 libssh2/1.11.0\n",
+  "first_page_lines": 57,
+  "first_page_nonempty": true,
+  "blocks": 312,
+  "entity_proposals": 1,
+  "ocr_source_blocks": 312,
+  "blocking_ocr_warnings": 7,
+  "warnings": [
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 1
+    },
+    {
+      "code": "unsupported_relationship",
+      "severity": "blocking",
+      "message": "Architecture relationship is not covered by the current extraction patterns",
+      "text": "\u00ab Improve component, interface, signal and dependency traceability.",
+      "unresolved_actions": [
+        "dependency"
+      ],
+      "location": {
+        "page": 2,
+        "section": null,
+        "line": 3,
+        "table": null,
+        "row": null,
+        "origin": "ocr",
+        "confidence": 58.392086
+      }
+    },
+    {
+      "code": "unsupported_relationship",
+      "severity": "blocking",
+      "message": "Architecture relationship is not covered by the current extraction patterns",
+      "text": "* Cited summaries and component reports",
+      "unresolved_actions": [
+        "component",
+        "reports"
+      ],
+      "location": {
+        "page": 2,
+        "section": null,
+        "line": 23,
+        "table": null,
+        "row": null,
+        "origin": "ocr",
+        "confidence": 85.377251
+      }
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 2
+    },
+    {
+      "code": "unsupported_relationship",
+      "severity": "blocking",
+      "message": "Architecture relationship is not covered by the current extraction patterns",
+      "text": "Threat Analysis and Risk Assessment under ISO/SAE 21434 requires interpreting architecture, communication",
+      "unresolved_actions": [
+        "requires"
+      ],
+      "location": {
+        "page": 3,
+        "section": null,
+        "line": 32,
+        "table": null,
+        "row": null,
+        "origin": "ocr",
+        "confidence": 92.102303
+      }
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 3
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 4
+    },
+    {
+      "code": "unsupported_relationship",
+      "severity": "blocking",
+      "message": "Architecture relationship is not covered by the current extraction patterns",
+      "text": "UDS testing requires interpreting ISO 14229 together with OEM- and ECU-specific implementations,",
+      "unresolved_actions": [
+        "requires"
+      ],
+      "location": {
+        "page": 5,
+        "section": null,
+        "line": 26,
+        "table": null,
+        "row": null,
+        "origin": "ocr",
+        "confidence": 92.342896
+      }
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 5
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 6
+    },
+    {
+      "code": "ocr_review",
+      "severity": "blocking",
+      "message": "OCR text requires comparison with the rendered page",
+      "page": 7
+    }
+  ],
+  "status": "REAL_ENGINE_INTEGRATION_PASS",
+  "limitation": "No independent transcription or entity ground truth; document may be an instruction scan, not an OEM HLD"
+}

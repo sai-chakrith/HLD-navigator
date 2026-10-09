@@ -1,0 +1,27 @@
+{
+  "repository": "eclipse-kuksa/kuksa-databroker",
+  "revision": "7a210d01fd00a8035cf68c05336bd0860777e892",
+  "license": "Apache-2.0",
+  "evaluation": "developer_public_examples",
+  "limitations": "Not proprietary OEM HLDs or an independent holdout",
+  "documents": [
+    {
+      "file": "overview.md",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/README.md",
+      "sha256": "43813927f33a649cdc5815e79f2eb374780d33441a0fc473399e4e3c3037563d",
+      "bytes": 14331
+    },
+    {
+      "file": "user-guide.md",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/doc/user_guide.md",
+      "sha256": "766ebf73940308ce2e5e7a5ebd2cad3b468719bea04c2c511b7117ca75ba8a03",
+      "bytes": 16087
+    },
+    {
+      "file": "LICENSE",
+      "url": "https://raw.githubusercontent.com/eclipse-kuksa/kuksa-databroker/7a210d01fd00a8035cf68c05336bd0860777e892/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "bytes": 11357
+    }
+  ]
+}

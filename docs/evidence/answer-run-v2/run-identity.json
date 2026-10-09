@@ -1,0 +1,71 @@
+{
+  "notice": "Agent-owned synthetic development evidence; not independently validated.",
+  "prepared": {
+    "notice": "Agent-owned synthetic development evidence; not independently validated.",
+    "case_count": 30,
+    "categories": {
+      "answerable": 12,
+      "must_abstain": 8,
+      "conflict": 5,
+      "injection": 5
+    },
+    "case_manifest_sha256": "3d4adc3c050a147d5ab397e53bb750cee4c2ad70ad82af61fb53f640febe200a",
+    "rubric_sha256": "5cfdfd2e3c67c4b6f8b64312f48d45c7c87afd559c6943c24f7285a3110a3c1d",
+    "runner_sha256": "ef88d8ba0903320f5888e8d33ca0813ddee99d8ff0166c96c9fd670ca838299e",
+    "model_calls_during_preparation": 0,
+    "semantic_assessment_required": true,
+    "ready_for_live_run": "Only after READY_FOR_TEST and candidate identity supplied"
+  },
+  "before": {
+    "product_files": {
+      "src/hld_navigator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/hld_navigator/admin.py": "dc0028f3c235f0bcae2617bfe3f85397b63ebbe4167a1cac4d05bd1648aac61c",
+      "src/hld_navigator/analysis.py": "8c1d8879d46ec0f150b020234ed279b850d784d3798f365181529cb76b9e7b85",
+      "src/hld_navigator/app.py": "6357173e183ecc8b7bea802f4e7c5d744b12af60ee47d496a6706ad6f6c30c09",
+      "src/hld_navigator/backup.py": "c0951ba03c4b2198a17fb3d418a4358ccea4398e8a8c3ce92e9f38c58cbcc251",
+      "src/hld_navigator/evaluation.py": "fe5272f9119479b8a9fba12d5679aefb11a7bc124ee88202743cff1a94403992",
+      "src/hld_navigator/extraction.py": "f3ed0575a73f82e4c808277e7e30972ff1b4a6030ebec630376054c3f27892b9",
+      "src/hld_navigator/models.py": "e0a0811c6a599c516df414a6625fc552b86f400627d0568f8809d9dd3e19ee0b",
+      "src/hld_navigator/ocr.py": "7d83bcdcb315182790884d3f0c8c372d2d365c501fe4c6c0df6de22e0d117416",
+      "src/hld_navigator/prose.py": "f4d5d7b504c4a3fdc73b778c1a90421f0e8c230435b5ae2397d46b1d4ba7164a",
+      "src/hld_navigator/rag.py": "bdb47f3b7a540872c4651d7485571f9faef547c7b07159f78ddf6e518545b895",
+      "src/hld_navigator/reports.py": "3cc3044bda64c42cd10fbdc6fdbf0b8c052f282e07ee0872757222969776ed0a",
+      "src/hld_navigator/store.py": "bcff6f4ed28f516554368f5c6bea57c67ff4c7cded833a20fc27dd6d3b3bed5f",
+      "src/hld_navigator/tables.py": "bed82f329d47858b6f3a4359950f91b178b768a2c07f54ea3b5c915163318903",
+      "src/hld_navigator/ui.py": "c8d2f28596f45e78e44ccebba2d0b8caefd93afae64abcd63db8d41c450a67ce",
+      "src/hld_navigator/vectors.py": "142f562df45d2302fc2bdf8190a15c7aed71ead74dd8cf78a886dcb35f25a979"
+    },
+    "product_manifest_sha256": "a4d8a3e85587ccd9aafc8ba3d6189e69aff9e35416a2deaf1861197bcc782014",
+    "supplied_identity_sha256": "8d06f66239912e4eff4467e1eb583f31a112797f4dd3792fb416fe9b4ed33e9a"
+  },
+  "runtime": {
+    "model": "Qwen2.5-7B-Instruct Q4_K_M",
+    "artifact_sha256": {
+      "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf": "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db",
+      "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf": "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+    },
+    "runtime_sha256": "ed69a9e87713b84c63940b2f0e708c8e698e82b3d74dfa1364e94d97e334720c",
+    "runtime": "llama.cpp b11490 CPU x64",
+    "parameters": {
+      "temperature": 0,
+      "max_tokens": 512,
+      "context": 2048,
+      "threads": 4,
+      "parallel_slots": 1,
+      "gpu_layers": 0,
+      "response_format": "json_object"
+    },
+    "hardware": {
+      "cpu": "12th Gen Intel Core i7-12700H",
+      "physical_cores": 14,
+      "logical_processors": 20,
+      "os": "Windows-11-10.0.26300-SP0",
+      "python": "3.14.8"
+    },
+    "artifact_verification": "Both complete shard SHA256 values and deployed runtime files verified before startup"
+  },
+  "runtime_metadata_sha256": "ef363fa64bcfac831260e756a9967c995ff5aee29adc0163a31a61dd4c783b50",
+  "utc": "2026-10-09T02:11:39.298327+00:00",
+  "one_raw_call_per_case": true,
+  "retrieval_mode": "fixed preselected eligible synthetic blocks"
+}

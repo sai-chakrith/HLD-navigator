@@ -1,0 +1,73 @@
+{
+  "health": {
+    "status": "ok",
+    "retrieval": "sqlite_fts5",
+    "pilot": true
+  },
+  "unauthenticated_status": 401,
+  "approved_entities": 8,
+  "findings": 0,
+  "retrieval_mode": "local_model_synthesis",
+  "runtime": "3.14.8",
+  "validation": "Synthetic live API/retrieval/model integration; not an independent semantic benchmark",
+  "fixture": "data/evaluation/torque-prose.md",
+  "question": "What type and unit does the Torque signal use?",
+  "response": {
+    "mode": "local_model_synthesis",
+    "answer": "The Torque signal uses type uint16 and unit Nm. [S1]",
+    "evidence": [
+      {
+        "id": "3ce95c28-4787-4f93-a49e-69771143cdb4",
+        "document_id": "9be6d9b0-775f-4981-bb4c-fd0d5604e30d",
+        "text": "The Torque signal has type uint16 and unit Nm.",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 5,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts"
+      },
+      {
+        "id": "f406f904-f436-412b-85ab-520bc3321d96",
+        "document_id": "9be6d9b0-775f-4981-bb4c-fd0d5604e30d",
+        "text": "The TorqueInterface interface carries the Torque signal.",
+        "location": {
+          "page": null,
+          "section": "Torque coordination HLD \u2014 synthetic development fixture",
+          "line": 4,
+          "table": null,
+          "row": null,
+          "origin": "text",
+          "confidence": null
+        },
+        "title": "Powertrain",
+        "version": "1",
+        "name": "fixture.md",
+        "review_state": "approved_facts"
+      }
+    ],
+    "claims": [
+      {
+        "text": "The Torque signal uses type uint16 and unit Nm.",
+        "citations": [
+          {
+            "source_id": "S1",
+            "snippet": "The Torque signal has type uint16 and unit Nm.",
+            "block_id": "3ce95c28-4787-4f93-a49e-69771143cdb4"
+          }
+        ]
+      }
+    ],
+    "reason": "",
+    "quarantined_source_ids": [],
+    "retrieval": "sqlite_fts5"
+  },
+  "model": "qwen7b"
+}

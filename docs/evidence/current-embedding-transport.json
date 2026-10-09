@@ -1,0 +1,12 @@
+{
+  "backend": "llama_cpp",
+  "artifact_sha256": "f0b2fef971e8366438bfd2d9aefea1b0115919389448806d290237f638bae999",
+  "model": "BGE-small-en-v1.5",
+  "inputs": 2,
+  "dimensions": [
+    384,
+    384
+  ],
+  "status": "live_embedding_pass",
+  "limitation": "Transport and real model execution only; not retrieval accuracy"
+}

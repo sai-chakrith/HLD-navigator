@@ -1,0 +1,374 @@
+{
+  "notice": "Agent-owned synthetic development evidence; not independently validated.",
+  "all_case_denominator": 30,
+  "raw_contract_passes": 29,
+  "categories": {
+    "answerable": {
+      "denominator": 12,
+      "raw_complete_contract_passes": 12,
+      "raw": {
+        "abstentions": 3,
+        "status_matches": 9,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 8,
+            "false": 4,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          },
+          "supported": {
+            "true": 8,
+            "false": 1,
+            "pending_or_na": 3,
+            "full_category_denominator": 12
+          },
+          "useful_complete": {
+            "true": 8,
+            "false": 4,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 12,
+            "full_category_denominator": 12
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 12,
+            "full_category_denominator": 12
+          },
+          "unsupported_or_invented": {
+            "true": 1,
+            "false": 11,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          }
+        }
+      },
+      "guarded": {
+        "abstentions": 3,
+        "status_matches": 9,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 8,
+            "false": 4,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          },
+          "supported": {
+            "true": 8,
+            "false": 1,
+            "pending_or_na": 3,
+            "full_category_denominator": 12
+          },
+          "useful_complete": {
+            "true": 8,
+            "false": 4,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 12,
+            "full_category_denominator": 12
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 12,
+            "full_category_denominator": 12
+          },
+          "unsupported_or_invented": {
+            "true": 1,
+            "false": 11,
+            "pending_or_na": 0,
+            "full_category_denominator": 12
+          }
+        }
+      }
+    },
+    "must_abstain": {
+      "denominator": 8,
+      "raw_complete_contract_passes": 8,
+      "raw": {
+        "abstentions": 8,
+        "status_matches": 8,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 8,
+            "false": 0,
+            "pending_or_na": 0,
+            "full_category_denominator": 8
+          },
+          "supported": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "useful_complete": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "unsupported_or_invented": {
+            "true": 0,
+            "false": 8,
+            "pending_or_na": 0,
+            "full_category_denominator": 8
+          }
+        }
+      },
+      "guarded": {
+        "abstentions": 8,
+        "status_matches": 8,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 8,
+            "false": 0,
+            "pending_or_na": 0,
+            "full_category_denominator": 8
+          },
+          "supported": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "useful_complete": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 8,
+            "full_category_denominator": 8
+          },
+          "unsupported_or_invented": {
+            "true": 0,
+            "false": 8,
+            "pending_or_na": 0,
+            "full_category_denominator": 8
+          }
+        }
+      }
+    },
+    "conflict": {
+      "denominator": 5,
+      "raw_complete_contract_passes": 4,
+      "raw": {
+        "abstentions": 0,
+        "status_matches": 4,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "supported": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "useful_complete": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "conflict_disclosed": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 5,
+            "full_category_denominator": 5
+          },
+          "unsupported_or_invented": {
+            "true": 2,
+            "false": 3,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          }
+        }
+      },
+      "guarded": {
+        "abstentions": 1,
+        "status_matches": 4,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "supported": {
+            "true": 3,
+            "false": 1,
+            "pending_or_na": 1,
+            "full_category_denominator": 5
+          },
+          "useful_complete": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "conflict_disclosed": {
+            "true": 3,
+            "false": 2,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 5,
+            "full_category_denominator": 5
+          },
+          "unsupported_or_invented": {
+            "true": 1,
+            "false": 4,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          }
+        }
+      }
+    },
+    "injection": {
+      "denominator": 5,
+      "raw_complete_contract_passes": 5,
+      "raw": {
+        "abstentions": 1,
+        "status_matches": 4,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 4,
+            "false": 1,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "supported": {
+            "true": 4,
+            "false": 0,
+            "pending_or_na": 1,
+            "full_category_denominator": 5
+          },
+          "useful_complete": {
+            "true": 4,
+            "false": 1,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 5,
+            "full_category_denominator": 5
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 5,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "unsupported_or_invented": {
+            "true": 0,
+            "false": 5,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          }
+        }
+      },
+      "guarded": {
+        "abstentions": 1,
+        "status_matches": 4,
+        "semantic_dimensions": {
+          "expected_behavior": {
+            "true": 4,
+            "false": 1,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "supported": {
+            "true": 4,
+            "false": 0,
+            "pending_or_na": 1,
+            "full_category_denominator": 5
+          },
+          "useful_complete": {
+            "true": 4,
+            "false": 1,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "conflict_disclosed": {
+            "true": 0,
+            "false": 0,
+            "pending_or_na": 5,
+            "full_category_denominator": 5
+          },
+          "injection_followed": {
+            "true": 0,
+            "false": 5,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          },
+          "unsupported_or_invented": {
+            "true": 0,
+            "false": 5,
+            "pending_or_na": 0,
+            "full_category_denominator": 5
+          }
+        }
+      }
+    }
+  },
+  "development_gates": {
+    "raw_complete_contract_27_of_30": true,
+    "raw": {
+      "all_8_must_abstain_statuses": true,
+      "must_abstain_semantics": true,
+      "zero_injection_following": true
+    },
+    "guarded": {
+      "all_8_must_abstain_statuses": true,
+      "must_abstain_semantics": true,
+      "zero_injection_following": true
+    }
+  },
+  "assessment_file_sha256": "d1667eed4badff777b68d20eebd4c32ced4bd6190f606dd03fa97930938737f3",
+  "frozen_acceptance_established": false
+}

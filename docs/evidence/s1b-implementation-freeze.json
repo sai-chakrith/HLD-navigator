@@ -1,0 +1,64 @@
+{
+  "task": "S1b implementation freeze",
+  "requirements": [
+    "R3",
+    "R6"
+  ],
+  "base": "7e902731cf66e1b9e2a6b299050ab148f292620d",
+  "created_utc": "2026-10-08T20:43:58.442205+00:00",
+  "implementation_status": "READY_FOR_TEST",
+  "live_experiment_status": "PENDING",
+  "model_download_session": 77546,
+  "download_resume": "8 MiB ranges, 16 workers; provisional existing ranges retained; both full shard hashes required before inference",
+  "files": {
+    "src/hld_navigator/app.py": {
+      "sha256": "b0bb1475a4bee8d95625f5358ea9204147ad7b25f2d819baeb5b4b3b08b3e1d5",
+      "bytes": 13341
+    },
+    "src/hld_navigator/models.py": {
+      "sha256": "e0a0811c6a599c516df414a6625fc552b86f400627d0568f8809d9dd3e19ee0b",
+      "bytes": 7245
+    },
+    "src/hld_navigator/rag.py": {
+      "sha256": "54a2f191163447454c14f570b3162008bb8b52052a3dce3a0d24f1ec9cb9ab75",
+      "bytes": 7098
+    },
+    "src/hld_navigator/ui.py": {
+      "sha256": "b222fa9d8c3e370c20312545ea45ced399d0402a3974e926ab3178c77679925a",
+      "bytes": 8563
+    },
+    "tests/test_s1b_contract.py": {
+      "sha256": "60400b95fb8b17a5666d6c66c6c9be797b78077cfbc8d95de80691b6cdfb363c",
+      "bytes": 3549
+    },
+    "tools/setup_s1b_model.py": {
+      "sha256": "fc331f2cb0139a535e958d90821e7bf85c5085b46aace775e1a1dbb15e5f8212",
+      "bytes": 3612
+    },
+    "tools/s1b_experiment.py": {
+      "sha256": "a916b252412a6cf4781eb861f3670b4acef4a963a825b075f1d64d7c9bdad6f0",
+      "bytes": 13052
+    },
+    "docs/s1b-local-answers.md": {
+      "sha256": "a8a08affa5034318a30afca7e6c90b8d7c2e4897115a855a7089d31aacc9aaa2",
+      "bytes": 3800
+    }
+  },
+  "verification": {
+    "uv run ruff check .": "All checks passed!\n",
+    "uv run pytest": "error: uv trampoline failed to canonicalize script path\n",
+    "uv run python -m pytest": "============================= test session starts =============================\nplatform win32 -- Python 3.14.8, pytest-9.1.1, pluggy-1.6.0\nrootdir: C:\\Users\\peddi\\Downloads\\chakrithdump\\HLD-navigator\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1\ncollected 482 items\n\ntests\\test_adapters.py ....                                              [  0%]\ntests\\test_chat_backend.py ..                                            [  1%]\ntests\\test_compound_prose.py ............                                [  3%]\ntests\\test_cpu_embeddings.py ...                                         [  4%]\ntests\\test_developer_caption_entities.py .........................       [  9%]\ntests\\test_developer_inventory_captions.py ............................. [ 15%]\n.................................                                        [ 22%]\ntests\\test_developer_pdf_prose_literal.py ............                   [ 24%]\ntests\\test_developer_pdf_table_prose_boundary.py .............           [ 27%]\ntests\\test_developer_provenance_integrity.py ........................... [ 33%]\n.                                                                        [ 33%]\ntests\\test_developer_table_provenance.py ......                          [ 34%]\ntests\\test_engineering.py ....................                           [ 38%]\ntests\\test_pdf_ui.py ....                                                [ 39%]\ntests\\test_pilot.py .................                                    [ 43%]\ntests\\test_recipients_units.py .............                             [ 45%]\ntests\\test_review_regressions.py ........                                [ 47%]\ntests\\test_s1b_contract.py ...............                               [ 50%]\ntests\\test_tester_acceptance_t2.py ...........                           [ 52%]\ntests\\test_tester_t2c_oracles.py ................................        [ 59%]\ntests\\test_tester_t3a_provenance.py .........                            [ 61%]\ntests\\test_tester_t3b1_fix1_boundaries.py ..........................     [ 66%]\ntests\\test_tester_t3b1_literal.py .....................................  [ 74%]\ntests\\test_tester_t3b2_integrity.py ...........................          [ 80%]\ntests\\test_tester_t3c_captions.py .........................              [ 85%]\ntests\\test_tester_t7a_captions.py ...................................    [ 92%]\ntests\\test_tester_t7a_cycle1.py ................................         [ 99%]\ntests\\test_warning_evaluation.py ....                                    [100%]\n\n============================== warnings summary ===============================\n.venv\\Lib\\site-packages\\fastapi\\testclient.py:1\n  C:\\Users\\peddi\\Downloads\\chakrithdump\\HLD-navigator\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 482 passed, 1 warning in 17.30s =======================\n"
+  },
+  "limitations": [
+    "No live inference completed; no model behavior gates claimed.",
+    "12 developer cases, not the independent Tester set or frozen evaluation corpus.",
+    "Semantic relevance/entailment remains separate from mechanical citation validity.",
+    "Direct uv pytest launcher fails; full suite run using python -m pytest."
+  ],
+  "provisional_download_progress": {
+    "shard1_nonzero_range_samples": 55,
+    "total_samples": 477,
+    "note": "Estimate only; not verified chunks or completed bytes",
+    "last_write_ns": 1791492231402312700
+  }
+}

@@ -1,5 +1,43 @@
 # Validation record
 
+## Current follow-up - 09 October 2026
+
+Current source: **499 tests passed** in `evidence/completion-pytest.xml`; lint passes.
+The paragraphs below retain historical runs and their earlier counts/limitations.
+`evidence/live-http.json` records the baseline HTTP workflow. Browser captures in
+`output/demo/screenshots/` verify actual upload, evidence review, graph rendering,
+revision comparison and HTTP 409 on an unreviewed export.
+
+`evidence/live-model-http.json` records real API retrieval plus Qwen 7B synthesis:
+the fictional Torque signal answer correctly states uint16/Nm and resolves to the
+retrieved source block. `evidence/answer-run-v3/` retains all 30 fixed cases, complete
+prompts, original evidence, raw outputs, guarded results, candidate hashes and
+hash-bound developer assessments. Mechanical raw contract: 29/30. All eight
+must-abstain cases abstained. Zero instruction-following was judged in five
+injection cases. Useful complete: 8/12 answerable, 3/5 conflicts, 4/5 injections.
+The A06 recipient reversal and C05 unsupported revision recommendation remain
+failures even though their literal citations pass. This is not independent or
+protected acceptance, and no global semantic-accuracy figure is claimed.
+
+Runs v1/v2 remain intact, including attacker fact adoption and contract failures.
+After those failures, the candidate added source-command quarantine, stronger
+instructions and llama.cpp JSON schema constraints. The unchanged cases were
+rerun once per version, without hidden retries. Quarantine excludes obvious
+assistant-directed lines, not originals; it is conservative and incomplete.
+
+`evidence/current-retrieval.json` reproduces real BGE CPU results on four public
+questions: recall@5 0.75 for both methods; MRR 0.75 lexical / 0.625 learned.
+`evidence/ocr-engine.json` records real Tesseract 5.5.0 on a seven-page image-only
+instructions scan: 312 blocks and seven mandatory OCR review warnings. It does
+not measure HLD word/entity accuracy. `evidence/public-current.json` preserves
+the frozen three-document parser limitations against provisional agent labels.
+
+Snapshot/restore, token revocation, graph/report and before/after impact regressions
+pass. Hosted CI is configured, not observed. Human review, OEM generalization,
+correction time and production deployment qualification remain external gaps.
+
+## Historical records
+
 Local date: 2026-10-08. Windows/Python 3.14.8. Eight review regressions failed before fixes (`evidence/review-before.txt`). Field-level evaluation also reproduced sentence punctuation becoming part of port names and unreported unsupported relationships (`evidence/prose-before.txt`). Explicit component absence failed before correction (`evidence/absence-before.txt`). Existing declaration ingestion, permissions, human review and document-version controls are preserved.
 
 Final local result: **87 passing tests**, lint/format checks passed, and ordinary-prose live HTTP workflow passed. One upstream Starlette/httpx deprecation warning remains. Ephemeral fixture credentials in failure evidence are redacted.

@@ -1,0 +1,71 @@
+{
+  "notice": "Agent-owned synthetic development evidence; not independently validated.",
+  "all_case_denominator": 30,
+  "categories": {
+    "answerable": 12,
+    "must_abstain": 8,
+    "conflict": 5,
+    "injection": 5
+  },
+  "raw_contract_passes": 29,
+  "raw_generation_errors": 0,
+  "guard_errors": 0,
+  "raw_vs_guarded_status_counts": {
+    "raw": {
+      "answered": 13,
+      "abstained": 12,
+      "conflict": 4,
+      "unparseable": 1
+    },
+    "guarded": {
+      "answered": 13,
+      "abstained": 13,
+      "conflict": 4
+    }
+  },
+  "semantic_and_usefulness_gates": "PENDING separate rubric assessments",
+  "candidate_before": {
+    "product_files": {
+      "src/hld_navigator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/hld_navigator/admin.py": "dc0028f3c235f0bcae2617bfe3f85397b63ebbe4167a1cac4d05bd1648aac61c",
+      "src/hld_navigator/analysis.py": "8c1d8879d46ec0f150b020234ed279b850d784d3798f365181529cb76b9e7b85",
+      "src/hld_navigator/app.py": "6357173e183ecc8b7bea802f4e7c5d744b12af60ee47d496a6706ad6f6c30c09",
+      "src/hld_navigator/backup.py": "c0951ba03c4b2198a17fb3d418a4358ccea4398e8a8c3ce92e9f38c58cbcc251",
+      "src/hld_navigator/evaluation.py": "fe5272f9119479b8a9fba12d5679aefb11a7bc124ee88202743cff1a94403992",
+      "src/hld_navigator/extraction.py": "f3ed0575a73f82e4c808277e7e30972ff1b4a6030ebec630376054c3f27892b9",
+      "src/hld_navigator/models.py": "e0a0811c6a599c516df414a6625fc552b86f400627d0568f8809d9dd3e19ee0b",
+      "src/hld_navigator/ocr.py": "7d83bcdcb315182790884d3f0c8c372d2d365c501fe4c6c0df6de22e0d117416",
+      "src/hld_navigator/prose.py": "f4d5d7b504c4a3fdc73b778c1a90421f0e8c230435b5ae2397d46b1d4ba7164a",
+      "src/hld_navigator/rag.py": "0135b1d0421084ccba4e80419b2db81c5b26f91e0749ad3214fa1261caa6e989",
+      "src/hld_navigator/reports.py": "3cc3044bda64c42cd10fbdc6fdbf0b8c052f282e07ee0872757222969776ed0a",
+      "src/hld_navigator/store.py": "bcff6f4ed28f516554368f5c6bea57c67ff4c7cded833a20fc27dd6d3b3bed5f",
+      "src/hld_navigator/tables.py": "bed82f329d47858b6f3a4359950f91b178b768a2c07f54ea3b5c915163318903",
+      "src/hld_navigator/ui.py": "a8728a280dc20bd9a99409e13fda6d5c25fde32e54715438e1f76015831df2c5",
+      "src/hld_navigator/vectors.py": "142f562df45d2302fc2bdf8190a15c7aed71ead74dd8cf78a886dcb35f25a979"
+    },
+    "product_manifest_sha256": "f7a7fd9f5c997e2c731e6169d3e3b03174b5da747f973569f8e579fd1f579736",
+    "supplied_identity_sha256": "975664aafbf36662716856b295b7fd6d7fab5eb38b5b3e3968954fb9942a0728"
+  },
+  "candidate_after": {
+    "product_files": {
+      "src/hld_navigator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/hld_navigator/admin.py": "dc0028f3c235f0bcae2617bfe3f85397b63ebbe4167a1cac4d05bd1648aac61c",
+      "src/hld_navigator/analysis.py": "8c1d8879d46ec0f150b020234ed279b850d784d3798f365181529cb76b9e7b85",
+      "src/hld_navigator/app.py": "6357173e183ecc8b7bea802f4e7c5d744b12af60ee47d496a6706ad6f6c30c09",
+      "src/hld_navigator/backup.py": "c0951ba03c4b2198a17fb3d418a4358ccea4398e8a8c3ce92e9f38c58cbcc251",
+      "src/hld_navigator/evaluation.py": "fe5272f9119479b8a9fba12d5679aefb11a7bc124ee88202743cff1a94403992",
+      "src/hld_navigator/extraction.py": "f3ed0575a73f82e4c808277e7e30972ff1b4a6030ebec630376054c3f27892b9",
+      "src/hld_navigator/models.py": "e0a0811c6a599c516df414a6625fc552b86f400627d0568f8809d9dd3e19ee0b",
+      "src/hld_navigator/ocr.py": "7d83bcdcb315182790884d3f0c8c372d2d365c501fe4c6c0df6de22e0d117416",
+      "src/hld_navigator/prose.py": "f4d5d7b504c4a3fdc73b778c1a90421f0e8c230435b5ae2397d46b1d4ba7164a",
+      "src/hld_navigator/rag.py": "0135b1d0421084ccba4e80419b2db81c5b26f91e0749ad3214fa1261caa6e989",
+      "src/hld_navigator/reports.py": "3cc3044bda64c42cd10fbdc6fdbf0b8c052f282e07ee0872757222969776ed0a",
+      "src/hld_navigator/store.py": "bcff6f4ed28f516554368f5c6bea57c67ff4c7cded833a20fc27dd6d3b3bed5f",
+      "src/hld_navigator/tables.py": "bed82f329d47858b6f3a4359950f91b178b768a2c07f54ea3b5c915163318903",
+      "src/hld_navigator/ui.py": "a8728a280dc20bd9a99409e13fda6d5c25fde32e54715438e1f76015831df2c5",
+      "src/hld_navigator/vectors.py": "142f562df45d2302fc2bdf8190a15c7aed71ead74dd8cf78a886dcb35f25a979"
+    },
+    "product_manifest_sha256": "f7a7fd9f5c997e2c731e6169d3e3b03174b5da747f973569f8e579fd1f579736",
+    "supplied_identity_sha256": "975664aafbf36662716856b295b7fd6d7fab5eb38b5b3e3968954fb9942a0728"
+  }
+}
