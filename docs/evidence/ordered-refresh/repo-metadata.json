@@ -1,0 +1,12 @@
+{
+  "html_url": "https://github.com/sai-chakrith/HLD-navigator",
+  "default_branch": "main",
+  "description": "AUTOSAR HLD analysis assistant with cited extraction, human review, search, exports and revision comparison; FastAPI, Streamlit and optional local LLMs.",
+  "topics": [
+    "autosar",
+    "fastapi",
+    "local-llm",
+    "rag",
+    "streamlit"
+  ]
+}

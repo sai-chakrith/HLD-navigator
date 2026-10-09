@@ -1,0 +1,17 @@
+5e26708 Open local demo directly without authentication
+3dc48bb Connect local UI automatically and hide backend settings
+40677a5 Record remediation measurements and rebuild verified real-ID submission
+93dc367 Separate approved fields from context and enforce bounded answer checks
+03cfc7f Freeze agent-authored remediation corpus and reproduced failure baseline
+01820a9 Package submission artifacts and interview handoff
+3ac3c91 Record public-document, OCR and three local-answer validation runs
+2e6ce6b Complete reviewed reports, revision analysis and local inference safeguards
+7e90273 Enforce occurrence-specific provenance integrity
+37d262f Preserve exact extraction provenance
+3518d1b Treat preserved CRLF as line endings in frozen fixture checks
+35e4d2d Preserve frozen evaluation bytes across platform checkouts
+954600e Preserve recipients and units; evaluate unfamiliar docs and real local models
+4fc8908 Fix compound prose omissions and expose review validation gaps
+cbf6aed Address HLD review defects and add prose extraction and local vectors
+c31ec1a Rename project and package to HLD Navigator
+c7a2e0a Start ArchLens AUTOSAR HLD review pilot

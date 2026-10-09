@@ -1,0 +1,1 @@
+error: uv trampoline failed to canonicalize script path
