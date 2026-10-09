@@ -1,0 +1,14 @@
+unformatted: File would be reformatted
+  --> tools\demo.py:77:25
+   |
+76 |     parser.add_argument("--seed-only", action="store_true")
+77 +     parser.add_argument("--public-pdf", action="store_true", help="Public PDF replay (the default)")
+78 |     parser.add_argument(
+   -         "--public-pdf", action="store_true", help="Public PDF replay (the default)"
+79 +         "--synthetic", action="store_true", help="Use fictional regression fixtures"
+80 |     )
+   -     parser.add_argument("--synthetic", action="store_true", help="Use fictional regression fixtures")
+81 |     parser.add_argument(
+   |
+
+1 file would be reformatted, 71 files already formatted

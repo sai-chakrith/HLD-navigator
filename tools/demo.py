@@ -74,13 +74,16 @@ def main():
     parser.add_argument("--api-port", type=int, default=8011)
     parser.add_argument("--ui-port", type=int, default=8511)
     parser.add_argument("--seed-only", action="store_true")
-    parser.add_argument("--public-pdf", action="store_true", help="Replay real public prose as PDF")
+    parser.add_argument(
+        "--public-pdf", action="store_true", help="Public PDF replay (the default)"
+    )
+    parser.add_argument("--synthetic", action="store_true", help="Use fictional regression fixtures")
     parser.add_argument(
         "--output", type=Path, default=ROOT / "docs/evidence/ordered-refresh/pdf-demo"
     )
     args = parser.parse_args()
     try:
-        if args.public_pdf:
+        if not args.synthetic:
             sys.path.insert(0, str(ROOT))
             from tools.public_pdf_demo import seed_pdf
 

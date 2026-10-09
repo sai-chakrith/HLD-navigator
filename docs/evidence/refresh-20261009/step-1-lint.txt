@@ -1,0 +1,12 @@
+E501 Line too long (101 > 100)
+  --> tools\demo.py:80:101
+   |
+78 |         "--public-pdf", action="store_true", help="Public PDF replay (the default)"
+79 |     )
+80 |     parser.add_argument("--synthetic", action="store_true", help="Use fictional regression fixtures")
+   |                                                                                                     ^
+81 |     parser.add_argument(
+82 |         "--output", type=Path, default=ROOT / "docs/evidence/ordered-refresh/pdf-demo"
+   |
+
+Found 1 error.
