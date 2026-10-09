@@ -5,6 +5,67 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 STRICT_MODEL = ConfigDict(extra="forbid", strict=True)
 
 
+class AnswerCitation(BaseModel):
+    model_config = STRICT_MODEL
+    source_id: str = Field(pattern=r"^S[1-9][0-9]*$")
+    snippet: str = Field(min_length=1)
+
+    @field_validator("snippet")
+    @classmethod
+    def nonblank_snippet(cls, value):
+        if not value.strip():
+            raise ValueError("snippet must be nonblank")
+        return value
+
+
+class AnswerClaim(BaseModel):
+    model_config = STRICT_MODEL
+    text: str = Field(min_length=1, max_length=2000)
+    citations: list[AnswerCitation] = Field(min_length=1)
+
+    @field_validator("text")
+    @classmethod
+    def nonblank_claim(cls, value):
+        if not value.strip():
+            raise ValueError("claim must be nonblank")
+        return value
+
+
+class ModelAnswer(BaseModel):
+    """Mechanical citation validity does not establish semantic entailment."""
+
+    model_config = STRICT_MODEL
+    status: Literal["answered", "abstained", "conflict"]
+    claims: list[AnswerClaim]
+    reason: Literal["", "insufficient_evidence", "contradictory_evidence"]
+
+    @model_validator(mode="after")
+    def consistent_status(self):
+        if self.status == "abstained":
+            if self.claims or self.reason != "insufficient_evidence":
+                raise ValueError("abstention requires no claims and insufficient_evidence reason")
+        elif not self.claims:
+            raise ValueError("non-abstaining response requires cited claims")
+        elif self.reason != ("contradictory_evidence" if self.status == "conflict" else ""):
+            raise ValueError("reason must agree with response status")
+        if self.status == "conflict":
+            alternatives = {(c.source_id, c.snippet) for claim in self.claims
+                            for c in claim.citations}
+            if len(alternatives) < 2:
+                raise ValueError("conflict disclosure requires at least two cited alternatives")
+        return self
+
+
+class ResolvedAnswerCitation(AnswerCitation):
+    block_id: str = Field(min_length=1)
+
+
+class ResolvedAnswerClaim(BaseModel):
+    model_config = STRICT_MODEL
+    text: str
+    citations: list[ResolvedAnswerCitation]
+
+
 class Location(BaseModel):
     model_config = STRICT_MODEL
 

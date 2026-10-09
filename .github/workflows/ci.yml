@@ -1,0 +1,25 @@
+name: Verification
+on: [push, pull_request]
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install uv==0.12.23
+      - run: uv sync --frozen --extra dev --python 3.11
+      - run: uv run python -m ruff check src tests tools
+      - run: uv run python -m pytest -q --junitxml=docs/evidence/ci-pytest.xml
+      - run: uv run python tools/smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-${{ matrix.os }}
+          path: |
+            docs/evidence/ci-pytest.xml
+            docs/evidence/live-http.json

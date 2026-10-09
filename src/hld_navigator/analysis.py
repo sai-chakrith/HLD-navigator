@@ -129,9 +129,19 @@ def compare(before, after):
         ],
     }
 
-    result["impact_paths"] = impact_paths(
-        before, [*result["removed"], *[change["before"] for change in result["changed"]]]
-    )
+    result["impact_paths"] = []
+    for revision, inventory, triggers in (
+        (
+            "before",
+            before,
+            [*result["removed"], *[change["before"] for change in result["changed"]]],
+        ),
+        ("after", after, [*result["added"], *[change["after"] for change in result["changed"]]]),
+    ):
+        result["impact_paths"].extend(
+            {**path, "revision": revision} for path in impact_paths(inventory, triggers)
+        )
+    result["impact_scope"] = "Declared paths up to two hops in the before and after inventories"
     return result
 
 
@@ -168,16 +178,16 @@ def impact_paths(entities, triggers):
             seeds.add(trigger["attributes"].get("owner"))
         for seed in sorted(s for s in seeds if s):
             queue = [([seed], [])]
-            visited = {seed}
             while queue:
                 nodes, identifiers = queue.pop(0)
+                if len(identifiers) >= 2:
+                    continue
                 for edge in edges:
                     if edge["attributes"].get("source") != nodes[-1]:
                         continue
                     target = edge["attributes"].get("target")
-                    if not target or target in visited:
+                    if not target or target in nodes:
                         continue
-                    visited.add(target)
                     next_nodes = [*nodes, target]
                     next_ids = [*identifiers, edge["id"]]
                     paths.append(

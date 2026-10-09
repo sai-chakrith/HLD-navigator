@@ -17,3 +17,13 @@ tester_acceptance/evidence/
 
 # Supervisor-only rendering of the external case-study specification.
 docs/spec-page-5.png
+
+# Local authoring scratch files and redundant unpacked submission copies.
+.chart-data-*/
+.ppt-build/
+tmp/
+output/demo/frames/
+output/demo/decoded-frame.png
+output/submission/Amrita_Viswa_Vidyapeetham_*/
+output/presentation/HLD_Navigator_Presentation_v1.0.pptx
+output/presentation/HLD_Navigator_Presentation_v1.1.pptx

@@ -6,7 +6,15 @@ import math
 import os
 from pathlib import Path
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import ProxyHandler, Request, build_opener
+
+from .rag import LocalRedirectHandler, require_loopback
+
+
+def urlopen(request, timeout):
+    """Keep local embedding text off environment proxies and external redirects."""
+    require_loopback(request if isinstance(request, str) else request.full_url)
+    return build_opener(ProxyHandler({}), LocalRedirectHandler()).open(request, timeout=timeout)
 
 
 def validate_vectors(vectors, count):

@@ -103,6 +103,17 @@ class Store:
                 (hashlib.sha256(token.encode()).hexdigest(), workspace),
             ).fetchone()
 
+    def revoke(self, user: str):
+        """Invalidate access across all memberships without deleting history."""
+        with self.connection() as db:
+            updated = db.execute(
+                "UPDATE users SET token_hash=? WHERE id=?",
+                (hashlib.sha256(secrets.token_bytes(40)).hexdigest(), user),
+            )
+            if updated.rowcount != 1:
+                raise KeyError(user)
+            self.audit(db, "local-admin", "revoke_access", user, {"scope": "all_workspaces"})
+
     @staticmethod
     def audit(db, actor, action, target, details):
         db.execute(

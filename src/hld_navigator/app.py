@@ -9,6 +9,7 @@ from .analysis import compare, findings
 from .extraction import ALLOWED, REQUIRED, extract
 from .models import CoverageReview, ManualEntity, Question, Review, SourceReview
 from .rag import answer
+from .reports import architecture_report
 from .store import ProvenanceError, Store
 from .vectors import configured_embedder
 
@@ -158,6 +159,8 @@ def create_app(path=None):
             }
         try:
             result = answer(question.text, evidence)
+            if result.get("reason") == "model_unavailable_or_invalid_response":
+                raise HTTPException(503, detail=result)
             if embedder and result["mode"] == "lexical_source_excerpts":
                 result["mode"] = "embedding_source_excerpts"
             result["retrieval"] = "local_embedding_cosine" if embedder else "sqlite_fts5"
@@ -205,6 +208,7 @@ def create_app(path=None):
             "document": document,
             "entities": approved,
             "findings": findings(approved),
+            **architecture_report(approved),
             "limitations": (
                 "Template-derived approved inventory; unrecognized prose/diagrams may "
                 "contain missed requirements. Findings are review candidates, "

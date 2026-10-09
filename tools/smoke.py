@@ -1,5 +1,6 @@
 """Isolated live HTTP workflow; leaves no server or user credentials behind."""
 
+import argparse
 import json
 import os
 import socket
@@ -16,6 +17,18 @@ from hld_navigator.store import Store
 
 def main():
     root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--with-model",
+        action="store_true",
+        help="Explicitly retain configured local answer-model settings",
+    )
+    parser.add_argument("--question", default="TorqueInterface")
+    args = parser.parse_args()
+    if args.with_model and not (
+        os.getenv("HLD_NAVIGATOR_CHAT_MODEL") or os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
+    ):
+        parser.error("Configure a local answer model before --with-model")
     report = {}
     with tempfile.TemporaryDirectory() as temporary:
         database = str(Path(temporary) / "smoke.db")
@@ -26,8 +39,16 @@ def main():
         base = f"http://127.0.0.1:{port}"
         env = os.environ.copy()
         env["HLD_NAVIGATOR_DB"] = database
-        env.pop("HLD_NAVIGATOR_OLLAMA_MODEL", None)
-        env.pop("HLD_NAVIGATOR_EMBED_MODEL", None)
+        for name in (
+            "HLD_NAVIGATOR_OLLAMA_MODEL",
+            "HLD_NAVIGATOR_CHAT_MODEL",
+            "HLD_NAVIGATOR_EMBED_MODEL",
+            "HLD_NAVIGATOR_CHAT_BACKEND",
+            "HLD_NAVIGATOR_LOCAL_URL",
+            "HLD_NAVIGATOR_OLLAMA_URL",
+        ):
+            if not args.with_model:
+                env.pop(name, None)
         with (Path(temporary) / "server.log").open("w") as logs:
             server = subprocess.Popen(
                 [
@@ -97,8 +118,8 @@ def main():
                 response = requests.post(
                     url + "/query",
                     headers=headers,
-                    json={"text": "TorqueInterface", "document_id": document},
-                    timeout=3,
+                    json={"text": args.question, "document_id": document},
+                    timeout=200 if args.with_model else 3,
                 )
                 response.raise_for_status()
                 assert response.json()["evidence"]
@@ -119,6 +140,15 @@ def main():
                     ),
                     fixture="data/evaluation/torque-prose.md",
                 )
+                if args.with_model:
+                    report.update(
+                        validation="Synthetic live API/retrieval/model integration; "
+                        "not an independent semantic benchmark",
+                        question=args.question,
+                        response=response.json(),
+                        model=env.get("HLD_NAVIGATOR_CHAT_MODEL")
+                        or env.get("HLD_NAVIGATOR_OLLAMA_MODEL"),
+                    )
             finally:
                 if os.name == "nt":
                     # The Windows venv launcher may spawn a child Python interpreter.
@@ -136,7 +166,8 @@ def main():
                 except subprocess.TimeoutExpired:
                     server.kill()
                     server.wait(timeout=5)
-    (root / "docs/evidence/live-http.json").write_text(json.dumps(report, indent=2))
+    name = "live-model-http.json" if args.with_model else "live-http.json"
+    (root / "docs/evidence" / name).write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))
 
 

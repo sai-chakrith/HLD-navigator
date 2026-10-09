@@ -11,13 +11,12 @@ import socket
 import subprocess
 import time
 from pathlib import Path
-from urllib.request import urlopen
 
 from hld_navigator.extraction import extract
 from hld_navigator.models import SourceReview
 from hld_navigator.rag import generate, supported
 from hld_navigator.store import Store
-from hld_navigator.vectors import LlamaCppEmbedding
+from hld_navigator.vectors import LlamaCppEmbedding, urlopen
 
 HASHES = {
     "runtime.zip": "ed69a9e87713b84c63940b2f0e708c8e698e82b3d74dfa1364e94d97e334720c",

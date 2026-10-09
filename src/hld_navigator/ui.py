@@ -23,7 +23,7 @@ def call(method, path, **kwargs):
             method,
             f"{base}/workspaces/{workspace}{path}",
             headers={"Authorization": f"Bearer {token}"},
-            timeout=60,
+            timeout=200 if path == "/query" else 60,
             **kwargs,
         )
 
@@ -82,7 +82,10 @@ with review:
 
     document = next(d for d in documents if d["id"] == selected)
 
-    st.json(document)
+    st.write(f"Source: {document['name']} · Approved: {bool(document['approved'])}")
+    st.caption(f"SHA-256: {document['sha256']}")
+    with st.expander(f"Source metadata and warnings ({len(document['warnings'])})"):
+        st.json(document)
 
     reason = st.text_input("Source review reason", "Reviewed source and extraction warnings")
 
@@ -220,11 +223,23 @@ with search:
         )
 
         st.caption(result["mode"])
+        if result.get("quarantined_source_ids"):
+            st.warning(
+                "Assistant-directed lines were excluded from generation in "
+                + ", ".join(result["quarantined_source_ids"])
+                + ". Original evidence remains available below."
+            )
+        if result.get("claims"):
+            st.caption(
+                "Citations checked against retrieved text. Confirm meaning and qualifiers "
+                "against the evidence before using this answer."
+            )
 
         st.text(result["answer"])
 
         for index, evidence in enumerate(result["evidence"], 1):
-            with st.expander(f"[{index}] {evidence['title']} · {evidence['version']}"):
+            citation = f"S{index}" if result.get("claims") else str(index)
+            with st.expander(f"[{citation}] {evidence['title']} · {evidence['version']}"):
                 st.caption(evidence.get("review_state", "source_statement"))
 
                 st.code(evidence["text"])
@@ -237,7 +252,22 @@ with report:
     if st.button("Build reviewed report"):
         result = call("GET", "/export", params={"document_id": selected})
 
-        st.json(result)
+        st.caption(result["coverage_claim"])
+        if result.get("graph_dot"):
+            st.graphviz_chart(result["graph_dot"])
+            st.caption(result["basis"])
+        st.subheader("Component reports")
+        for component in result.get("component_reports", []):
+            with st.expander(component["name"]):
+                st.write(component["attributes"].get("description", ""))
+                st.json(component)
+        st.subheader("Candidate inconsistencies")
+        if result["findings"]:
+            st.json(result["findings"])
+        else:
+            st.info("No inconsistencies found by the implemented checks.")
+        with st.expander("Complete export and source evidence"):
+            st.json(result)
 
         st.download_button(
             "Download JSON", json.dumps(result, indent=2), "architecture.json", "application/json"
@@ -248,4 +278,23 @@ with report:
     after = st.selectbox("After", list(labels), format_func=labels.get)
 
     if st.button("Compare approved inventories"):
-        st.json(call("GET", "/compare", params={"before": before, "after": after}))
+        result = call("GET", "/compare", params={"before": before, "after": after})
+        st.subheader("Revision changes")
+        st.write(
+            f"Added: {len(result['added'])} · Removed: {len(result['removed'])} · "
+            f"Changed: {len(result['changed'])}"
+        )
+        changes = [
+            {
+                "Kind": change["after"]["kind"],
+                "Name": change["after"]["name"],
+                "Before": json.dumps(change["before"]["attributes"], sort_keys=True),
+                "After": json.dumps(change["after"]["attributes"], sort_keys=True),
+            }
+            for change in result["changed"]
+        ]
+        if changes:
+            st.dataframe(changes, hide_index=True)
+        st.caption(result["impact_scope"])
+        with st.expander("Changes and cited impact paths"):
+            st.json(result)
