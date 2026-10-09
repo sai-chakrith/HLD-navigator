@@ -1,0 +1,1 @@
+The Saffron component provides the Demand interface to the Hazel component when enabled.

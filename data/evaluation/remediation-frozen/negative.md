@@ -1,0 +1,1 @@
+The Willow component does not provide the Status interface to the Rowan component.

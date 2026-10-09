@@ -1,0 +1,1217 @@
+{
+  "manifest_sha256": "7b16b970b8c2577258bb8f7a794767b00f900469798951003d17a46661f025da",
+  "runtime": {
+    "python": "3.14.8",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "model_artifacts": {
+    "embedding_identity": null,
+    "answer_model_tag": null,
+    "answer_model_digest": null,
+    "answer_artifact_verification": "PENDING_OPERATOR_RECORD"
+  },
+  "corpus_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT",
+  "reviewers": [],
+  "measured_correction_minutes": null,
+  "model_evaluation": "NOT_RUN",
+  "human_semantic_groundedness": null,
+  "answer_model_evaluation": "NOT_RUN",
+  "retrieval": [],
+  "cases": [
+    {
+      "file": "prose-1.md",
+      "warnings": [],
+      "locations": [
+        {
+          "kind": "component",
+          "name": "Lumen",
+          "attributes": {},
+          "evidence": "The Lumen component provides the LoadBus interface to the Slate component.",
+          "location": {
+            "page": null,
+            "section": "Revision 1",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "component",
+          "name": "Slate",
+          "attributes": {},
+          "evidence": "The Lumen component provides the LoadBus interface to the Slate component.",
+          "location": {
+            "page": null,
+            "section": "Revision 1",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "LoadBus",
+          "attributes": {
+            "payload": "Load"
+          },
+          "evidence": "The Lumen component provides the LoadBus interface to the Slate component.",
+          "location": {
+            "page": null,
+            "section": "Revision 1",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The LoadBus interface carries the Load signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The LoadBus interface carries the Load signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "dependency",
+          "name": "Lumen->Slate:LoadBus",
+          "attributes": {
+            "source": "Lumen",
+            "target": "Slate",
+            "interface": "LoadBus"
+          },
+          "evidence": "The Lumen component provides the LoadBus interface to the Slate component.",
+          "location": {
+            "page": null,
+            "section": "Revision 1",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Lumen component provides the LoadBus interface to the Slate component.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "signal",
+          "name": "Load",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          },
+          "evidence": "The LoadBus interface carries the Load signal.",
+          "location": {
+            "page": null,
+            "section": "Revision 1",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The LoadBus interface carries the Load signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The LoadBus interface carries the Load signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Load signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Load signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 1",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "matched": [],
+        "missed": [],
+        "unexpected": []
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    },
+    {
+      "file": "prose-2.md",
+      "warnings": [],
+      "locations": [
+        {
+          "kind": "component",
+          "name": "Orchid",
+          "attributes": {},
+          "evidence": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+          "location": {
+            "page": null,
+            "section": "Revision 2",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "component",
+          "name": "Cedar",
+          "attributes": {},
+          "evidence": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+          "location": {
+            "page": null,
+            "section": "Revision 2",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "CurrentBus",
+          "attributes": {
+            "payload": "Current"
+          },
+          "evidence": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+          "location": {
+            "page": null,
+            "section": "Revision 2",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The CurrentBus interface carries the Current signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The CurrentBus interface carries the Current signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "dependency",
+          "name": "Orchid->Cedar:CurrentBus",
+          "attributes": {
+            "source": "Orchid",
+            "target": "Cedar",
+            "interface": "CurrentBus"
+          },
+          "evidence": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+          "location": {
+            "page": null,
+            "section": "Revision 2",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Orchid component provides the CurrentBus interface to the Cedar component.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "signal",
+          "name": "Current",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          },
+          "evidence": "The CurrentBus interface carries the Current signal.",
+          "location": {
+            "page": null,
+            "section": "Revision 2",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The CurrentBus interface carries the Current signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The CurrentBus interface carries the Current signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Current signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Current signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 2",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "matched": [],
+        "missed": [],
+        "unexpected": []
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    },
+    {
+      "file": "prose-3.md",
+      "warnings": [],
+      "locations": [
+        {
+          "kind": "component",
+          "name": "Quartz",
+          "attributes": {},
+          "evidence": "The Quartz component provides the AngleBus interface to the Birch component.",
+          "location": {
+            "page": null,
+            "section": "Revision 3",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "component",
+          "name": "Birch",
+          "attributes": {},
+          "evidence": "The Quartz component provides the AngleBus interface to the Birch component.",
+          "location": {
+            "page": null,
+            "section": "Revision 3",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "AngleBus",
+          "attributes": {
+            "payload": "Angle"
+          },
+          "evidence": "The Quartz component provides the AngleBus interface to the Birch component.",
+          "location": {
+            "page": null,
+            "section": "Revision 3",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The AngleBus interface carries the Angle signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The AngleBus interface carries the Angle signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "dependency",
+          "name": "Quartz->Birch:AngleBus",
+          "attributes": {
+            "source": "Quartz",
+            "target": "Birch",
+            "interface": "AngleBus"
+          },
+          "evidence": "The Quartz component provides the AngleBus interface to the Birch component.",
+          "location": {
+            "page": null,
+            "section": "Revision 3",
+            "line": 2,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The Quartz component provides the AngleBus interface to the Birch component.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 2,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "signal",
+          "name": "Angle",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          },
+          "evidence": "The AngleBus interface carries the Angle signal.",
+          "location": {
+            "page": null,
+            "section": "Revision 3",
+            "line": 3,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "The AngleBus interface carries the Angle signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The AngleBus interface carries the Angle signal.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 3,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Angle signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            },
+            {
+              "text": "The Angle signal has type uint16 and unit Nm.",
+              "location": {
+                "page": null,
+                "section": "Revision 3",
+                "line": 4,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "matched": [],
+        "missed": [],
+        "unexpected": []
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    },
+    {
+      "file": "ports.md",
+      "warnings": [],
+      "locations": [
+        {
+          "kind": "port",
+          "name": "EchoOut",
+          "attributes": {
+            "owner": "Marigold",
+            "interface": "EchoBus",
+            "direction": "provides"
+          },
+          "evidence": "| EchoOut | Marigold | EchoBus | P-Port |",
+          "location": {
+            "page": null,
+            "section": "Ports",
+            "line": 4,
+            "table": 1,
+            "row": 3,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "| EchoOut | Marigold | EchoBus | P-Port |",
+              "location": {
+                "page": null,
+                "section": "Ports",
+                "line": 4,
+                "table": 1,
+                "row": 3,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "port",
+          "name": "EchoIn",
+          "attributes": {
+            "owner": "Juniper",
+            "interface": "EchoBus",
+            "direction": "requires"
+          },
+          "evidence": "| EchoIn | Juniper | EchoBus | R-Port |",
+          "location": {
+            "page": null,
+            "section": "Ports",
+            "line": 5,
+            "table": 1,
+            "row": 4,
+            "origin": "text",
+            "confidence": null
+          },
+          "sources": [
+            {
+              "text": "| EchoIn | Juniper | EchoBus | R-Port |",
+              "location": {
+                "page": null,
+                "section": "Ports",
+                "line": 5,
+                "table": 1,
+                "row": 4,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          ]
+        }
+      ],
+      "warning_accuracy": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": null,
+        "recall": null,
+        "matched": [],
+        "missed": [],
+        "unexpected": []
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    },
+    {
+      "file": "conditional.md",
+      "warnings": [
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The Saffron component provides the Demand interface to the Hazel component when enabled.",
+          "location": {
+            "page": null,
+            "section": null,
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "no_entities",
+          "severity": "blocking",
+          "message": "No template entities or supported prose patterns recognized"
+        }
+      ],
+      "locations": [],
+      "warning_accuracy": {
+        "tp": 1,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "matched": [
+          {
+            "expected": {
+              "codes": [
+                "ambiguous_prose"
+              ],
+              "location": {
+                "line": 1
+              },
+              "requirement": "The Saffron component provides the Demand interface to the Hazel component when enabled."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "The Saffron component provides the Demand interface to the Hazel component when enabled.",
+              "location": {
+                "page": null,
+                "section": null,
+                "line": 1,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          }
+        ],
+        "missed": [],
+        "unexpected": [
+          {
+            "code": "no_entities",
+            "severity": "blocking",
+            "message": "No template entities or supported prose patterns recognized"
+          }
+        ]
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    },
+    {
+      "file": "negative.md",
+      "warnings": [
+        {
+          "code": "ambiguous_prose",
+          "severity": "blocking",
+          "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+          "text": "The Willow component does not provide the Status interface to the Rowan component.",
+          "location": {
+            "page": null,
+            "section": null,
+            "line": 1,
+            "table": null,
+            "row": null,
+            "origin": "text",
+            "confidence": null
+          }
+        },
+        {
+          "code": "no_entities",
+          "severity": "blocking",
+          "message": "No template entities or supported prose patterns recognized"
+        }
+      ],
+      "locations": [],
+      "warning_accuracy": {
+        "tp": 1,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "matched": [
+          {
+            "expected": {
+              "codes": [
+                "ambiguous_prose"
+              ],
+              "location": {
+                "line": 1
+              },
+              "requirement": "The Willow component does not provide the Status interface to the Rowan component."
+            },
+            "actual": {
+              "code": "ambiguous_prose",
+              "severity": "blocking",
+              "message": "Negated, uncertain or qualified architecture statement needs interpretation",
+              "text": "The Willow component does not provide the Status interface to the Rowan component.",
+              "location": {
+                "page": null,
+                "section": null,
+                "line": 1,
+                "table": null,
+                "row": null,
+                "origin": "text",
+                "confidence": null
+              }
+            }
+          }
+        ],
+        "missed": [],
+        "unexpected": [
+          {
+            "code": "no_entities",
+            "severity": "blocking",
+            "message": "No template entities or supported prose patterns recognized"
+          }
+        ]
+      },
+      "warning_annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT"
+    }
+  ],
+  "fields": {
+    "signal.type": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.target": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.interface": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.source": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.unit": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "dependency.entity": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "signal.entity": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "component.entity": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.entity": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "interface.payload": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.entity": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.interface": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.direction": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    },
+    "port.owner": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "missed": [],
+      "incorrect": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "correction_actions": 0,
+      "measured_correction_minutes": null
+    }
+  },
+  "warning_metrics": {
+    "annotated_documents": 6,
+    "tp": 2,
+    "fp": 2,
+    "fn": 0,
+    "precision": 0.5,
+    "recall": 1.0,
+    "annotation_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT",
+    "annotation_scope": "positive entity/field facts plus two qualified warning cases; no tuning on this set",
+    "human_warning_semantics_review": "PENDING"
+  },
+  "lexical_metrics": null,
+  "embedding_metrics": null,
+  "model_dependency": "Available local Ollama endpoint, embedding model and verified artifact digest; answer model required for model-answer quality measurement",
+  "limitation": "Only independently reviewed, frozen holdouts support acceptance conclusions. Quote support does not establish relevance or semantic entailment. Correction actions are not measured effort."
+}

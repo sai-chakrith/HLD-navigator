@@ -1,0 +1,6 @@
+{
+  "manifest_sha256": "7b16b970b8c2577258bb8f7a794767b00f900469798951003d17a46661f025da",
+  "source_commit": "01820a9eeb951909d23ab745efe71bd1e0f90f62",
+  "timing": "before remediation parser changes",
+  "labels": "agent authored; human review unavailable"
+}

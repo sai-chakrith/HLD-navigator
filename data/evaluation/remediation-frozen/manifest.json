@@ -1,0 +1,187 @@
+{
+  "review_status": "FROZEN_AGENT_AUTHORED_SYNTHETIC_NOT_INDEPENDENT",
+  "reviewers": [],
+  "scope": "positive entity/field facts plus two qualified warning cases; no tuning on this set",
+  "documents": [
+    {
+      "file": "prose-1.md",
+      "sha256": "eaa6c9b782a787063934b275e1c2de4f87d0cf936dff637bbc7d2ddc62470df3",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "Lumen",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "Slate",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "LoadBus",
+          "attributes": {
+            "payload": "Load"
+          }
+        },
+        {
+          "kind": "signal",
+          "name": "Load",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          }
+        },
+        {
+          "kind": "dependency",
+          "name": "Lumen->Slate:LoadBus",
+          "attributes": {
+            "source": "Lumen",
+            "target": "Slate",
+            "interface": "LoadBus"
+          }
+        }
+      ],
+      "expected_warnings": []
+    },
+    {
+      "file": "prose-2.md",
+      "sha256": "edebf1bdf8147d19131735a6dd9fdbb45f2983631d934316af0adcf79bdb8b40",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "Orchid",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "Cedar",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "CurrentBus",
+          "attributes": {
+            "payload": "Current"
+          }
+        },
+        {
+          "kind": "signal",
+          "name": "Current",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          }
+        },
+        {
+          "kind": "dependency",
+          "name": "Orchid->Cedar:CurrentBus",
+          "attributes": {
+            "source": "Orchid",
+            "target": "Cedar",
+            "interface": "CurrentBus"
+          }
+        }
+      ],
+      "expected_warnings": []
+    },
+    {
+      "file": "prose-3.md",
+      "sha256": "1cbb1d03581d85e1b3c5b7987f0874e71974c506ba91f8303bd3c5bf94fcd51b",
+      "entities": [
+        {
+          "kind": "component",
+          "name": "Quartz",
+          "attributes": {}
+        },
+        {
+          "kind": "component",
+          "name": "Birch",
+          "attributes": {}
+        },
+        {
+          "kind": "interface",
+          "name": "AngleBus",
+          "attributes": {
+            "payload": "Angle"
+          }
+        },
+        {
+          "kind": "signal",
+          "name": "Angle",
+          "attributes": {
+            "type": "uint16",
+            "unit": "Nm"
+          }
+        },
+        {
+          "kind": "dependency",
+          "name": "Quartz->Birch:AngleBus",
+          "attributes": {
+            "source": "Quartz",
+            "target": "Birch",
+            "interface": "AngleBus"
+          }
+        }
+      ],
+      "expected_warnings": []
+    },
+    {
+      "file": "ports.md",
+      "sha256": "b3985ea953ff3141608ee6e5cf0e05232c37e06ac6e16687a5289c7c82b38355",
+      "entities": [
+        {
+          "kind": "port",
+          "name": "EchoOut",
+          "attributes": {
+            "owner": "Marigold",
+            "interface": "EchoBus",
+            "direction": "provides"
+          }
+        },
+        {
+          "kind": "port",
+          "name": "EchoIn",
+          "attributes": {
+            "owner": "Juniper",
+            "interface": "EchoBus",
+            "direction": "requires"
+          }
+        }
+      ],
+      "expected_warnings": []
+    },
+    {
+      "file": "conditional.md",
+      "sha256": "4fc776b75e44b5811eb56ca1602af7abc1ca6c403c82124974e53b5370622520",
+      "entities": [],
+      "expected_warnings": [
+        {
+          "codes": [
+            "ambiguous_prose"
+          ],
+          "location": {
+            "line": 1
+          },
+          "requirement": "The Saffron component provides the Demand interface to the Hazel component when enabled."
+        }
+      ]
+    },
+    {
+      "file": "negative.md",
+      "sha256": "01c798dc9b9e83f068b76b59f0032d740787030f0c28d52ed70ad903d86cd300",
+      "entities": [],
+      "expected_warnings": [
+        {
+          "codes": [
+            "ambiguous_prose"
+          ],
+          "location": {
+            "line": 1
+          },
+          "requirement": "The Willow component does not provide the Status interface to the Rowan component."
+        }
+      ]
+    }
+  ]
+}
