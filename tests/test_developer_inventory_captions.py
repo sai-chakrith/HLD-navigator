@@ -56,9 +56,12 @@ def test_text_inventory_captions_preserve_real_warnings(suffix):
     table_sources = [s for s in entity.sources if s["location"]["table"]]
     assert len(table_sources) == 1
     assert table_sources[0]["text"] == "| Servo | Sets target |"
-    assert table_sources[0]["location"] == Location(
-        section="Control component and interface inventory", line=4, table=1, row=3
-    ).model_dump()
+    assert (
+        table_sources[0]["location"]
+        == Location(
+            section="Control component and interface inventory", line=4, table=1, row=3
+        ).model_dump()
+    )
     warnings = [w for w in issues if w["code"] == "unsupported_relationship"]
     assert len(warnings) == 1
     assert warnings[0]["text"] == predicate
@@ -166,8 +169,15 @@ def test_multi_page_inventory_pdf_has_exact_rows_and_reviewable_evidence(tmp_pat
             assert source["text"] == page.crop(table.rows[location["row"] - 1].bbox).extract_text()
     store = Store(str(tmp_path / "developer-inventory.db"))
     document = store.ingest(
-        "developer", "Inventory", "1", "developer-inventory.pdf", content,
-        blocks, entities, issues, "dev",
+        "developer",
+        "Inventory",
+        "1",
+        "developer-inventory.pdf",
+        content,
+        blocks,
+        entities,
+        issues,
+        "dev",
     )
     store.review(
         "developer", document, SourceReview(approved=True, reason="Own source"), "dev", True
@@ -179,7 +189,7 @@ def test_multi_page_inventory_pdf_has_exact_rows_and_reviewable_evidence(tmp_pat
     evidence = store.search("developer", "Servo", document)
     table_sources = [b for b in evidence if b["location"]["table"]]
     assert {b["location"]["page"] for b in table_sources} == {1, 2}
-    assert all(b["text"] == servo.evidence for b in table_sources)
+    assert all(b["source_context"]["text"] == servo.evidence for b in table_sources)
     assert all(b["review_state"] == "approved_facts" for b in table_sources)
 
 
@@ -210,10 +220,13 @@ def test_inventory_pdf_does_not_suppress_relationship_warnings(caption, relation
         assert not any(e.kind == "dependency" for e in entities)
 
 
-@pytest.mark.parametrize("caption", [
-    "Mechanical component inventory for release 8.12.4",
-    "Mechanical component inventory (version v5.9)",
-])
+@pytest.mark.parametrize(
+    "caption",
+    [
+        "Mechanical component inventory for release 8.12.4",
+        "Mechanical component inventory (version v5.9)",
+    ],
+)
 @pytest.mark.parametrize("suffix", [".md", ".txt", ".pdf"])
 def test_versioned_inventory_has_raw_table_sources_and_can_be_reviewed_exported(
     tmp_path, caption, suffix
@@ -222,8 +235,7 @@ def test_versioned_inventory_has_raw_table_sources_and_can_be_reviewed_exported(
         content = inventory_pdf(caption=caption)
     else:
         content = (
-            caption + "\n| SWC Name | Responsibility |\n| --- | --- |\n"
-            "| Servo | Sets target |\n"
+            caption + "\n| SWC Name | Responsibility |\n| --- | --- |\n| Servo | Sets target |\n"
         ).encode()
     name = "developer-versioned" + suffix
     blocks, entities, issues = extract(name, content)
@@ -231,9 +243,11 @@ def test_versioned_inventory_has_raw_table_sources_and_can_be_reviewed_exported(
     servo = next(e for e in entities if e.name == "Servo")
     table_sources = [s for s in servo.sources if s["location"]["table"]]
     assert len(table_sources) == (2 if suffix == ".pdf" else 1)
-    assert all(s["text"] == (
-        "Sets target\nServo at startup" if suffix == ".pdf" else "| Servo | Sets target |"
-    ) for s in table_sources)
+    assert all(
+        s["text"]
+        == ("Sets target\nServo at startup" if suffix == ".pdf" else "| Servo | Sets target |")
+        for s in table_sources
+    )
     app = create_app(str(tmp_path / "own-versioned.db"))
     store = app.state.store
     token = store.provision("dev", "own", "reviewer")
@@ -245,7 +259,8 @@ def test_versioned_inventory_has_raw_table_sources_and_can_be_reviewed_exported(
         store.review("own", entity["id"], Review(status="approved", reason="Own proposal"), "dev")
     with TestClient(app) as client:
         response = client.get(
-            "/workspaces/own/export", params={"document_id": document},
+            "/workspaces/own/export",
+            params={"document_id": document},
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 200, response.text
@@ -255,21 +270,41 @@ def test_versioned_inventory_has_raw_table_sources_and_can_be_reviewed_exported(
         assert len(exported["sources"]) == len(servo.sources)
 
 
-@pytest.mark.parametrize("caption", [
-    "component inventory for release 7.14",
-    "component and interface inventory (revision r9)",
-])
-@pytest.mark.parametrize("statement,code,action", [
-    ("Coordinator component adjudicates SafetyData with Auditor.",
-     "unsupported_relationship", "adjudicates"),
-    ("Coordinator routes SafetyData to Auditor.", "unsupported_relationship", "routes"),
-    ("Coordinator component provides Status interface to Auditor and arbitrates SafetyData.",
-     "unsupported_relationship", "arbitrates"),
-    ("Coordinator component may provide Status interface to Auditor.", "ambiguous_prose", None),
-    ("If Coordinator component provides Status interface to Auditor, Auditor sends SafetyData.",
-     "ambiguous_prose", None),
-    ("Coordinator component never provides Status interface to Auditor.", "ambiguous_prose", None),
-])
+@pytest.mark.parametrize(
+    "caption",
+    [
+        "component inventory for release 7.14",
+        "component and interface inventory (revision r9)",
+    ],
+)
+@pytest.mark.parametrize(
+    "statement,code,action",
+    [
+        (
+            "Coordinator component adjudicates SafetyData with Auditor.",
+            "unsupported_relationship",
+            "adjudicates",
+        ),
+        ("Coordinator routes SafetyData to Auditor.", "unsupported_relationship", "routes"),
+        (
+            "Coordinator component provides Status interface to Auditor and arbitrates SafetyData.",
+            "unsupported_relationship",
+            "arbitrates",
+        ),
+        ("Coordinator component may provide Status interface to Auditor.", "ambiguous_prose", None),
+        (
+            "If Coordinator component provides Status interface to Auditor, "
+            "Auditor sends SafetyData.",
+            "ambiguous_prose",
+            None,
+        ),
+        (
+            "Coordinator component never provides Status interface to Auditor.",
+            "ambiguous_prose",
+            None,
+        ),
+    ],
+)
 def test_release_metadata_does_not_hide_nearby_relationships(caption, statement, code, action):
     location = Location(page=4)
     text = caption + ": " + statement
@@ -285,12 +320,16 @@ def test_release_metadata_does_not_hide_nearby_relationships(caption, statement,
         assert not entities
 
 
-@pytest.mark.parametrize("text", [
-    "component inventory for release 6.2 adjudicates SafetyData with Auditor.",
-    "component inventory (release 6.2 adjudicates SafetyData with Auditor).",
-    "component inventory for release pending adjudicates SafetyData with Auditor.",
-])
+@pytest.mark.parametrize(
+    "text",
+    [
+        "component inventory for release 6.2 adjudicates SafetyData with Auditor.",
+        "component inventory (release 6.2 adjudicates SafetyData with Auditor).",
+        "component inventory for release pending adjudicates SafetyData with Auditor.",
+    ],
+)
 def test_non_metadata_lowercase_continuations_are_still_flagged(text):
     _, issues = parse_prose(text, Location(page=4))
-    assert any(w["code"] == "unsupported_relationship" and w["severity"] == "blocking"
-               for w in issues)
+    assert any(
+        w["code"] == "unsupported_relationship" and w["severity"] == "blocking" for w in issues
+    )

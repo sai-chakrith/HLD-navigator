@@ -50,6 +50,7 @@ def test_demo_ui_renders_reviewed_dependency_map_and_component_reports(tmp_path,
 
     def request(method, url, **kwargs):
         kwargs.pop("timeout", None)
+        assert kwargs.pop("allow_redirects") is False
         return client.request(method, urlparse(url).path, **kwargs)
 
     monkeypatch.setattr("requests.request", request)

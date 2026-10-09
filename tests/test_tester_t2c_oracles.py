@@ -14,8 +14,11 @@ from test_tester_t7a_captions import QUALIFIED, UNSUPPORTED, pdf_source
 from hld_navigator.extraction import extract
 from tester_acceptance.t2c_oracles import verify_contributors, verify_warnings
 
-EVIDENCE = (Path(__file__).resolve().parents[1] / "tester_acceptance/evidence"
-            / datetime.now(UTC).strftime("t2c-synthetic-%Y%m%dT%H%M%S%f"))
+EVIDENCE = (
+    Path(__file__).resolve().parents[1]
+    / "tester_acceptance/evidence"
+    / datetime.now(UTC).strftime("t2c-synthetic-%Y%m%dT%H%M%S%f")
+)
 
 
 def preserve(name, value):
@@ -42,26 +45,44 @@ def original(request):
             originals[page] = pdf.pages[page - 1].extract_text()
             rows[page] = pdf.pages[page - 1].crop((60, 112, 560, 162)).extract_text()
             assert rows[page] == "Aster Monitors pressure\nwithin limits"
-    result = {"category": category, "statement": statement, "originals": originals,
-              "row_spans": rows, "sources": entities[0].sources, "warnings": warnings,
-              "code": "unsupported_relationship" if category == "unknown" else "ambiguous_prose"}
-    preserve(category + ".original-audit.json", {
-        "notice": "not independently validated", **result,
-        "blocks": [b.model_dump() for b in blocks],
-        "entities": [e.model_dump() for e in entities]})
+    result = {
+        "category": category,
+        "statement": statement,
+        "originals": originals,
+        "row_spans": rows,
+        "sources": entities[0].sources,
+        "warnings": warnings,
+        "code": "unsupported_relationship" if category == "unknown" else "ambiguous_prose",
+    }
+    preserve(
+        category + ".original-audit.json",
+        {
+            "notice": "not independently validated",
+            **result,
+            "blocks": [b.model_dump() for b in blocks],
+            "entities": [e.model_dump() for e in entities],
+        },
+    )
     return result
 
 
 def check_sources(original, sources):
     return verify_contributors(
-        sources, require_context=original["category"] == "unknown",
-        originals=original["originals"], row_spans=original["row_spans"],
-        statement=original["statement"])
+        sources,
+        require_context=original["category"] == "unknown",
+        originals=original["originals"],
+        row_spans=original["row_spans"],
+        statement=original["statement"],
+    )
 
 
 def check_warnings(original, warnings):
-    return verify_warnings(warnings, statement=original["statement"],
-                           code=original["code"], originals=original["originals"])
+    return verify_warnings(
+        warnings,
+        statement=original["statement"],
+        code=original["code"],
+        originals=original["originals"],
+    )
 
 
 def test_complete_positive_control_and_literal_gap(original):
@@ -78,16 +99,23 @@ def test_complete_positive_control_and_literal_gap(original):
                 assert source["text"] not in original["originals"][source["location"]["page"]]
         with pytest.raises(AssertionError):
             check_sources(original, joined_sources)
-    preserve(original["category"] + ".positive-control.json", {
-        "notice": "not independently validated",
-        "contributors": [c.model_dump() for c in characterized],
-        "warnings": checked, "literal_mechanical_gate_met": literal_gate,
-        "frozen_acceptance_established": False,
-        "gap_task": "T3b" if not literal_gate else None})
+    preserve(
+        original["category"] + ".positive-control.json",
+        {
+            "notice": "not independently validated",
+            "contributors": [c.model_dump() for c in characterized],
+            "warnings": checked,
+            "literal_mechanical_gate_met": literal_gate,
+            "frozen_acceptance_established": False,
+            "gap_task": "T3b" if not literal_gate else None,
+        },
+    )
 
 
-@pytest.mark.parametrize("mutation", ["wrong-table-page", "altered-table-quote",
-                                     "duplicate-table", "unrelated-contributor"])
+@pytest.mark.parametrize(
+    "mutation",
+    ["wrong-table-page", "altered-table-quote", "duplicate-table", "unrelated-contributor"],
+)
 def test_rejects_bad_table_or_extra_sources(original, mutation):
     sources = deepcopy(original["sources"])
     table = next(s for s in sources if s["location"]["table"] == 1)
@@ -98,13 +126,24 @@ def test_rejects_bad_table_or_extra_sources(original, mutation):
     elif mutation == "duplicate-table":
         sources.append(deepcopy(table))
     else:
-        sources.append({"text": "Unrelated statement", "location": {
-            **table["location"], "table": None, "row": None}})
+        sources.append(
+            {
+                "text": "Unrelated statement",
+                "location": {**table["location"], "table": None, "row": None},
+            }
+        )
     with pytest.raises((AssertionError, ValidationError)) as rejected:
         check_sources(original, sources)
-    preserve(original["category"] + ".source-negative-" + mutation + ".json", {
-        "notice": "not independently validated", "mutation": mutation, "sources": sources,
-        "rejected": True, "reason": str(rejected.value)})
+    preserve(
+        original["category"] + ".source-negative-" + mutation + ".json",
+        {
+            "notice": "not independently validated",
+            "mutation": mutation,
+            "sources": sources,
+            "rejected": True,
+            "reason": str(rejected.value),
+        },
+    )
 
 
 @pytest.mark.parametrize("mutation", ["missing-prose", "wrong-prose-page", "altered-prose"])
@@ -120,18 +159,37 @@ def test_rejects_prose_mutations(original, mutation):
             prose["text"] = prose["text"].replace("arbitrates", "provides")
     else:
         # Qualified prose must contribute no unconditional entity source.
-        sources.append({"text": original["statement"], "location": {
-            **sources[0]["location"], "table": None, "row": None}})
+        sources.append(
+            {
+                "text": original["statement"],
+                "location": {**sources[0]["location"], "table": None, "row": None},
+            }
+        )
     with pytest.raises((AssertionError, ValidationError)) as rejected:
         check_sources(original, sources)
-    preserve(original["category"] + ".source-negative-" + mutation + ".json", {
-        "notice": "not independently validated", "sources": sources,
-        "rejected": True, "reason": str(rejected.value)})
+    preserve(
+        original["category"] + ".source-negative-" + mutation + ".json",
+        {
+            "notice": "not independently validated",
+            "sources": sources,
+            "rejected": True,
+            "reason": str(rejected.value),
+        },
+    )
 
 
-@pytest.mark.parametrize("mutation", ["wrong-page", "wrong-page-context", "missing-statement",
-                                     "altered-statement", "wrong-category", "nonblocking",
-                                     "missing-warning"])
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "wrong-page",
+        "wrong-page-context",
+        "missing-statement",
+        "altered-statement",
+        "wrong-category",
+        "nonblocking",
+        "missing-warning",
+    ],
+)
 def test_rejects_warning_mutations(original, mutation):
     warnings = deepcopy(original["warnings"])
     warning = warnings[0]
@@ -144,17 +202,24 @@ def test_rejects_warning_mutations(original, mutation):
     elif mutation == "altered-statement":
         warning["text"] = warning["text"].replace("may", "will").replace("arbitrates", "controls")
     elif mutation == "wrong-category":
-        warning["code"] = ("ambiguous_prose" if original["category"] == "unknown"
-                           else "unsupported_relationship")
+        warning["code"] = (
+            "ambiguous_prose" if original["category"] == "unknown" else "unsupported_relationship"
+        )
     elif mutation == "nonblocking":
         warning["severity"] = "informational"
     else:
         warnings.pop()
     with pytest.raises((AssertionError, ValidationError)) as rejected:
         check_warnings(original, warnings)
-    preserve(original["category"] + ".warning-negative-" + mutation + ".json", {
-        "notice": "not independently validated", "warnings": warnings,
-        "rejected": True, "reason": str(rejected.value)})
+    preserve(
+        original["category"] + ".warning-negative-" + mutation + ".json",
+        {
+            "notice": "not independently validated",
+            "warnings": warnings,
+            "rejected": True,
+            "reason": str(rejected.value),
+        },
+    )
 
 
 def test_missing_qualifier_rejected(original):
@@ -165,6 +230,12 @@ def test_missing_qualifier_rejected(original):
         warnings[0]["text"] = warnings[0]["text"].replace("arbitrates ", "")
     with pytest.raises((AssertionError, ValidationError)) as rejected:
         check_warnings(original, warnings)
-    preserve(original["category"] + ".missing-qualifier-or-action.json", {
-        "notice": "not independently validated", "warnings": warnings,
-        "rejected": True, "reason": str(rejected.value)})
+    preserve(
+        original["category"] + ".missing-qualifier-or-action.json",
+        {
+            "notice": "not independently validated",
+            "warnings": warnings,
+            "rejected": True,
+            "reason": str(rejected.value),
+        },
+    )

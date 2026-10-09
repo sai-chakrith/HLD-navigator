@@ -53,7 +53,9 @@ def pdf_fixture():
     SimpleDocTemplate(stream).build(
         [
             Paragraph("Table provenance fixture", getSampleStyleSheet()["Normal"]),
-            PageBreak(), components, ports,
+            PageBreak(),
+            components,
+            ports,
         ]
     )
     return stream.getvalue()
@@ -69,7 +71,8 @@ def test_markdown_exact_spacing_aliases_sections_and_repeated_rows():
     assert component.attributes == {"description": "Calculate torque"}
     assert component.location == Location(section="Components", line=4, table=1, row=3)
     assert [(s["location"]["line"], s["location"]["row"]) for s in component.sources] == [
-        (4, 3), (5, 4)
+        (4, 3),
+        (5, 4),
     ]
     assert all(s["text"] == raw for s in component.sources)
     ports = {e.name: e for e in entities if e.kind == "port"}
@@ -141,7 +144,8 @@ def test_raw_evidence_survives_ingest_review_retrieval_export_and_reopen(
     headers = {"Authorization": "Bearer " + store.provision("dev", "own", "reviewer")}
     with TestClient(app) as client:
         response = client.post(
-            "/workspaces/own/documents", headers=headers,
+            "/workspaces/own/documents",
+            headers=headers,
             data={"title": "Own provenance fixture", "version": "1"},
             files={"file": (name, content)},
         )
@@ -164,7 +168,8 @@ def test_raw_evidence_survives_ingest_review_retrieval_export_and_reopen(
                 entity.sources, key=lambda s: str(s["location"])
             )
         response = client.post(
-            "/workspaces/own/query", headers=headers,
+            "/workspaces/own/query",
+            headers=headers,
             json={"text": "DemoECU", "document_id": document},
         )
         assert response.status_code == 200, response.text
@@ -174,7 +179,10 @@ def test_raw_evidence_survives_ingest_review_retrieval_export_and_reopen(
         table_evidence = [e for e in evidence if e["location"]["table"]]
         assert table_evidence
         assert all(e["review_state"] == "approved_facts" for e in table_evidence)
-        assert all(e["text"] in {s["text"] for v in expected for s in v.sources} for e in evidence)
+        assert all(
+            e["source_context"]["text"] in {s["text"] for v in expected for s in v.sources}
+            for e in evidence
+        )
     reopened = Store(path)
     assert reopened.entities("own", document) == store.entities("own", document)
 

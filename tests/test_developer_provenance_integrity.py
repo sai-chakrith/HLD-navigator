@@ -140,15 +140,11 @@ def test_identical_pdf_table_rows_keep_both_row_occurrences(tmp_path):
 
 def test_repeated_markdown_lines_in_sections_keep_section_and_line(tmp_path):
     store = Store(str(tmp_path / "sections.db"))
-    content = (
-        b"# Primary\nComponent: ValveCtrl\n\n"
-        b"# Redundant\nComponent: ValveCtrl\n"
-    )
+    content = b"# Primary\nComponent: ValveCtrl\n\n# Redundant\nComponent: ValveCtrl\n"
     document = ingest(store, "alpha", "Sections", "sections.md", content)
     entity = store.entities("alpha", document)[0]
     assert {
-        (source["location"]["section"], source["location"]["line"])
-        for source in entity["sources"]
+        (source["location"]["section"], source["location"]["line"]) for source in entity["sources"]
     } == {("Primary", 2), ("Redundant", 5)}
 
 
@@ -164,13 +160,18 @@ def test_repeated_proposals_at_one_occurrence_deduplicate_one_link(tmp_path):
         sources=[source, source],
     )
     document = store.ingest(
-        "alpha", "Same occurrence", "1", "same.md", source["text"].encode(),
-        [block], [entity], [], "developer",
+        "alpha",
+        "Same occurrence",
+        "1",
+        "same.md",
+        source["text"].encode(),
+        [block],
+        [entity],
+        [],
+        "developer",
     )
     saved = store.entities("alpha", document)[0]
-    assert saved["sources"] == [
-        {"text": source["text"], "location": Location(line=1).model_dump()}
-    ]
+    assert saved["sources"] == [{"text": source["text"], "location": Location(line=1).model_dump()}]
     with store.connection() as db:
         assert db.execute("SELECT count(*) FROM entity_evidence").fetchone()[0] == 1
 
@@ -207,9 +208,7 @@ def test_unresolvable_sources_reject_atomically(tmp_path, fault):
     text = "Component: Other" if fault == "altered" else block.text
     entity = Entity(kind="component", name="ValveCtrl", evidence=text, location=location)
     with pytest.raises(ProvenanceError, match="exact source-block occurrence"):
-        store.ingest(
-            "alpha", "Rejected", "1", "bad.pdf", b"source", [block], [entity], [], "dev"
-        )
+        store.ingest("alpha", "Rejected", "1", "bad.pdf", b"source", [block], [entity], [], "dev")
     with store.connection() as db:
         rejected = db.execute(
             "SELECT provenance_status,provenance_detail,original FROM documents"
@@ -227,13 +226,18 @@ def test_database_failure_rolls_back_document_blocks_entities_links_and_audit(tm
     blocks, entities, warnings = extract("rollback.md", b"Component: ValveCtrl")
     with pytest.raises(ProvenanceError, match="original quarantined"):
         store.ingest(
-            "alpha", "Rollback", "1", "rollback.md", b"source",
-            blocks, entities, warnings, None,
+            "alpha",
+            "Rollback",
+            "1",
+            "rollback.md",
+            b"source",
+            blocks,
+            entities,
+            warnings,
+            None,
         )
     with store.connection() as db:
-        rejected = db.execute(
-            "SELECT provenance_status,original FROM documents"
-        ).fetchone()
+        rejected = db.execute("SELECT provenance_status,original FROM documents").fetchone()
         assert rejected["provenance_status"] == "quarantined"
         assert rejected["original"] == b"source"
         for table in ("blocks", "entities", "entity_evidence", "search"):
@@ -249,19 +253,23 @@ def test_orphan_manual_block_and_wrong_workspace_are_rejected(tmp_path):
     document = ingest(store, "alpha", "Manual", "manual.md", b"Component: ValveCtrl")
     block = store.eligible_blocks("alpha", document, "source", approved=False)[0]
     payload = {
-        "kind": "component", "name": "ValveCtrl", "attributes": {},
+        "kind": "component",
+        "name": "ValveCtrl",
+        "attributes": {},
         "evidence_block_id": "missing-block",
     }
     with TestClient(app) as client:
         response = client.post(
             f"/workspaces/alpha/documents/{document}/entities",
-            headers={"Authorization": "Bearer " + alpha_token}, json=payload,
+            headers={"Authorization": "Bearer " + alpha_token},
+            json=payload,
         )
         assert response.status_code == 404
         payload["evidence_block_id"] = block["id"]
         response = client.post(
             f"/workspaces/beta/documents/{document}/entities",
-            headers={"Authorization": "Bearer " + beta_token}, json=payload,
+            headers={"Authorization": "Bearer " + beta_token},
+            json=payload,
         )
         assert response.status_code == 404
     assert len(store.entities("alpha", document)) == 1
@@ -289,25 +297,36 @@ def test_tampered_lineage_quarantines_on_reopen_and_denies_lifecycle(tmp_path):
     headers = {"Authorization": "Bearer " + token}
     with TestClient(restarted) as client:
         entity = restarted_store.entities("alpha", document)[0]
-        assert client.post(
-            f"/workspaces/alpha/entities/{entity['id']}/review", headers=headers,
-            json={"status": "approved", "reason": "Must fail lineage audit"},
-        ).status_code == 409
-        assert client.post(
-            "/workspaces/alpha/query", headers=headers,
-            json={"text": "ValveCtrl", "document_id": document},
-        ).status_code == 409
-        assert client.get(
-            "/workspaces/alpha/export", headers=headers, params={"document_id": document}
-        ).status_code == 409
+        assert (
+            client.post(
+                f"/workspaces/alpha/entities/{entity['id']}/review",
+                headers=headers,
+                json={"status": "approved", "reason": "Must fail lineage audit"},
+            ).status_code
+            == 409
+        )
+        assert (
+            client.post(
+                "/workspaces/alpha/query",
+                headers=headers,
+                json={"text": "ValveCtrl", "document_id": document},
+            ).status_code
+            == 409
+        )
+        assert (
+            client.get(
+                "/workspaces/alpha/export", headers=headers, params={"document_id": document}
+            ).status_code
+            == 409
+        )
     state = restarted_store.documents("alpha")[0]
     assert state["provenance_status"] == "quarantined"
     assert state["approved"] == 0
     assert "primary evidence resolves to 0 occurrences" in state["provenance_detail"]
     with restarted_store.connection() as db:
-        assert db.execute(
-            "SELECT count(*) FROM audit WHERE action='entity_review'"
-        ).fetchone()[0] == 1
+        assert (
+            db.execute("SELECT count(*) FROM audit WHERE action='entity_review'").fetchone()[0] == 1
+        )
 
 
 def test_cross_document_link_quarantines_only_the_affected_document(tmp_path):
@@ -315,17 +334,18 @@ def test_cross_document_link_quarantines_only_the_affected_document(tmp_path):
     first = ingest(store, "alpha", "First", "first.md", b"Component: ValveCtrl")
     second = ingest(store, "alpha", "Second", "second.md", b"Component: ValveCtrl")
     with store.connection() as db:
-        entity = db.execute(
-            "SELECT id FROM entities WHERE document_id=?", (first,)
-        ).fetchone()[0]
+        entity = db.execute("SELECT id FROM entities WHERE document_id=?", (first,)).fetchone()[0]
         foreign_block = db.execute(
             "SELECT id FROM blocks WHERE document_id=?", (second,)
         ).fetchone()[0]
         db.execute("INSERT INTO entity_evidence VALUES(?,?)", (entity, foreign_block))
     with pytest.raises(ProvenanceError, match="another document"):
         store.review(
-            "alpha", first, SourceReview(approved=True, reason="Reject cross-link"),
-            "developer", source=True,
+            "alpha",
+            first,
+            SourceReview(approved=True, reason="Reject cross-link"),
+            "developer",
+            source=True,
         )
     states = {row["id"]: row["provenance_status"] for row in store.documents("alpha")}
     assert states == {first: "quarantined", second: "verified"}
@@ -336,16 +356,19 @@ def test_orphan_stored_block_link_is_detected_after_restart(tmp_path):
     store = Store(path)
     document = ingest(store, "alpha", "Orphan", "orphan.md", b"Component: ValveCtrl")
     with sqlite3.connect(path) as db:
-        entity = db.execute(
-            "SELECT id FROM entities WHERE document_id=?", (document,)
-        ).fetchone()[0]
+        entity = db.execute("SELECT id FROM entities WHERE document_id=?", (document,)).fetchone()[
+            0
+        ]
         db.execute("PRAGMA foreign_keys=OFF")
         db.execute("INSERT INTO entity_evidence VALUES(?,?)", (entity, "missing-occurrence"))
     restarted = Store(path)
     with pytest.raises(ProvenanceError, match="missing block"):
         restarted.review(
-            "alpha", document, SourceReview(approved=True, reason="Reject orphan"),
-            "developer", source=True,
+            "alpha",
+            document,
+            SourceReview(approved=True, reason="Reject orphan"),
+            "developer",
+            source=True,
         )
     assert restarted.documents("alpha")[0]["provenance_status"] == "quarantined"
 
@@ -366,12 +389,14 @@ def test_valid_review_export_query_and_restart_preserve_occurrences(tmp_path, mo
         )
         assert exported.status_code == 200, exported.text
         sources = next(
-            entity["sources"] for entity in exported.json()["entities"]
+            entity["sources"]
+            for entity in exported.json()["entities"]
             if entity["kind"] == "dependency"
         )
         assert {source["location"]["page"] for source in sources} == {1, 2}
         queried = client.post(
-            "/workspaces/alpha/query", headers=headers,
+            "/workspaces/alpha/query",
+            headers=headers,
             json={"text": "ValveCtrl", "document_id": document},
         )
         assert queried.status_code == 200, queried.text
@@ -404,20 +429,31 @@ def test_legacy_database_is_explicitly_unverified_and_denied(tmp_path):
     assert "Predates occurrence validation" in legacy["provenance_detail"]
     with pytest.raises(ProvenanceError, match="re-ingestion"):
         store.review(
-            "alpha", "legacy-doc", SourceReview(approved=True, reason="Must re-ingest"),
-            "reviewer", source=True,
+            "alpha",
+            "legacy-doc",
+            SourceReview(approved=True, reason="Must re-ingest"),
+            "reviewer",
+            source=True,
         )
     with pytest.raises(ProvenanceError, match="re-ingestion"):
         store.index_vectors("alpha", "legacy-doc", object())
     headers = {"Authorization": "Bearer " + token}
     with TestClient(app) as client:
-        assert client.get(
-            "/workspaces/alpha/export", headers=headers, params={"document_id": "legacy-doc"}
-        ).status_code == 409
-        assert client.post(
-            "/workspaces/alpha/query", headers=headers,
-            json={"text": "Legacy", "document_id": "legacy-doc"},
-        ).status_code == 409
-        assert client.get(
-            "/workspaces/alpha/documents/legacy-doc/blocks", headers=headers
-        ).status_code == 409
+        assert (
+            client.get(
+                "/workspaces/alpha/export", headers=headers, params={"document_id": "legacy-doc"}
+            ).status_code
+            == 409
+        )
+        assert (
+            client.post(
+                "/workspaces/alpha/query",
+                headers=headers,
+                json={"text": "Legacy", "document_id": "legacy-doc"},
+            ).status_code
+            == 409
+        )
+        assert (
+            client.get("/workspaces/alpha/documents/legacy-doc/blocks", headers=headers).status_code
+            == 409
+        )

@@ -16,27 +16,33 @@ from hld_navigator.prose import parse_prose
 from hld_navigator.store import Store
 
 
-@pytest.mark.parametrize("caption", [
-    "Hydraulics component inventory for release 14.6",
-    "Bench component catalogue (revision r21)",
-    "Actuation interface table: data definitions",
-    "Voltage signal list - version 9",
-    "Envelope port overview",
-    "Recovery flow summary",
-    "Coupling dependency index",
-    "Thermal component and interface definitions",
-])
+@pytest.mark.parametrize(
+    "caption",
+    [
+        "Hydraulics component inventory for release 14.6",
+        "Bench component catalogue (revision r21)",
+        "Actuation interface table: data definitions",
+        "Voltage signal list - version 9",
+        "Envelope port overview",
+        "Recovery flow summary",
+        "Coupling dependency index",
+        "Thermal component and interface definitions",
+    ],
+)
 def test_nominal_caption_labels_are_not_entities(caption):
     entities, issues = parse_prose(caption, Location(section="Own captions", line=2))
     assert not entities
     assert not issues
 
 
-@pytest.mark.parametrize("caption", [
-    "Hydraulics component inventory for release 14.6",
-    "Actuation interface table: data definitions",
-    "Voltage signal list - version 9",
-])
+@pytest.mark.parametrize(
+    "caption",
+    [
+        "Hydraulics component inventory for release 14.6",
+        "Actuation interface table: data definitions",
+        "Voltage signal list - version 9",
+    ],
+)
 def test_caption_and_real_mentions_in_one_context_are_distinguished(caption):
     text = (
         caption + ": PumpController component provides PressureData interface to Display "
@@ -45,9 +51,12 @@ def test_caption_and_real_mentions_in_one_context_are_distinguished(caption):
     entities, issues = parse_prose(text, Location(page=2))
     assert not issues
     assert {(e.kind, e.name) for e in entities} == {
-        ("component", "PumpController"), ("component", "Display"),
-        ("component", "Sequencer"), ("interface", "PressureData"),
-        ("interface", "CommandData"), ("dependency", "PumpController->Display:PressureData"),
+        ("component", "PumpController"),
+        ("component", "Display"),
+        ("component", "Sequencer"),
+        ("interface", "PressureData"),
+        ("interface", "CommandData"),
+        ("dependency", "PumpController->Display:PressureData"),
         ("dependency", "Sequencer->PumpController:CommandData"),
     }
     assert all(e.evidence == text and e.location.page == 2 for e in entities)
@@ -58,7 +67,8 @@ def test_explicit_entity_statement_with_inventory_word_retains_the_named_entity(
     entities, issues = parse_prose(text, Location(line=3))
     assert not issues
     assert {(e.kind, e.name) for e in entities} == {
-        ("component", "PumpController"), ("interface", "PressureData")
+        ("component", "PumpController"),
+        ("interface", "PressureData"),
     }
 
 
@@ -115,7 +125,9 @@ def test_caption_text_has_only_the_supported_architecture_and_keeps_captions(suf
     blocks, entities, issues = extract("own-caption-entities" + suffix, content)
     assert not issues
     assert {(e.kind, e.name) for e in entities} == {
-        ("component", "PumpController"), ("interface", "PressureData"), ("signal", "Pressure")
+        ("component", "PumpController"),
+        ("interface", "PressureData"),
+        ("signal", "Pressure"),
     }
     component = next(e for e in entities if e.kind == "component")
     assert component.attributes == {"description": "Regulates pressure"}
@@ -187,7 +199,8 @@ def test_caption_sources_and_entities_survive_review_export_retrieval_and_restar
         store.review("own", entity["id"], Review(status="approved", reason="Own source"), "dev")
     with TestClient(app) as client:
         response = client.get(
-            "/workspaces/own/export", params={"document_id": document},
+            "/workspaces/own/export",
+            params={"document_id": document},
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 200, response.text
@@ -211,24 +224,44 @@ def test_caption_sources_and_entities_survive_review_export_retrieval_and_restar
     evidence = reopened.search("own", "PumpController", document)
     assert evidence
     assert all(b["location"]["table"] and b["review_state"] == "approved_facts" for b in evidence)
-    assert any("component inventory" in b["text"] for b in reopened.eligible_blocks(
-        "own", document, "source"
-    ))
+    assert any(
+        "component inventory" in b["text"]
+        for b in reopened.eligible_blocks("own", document, "source")
+    )
 
 
-@pytest.mark.parametrize("statement,code,action", [
-    ("PumpController component mediates DiagnosticData with Recorder.",
-     "unsupported_relationship", "mediates"),
-    ("PumpController component provides PressureData interface to Display "
-     "and arbitrates SafetyData.",
-     "unsupported_relationship", "arbitrates"),
-    ("PumpController component may provide PressureData interface to Display.",
-     "ambiguous_prose", None),
-    ("PumpController component never provides PressureData interface to Display.",
-     "ambiguous_prose", None),
-    ("If PumpController component provides PressureData interface to Display, Display sends Alert.",
-     "ambiguous_prose", None),
-])
+@pytest.mark.parametrize(
+    "statement,code,action",
+    [
+        (
+            "PumpController component mediates DiagnosticData with Recorder.",
+            "unsupported_relationship",
+            "mediates",
+        ),
+        (
+            "PumpController component provides PressureData interface to Display "
+            "and arbitrates SafetyData.",
+            "unsupported_relationship",
+            "arbitrates",
+        ),
+        (
+            "PumpController component may provide PressureData interface to Display.",
+            "ambiguous_prose",
+            None,
+        ),
+        (
+            "PumpController component never provides PressureData interface to Display.",
+            "ambiguous_prose",
+            None,
+        ),
+        (
+            "If PumpController component provides PressureData interface to Display, "
+            "Display sends Alert.",
+            "ambiguous_prose",
+            None,
+        ),
+    ],
+)
 def test_caption_entity_exclusion_retains_pdf_relationship_guards(statement, code, action):
     _, entities, issues = extract("own-caption-guards.pdf", caption_pdf_fixture(statement))
     warning = next(w for w in issues if w["code"] == code)

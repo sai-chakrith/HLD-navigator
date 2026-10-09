@@ -13,8 +13,8 @@ import time
 from pathlib import Path
 
 from hld_navigator.extraction import extract
-from hld_navigator.models import SourceReview
-from hld_navigator.rag import generate, supported
+from hld_navigator.models import ModelAnswer, SourceReview
+from hld_navigator.rag import filter_answer, generate, supported
 from hld_navigator.store import Store
 from hld_navigator.vectors import LlamaCppEmbedding, urlopen
 
@@ -149,7 +149,10 @@ def cases():
     ]
 
 
-def run(root, output, embeddings_only=False):
+def run(root, output, embeddings_only=False, contract="current"):
+    from legacy_answer import generate as legacy_generate
+
+    generator = legacy_generate if contract == "legacy" else generate
     root = root.resolve()
     required = ["runtime.zip", "bge.gguf"] + ([] if embeddings_only else ["qwen.gguf"])
     for name in required:
@@ -168,7 +171,11 @@ def run(root, output, embeddings_only=False):
         "answers": [],
         "retrieval": [],
     }
-    generation_code = Path("src/hld_navigator/rag.py").read_bytes()
+    generation_code = Path(
+        "tools/legacy_answer.py" if contract == "legacy" else "src/hld_navigator/rag.py"
+    ).read_bytes()
+    report["answer_contract"] = contract
+    report["legacy_source_commit"] = "7e90273" if contract == "legacy" else None
     report["generation_code_sha256"] = hashlib.sha256(generation_code).hexdigest()
     report["system_prompt"] = next(
         node.value
@@ -263,9 +270,12 @@ def run(root, output, embeddings_only=False):
                 HLD_NAVIGATOR_CHAT_BACKEND="llama_cpp",
             )
             for case in cases():
-                evidence = [{"text": text} for text in case["sources"]]
+                evidence = [
+                    {"id": f"case-{case['id']}-{i}", "text": text}
+                    for i, text in enumerate(case["sources"], 1)
+                ]
                 started = time.perf_counter()
-                raw = generate(case["question"], evidence)
+                raw = generator(case["question"], evidence)
                 integrity = isinstance(raw, str) and supported(raw, evidence)
                 citations = (
                     set(map(int, re.findall(r"\[(\d+)\]", raw))) if isinstance(raw, str) else set()
@@ -300,30 +310,68 @@ def run(root, output, embeddings_only=False):
                         "human_relevance_entailment_review": "PENDING",
                     }
                 )
+                if contract == "current":
+                    item = report["answers"][-1]
+                    guarded = filter_answer(raw, evidence)
+                    try:
+                        parsed = ModelAnswer.model_validate_json(raw)
+                        contract_valid = True
+                        raw_status = parsed.status
+                    except ValueError:
+                        contract_valid, raw_status = False, "invalid"
+                    item.update(
+                        raw_contract_valid=contract_valid,
+                        raw_status=raw_status,
+                        guarded=guarded,
+                        human_review_required=True,
+                    )
+                    # Obsolete complete-block metrics cannot score synthesis.
+                    for key in (
+                        "quote_integrity",
+                        "raw_abstention",
+                        "required_content_present",
+                        "contradiction_abstention_pass",
+                        "application_abstention",
+                        "insufficient_evidence_abstention_pass",
+                        "expected_evidence_selection_pass",
+                    ):
+                        item.pop(key, None)
                 output.write_text(json.dumps(report, indent=2), encoding="utf-8")
                 print(
                     case["id"],
-                    report["answers"][-1]["expected_evidence_selection_pass"],
+                    report["answers"][-1].get(
+                        "expected_evidence_selection_pass",
+                        report["answers"][-1].get("raw_contract_valid"),
+                    ),
                     flush=True,
                 )
         report["answer_metrics"] = {
             "cases": len(report["answers"]),
-            "quote_contract_passes": sum(c["quote_integrity"] for c in report["answers"]),
+            "quote_contract_passes": sum(
+                c.get("quote_integrity", False) for c in report["answers"]
+            ),
             "required_content_cases": sum(bool(c["required"]) for c in report["answers"]),
             "required_content_present": sum(
-                c["required_content_present"] for c in report["answers"]
+                c.get("required_content_present", False) for c in report["answers"]
             ),
             "expected_abstention_cases": sum(not c["required"] for c in report["answers"]),
             "raw_correct_abstentions": sum(
-                not c["required"] and c["raw_abstention"] for c in report["answers"]
+                not c["required"] and c.get("raw_abstention", False) for c in report["answers"]
             ),
         }
         if report["answers"]:
             report["acceptance"] = (
                 "CONTROLLED_CONTRACT_PASSED; INDEPENDENT_ACCEPTANCE_PENDING"
-                if all(c["expected_evidence_selection_pass"] for c in report["answers"])
+                if all(c.get("expected_evidence_selection_pass", False) for c in report["answers"])
                 else "FAILED_CONTROLLED_ANSWER_CONTRACT; NOT_ACCEPTED_FOR_PILOT_ANSWERS"
             )
+        if contract == "current":
+            report["answer_metrics"] = {
+                "cases": len(report["answers"]),
+                "raw_contract_passes": sum(c["raw_contract_valid"] for c in report["answers"]),
+                "semantics": "PENDING_DEVELOPER_OR_HUMAN_ASSESSMENT",
+            }
+            report["acceptance"] = "SYNTHESIS_DEVELOPMENT_MEASUREMENT_NOT_ACCEPTANCE"
         report["complete"] = True
         report["limitation"] = (
             "Four agent-selected public-document retrieval queries and ten controlled "
@@ -357,5 +405,6 @@ if __name__ == "__main__":
     parser.add_argument("--runtime-dir", type=Path, default=Path(".data/local-inference"))
     parser.add_argument("--output", type=Path, default=Path("docs/evidence/local-model.json"))
     parser.add_argument("--embeddings-only", action="store_true")
+    parser.add_argument("--contract", choices=["current", "legacy"], default="current")
     args = parser.parse_args()
-    run(args.runtime_dir, args.output, args.embeddings_only)
+    run(args.runtime_dir, args.output, args.embeddings_only, args.contract)

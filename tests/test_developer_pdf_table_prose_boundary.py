@@ -21,8 +21,9 @@ def boundary_pdf(responsibility="Receives operator request", before=None, after=
     for sheet in (1, 2):
         if sheet == 2:
             story.append(PageBreak())
-        story.append(Paragraph(f"Load component inventory version v12.3 - sheet {sheet}",
-                               styles["Normal"]))
+        story.append(
+            Paragraph(f"Load component inventory version v12.3 - sheet {sheet}", styles["Normal"])
+        )
         if before:
             story.append(Paragraph(before, styles["Normal"]))
         table = Table(
@@ -37,10 +38,15 @@ def boundary_pdf(responsibility="Receives operator request", before=None, after=
     return stream.getvalue()
 
 
-@pytest.mark.parametrize("responsibility", [
-    "Receives operator request", "Sends safety summary", "Provides state history",
-    "Routes diagnostics",
-])
+@pytest.mark.parametrize(
+    "responsibility",
+    [
+        "Receives operator request",
+        "Sends safety summary",
+        "Provides state history",
+        "Routes diagnostics",
+    ],
+)
 def test_benign_responsibilities_are_parsed_only_as_table_attributes(responsibility):
     content = boundary_pdf(responsibility)
     _, entities, warnings = extract("own-load-inventory.pdf", content)
@@ -60,14 +66,16 @@ def test_benign_responsibilities_are_parsed_only_as_table_attributes(responsibil
 
 
 def test_real_wrapped_prose_outside_table_retains_literal_page_and_all_contributors():
-    content = boundary_pdf(after=(
-        "DemandCtrl component provides DemandData interface<br/>to LoadMonitor component."
-    ))
+    content = boundary_pdf(
+        after=("DemandCtrl component provides DemandData interface<br/>to LoadMonitor component.")
+    )
     _, entities, warnings = extract("own-load-relationship.pdf", content)
     assert not warnings
     edge = next(e for e in entities if e.kind == "dependency")
     assert edge.attributes == {
-        "source": "DemandCtrl", "target": "LoadMonitor", "interface": "DemandData"
+        "source": "DemandCtrl",
+        "target": "LoadMonitor",
+        "interface": "DemandData",
     }
     component = next(e for e in entities if e.name == "DemandCtrl")
     assert component.attributes == {"description": "Receives operator request"}
@@ -82,20 +90,48 @@ def test_real_wrapped_prose_outside_table_retains_literal_page_and_all_contribut
     assert {s["location"]["page"] for s in edge.sources} == {1, 2}
 
 
-@pytest.mark.parametrize("before,after,code,action", [
-    (None, "DemandCtrl component adjudicates DemandData with LoadMonitor.",
-     "unsupported_relationship", "adjudicates"),
-    (None, "DemandCtrl component receives DiagnosticData from Reviewer.",
-     "unsupported_relationship", "receives"),
-    (None, "DemandCtrl component provides DemandData interface to LoadMonitor "
-     "and arbitrates TimingData with Recorder.", "unsupported_relationship", "arbitrates"),
-    (None, "DemandCtrl component never provides DemandData interface to LoadMonitor.",
-     "ambiguous_prose", None),
-    (None, "DemandCtrl component might provide DemandData interface to LoadMonitor.",
-     "ambiguous_prose", None),
-    ("If controller readiness is confirmed,",
-     "DemandCtrl component provides DemandData interface to LoadMonitor.", "ambiguous_prose", None),
-])
+@pytest.mark.parametrize(
+    "before,after,code,action",
+    [
+        (
+            None,
+            "DemandCtrl component adjudicates DemandData with LoadMonitor.",
+            "unsupported_relationship",
+            "adjudicates",
+        ),
+        (
+            None,
+            "DemandCtrl component receives DiagnosticData from Reviewer.",
+            "unsupported_relationship",
+            "receives",
+        ),
+        (
+            None,
+            "DemandCtrl component provides DemandData interface to LoadMonitor "
+            "and arbitrates TimingData with Recorder.",
+            "unsupported_relationship",
+            "arbitrates",
+        ),
+        (
+            None,
+            "DemandCtrl component never provides DemandData interface to LoadMonitor.",
+            "ambiguous_prose",
+            None,
+        ),
+        (
+            None,
+            "DemandCtrl component might provide DemandData interface to LoadMonitor.",
+            "ambiguous_prose",
+            None,
+        ),
+        (
+            "If controller readiness is confirmed,",
+            "DemandCtrl component provides DemandData interface to LoadMonitor.",
+            "ambiguous_prose",
+            None,
+        ),
+    ],
+)
 def test_outside_table_claims_keep_blocking_warnings_and_complete_qualifiers(
     before, after, code, action
 ):
@@ -125,15 +161,23 @@ def test_reviewed_benign_table_document_exports_without_coverage_override(tmp_pa
     store = app.state.store
     token = store.provision("dev", "own", "reviewer")
     document = store.ingest(
-        "own", "Own load document", "1", "own-load-export.pdf", content,
-        blocks, entities, warnings, "dev",
+        "own",
+        "Own load document",
+        "1",
+        "own-load-export.pdf",
+        content,
+        blocks,
+        entities,
+        warnings,
+        "dev",
     )
     store.review("own", document, SourceReview(approved=True, reason="Own source"), "dev", True)
     for entity in store.entities("own", document):
         store.review("own", entity["id"], Review(status="approved", reason="Own proposal"), "dev")
     with TestClient(app) as client:
         response = client.get(
-            "/workspaces/own/export", params={"document_id": document},
+            "/workspaces/own/export",
+            params={"document_id": document},
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 200, response.text

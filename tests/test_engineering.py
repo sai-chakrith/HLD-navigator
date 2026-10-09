@@ -63,7 +63,15 @@ def test_disputed_sources_explicit_and_edits_do_not_promote_old_text(api):
         headers=reviewer,
         json={"text": "Engine", "document_id": document},
     )
-    assert not response.json()["evidence"]
+    revised = response.json()["evidence"]
+    assert revised and "Controls torque" in revised[0]["text"]
+    assert "Controls brakes" not in revised[0]["text"]
+    assert revised[0]["facts"][0]["field_basis"] == "reviewer_correction"
+    assert revised[0]["source_context"]["review_state"] == "disputed_source"
+    assert (
+        store.search("pilot", "torque", document)[0]["facts"][0]["field_basis"]
+        == "reviewer_correction"
+    )
     response = client.post(
         "/workspaces/pilot/query",
         headers=reviewer,

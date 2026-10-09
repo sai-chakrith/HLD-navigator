@@ -38,23 +38,25 @@ def original_pages(content):
 
 
 def compound_fixture():
-    return line_pdf([
+    return line_pdf(
         [
-            "Combustion reference.",
-            "InjectorCtrl   component provides DoseData interface",
-            "to Gateway component and Recorder component and receives",
-            "CommandData interface from SafetyMgr component.",
-            "DoseData interface carries Dose signal.",
-            "Dose signal has type uint32 and unit mg/cycle.",
-        ],
-        [
-            "Command channel reference.",
-            "InjectorCtrl requires CommandData interface through",
-            "CommandIn port.",
-            "Injection flow runs from InjectorCtrl component",
-            "to Gateway component.",
-        ],
-    ])
+            [
+                "Combustion reference.",
+                "InjectorCtrl   component provides DoseData interface",
+                "to Gateway component and Recorder component and receives",
+                "CommandData interface from SafetyMgr component.",
+                "DoseData interface carries Dose signal.",
+                "Dose signal has type uint32 and unit mg/cycle.",
+            ],
+            [
+                "Command channel reference.",
+                "InjectorCtrl requires CommandData interface through",
+                "CommandIn port.",
+                "Injection flow runs from InjectorCtrl component",
+                "to Gateway component.",
+            ],
+        ]
+    )
 
 
 def test_wrapped_compound_prose_keeps_facts_and_literal_page_bytes():
@@ -66,20 +68,28 @@ def test_wrapped_compound_prose_keeps_facts_and_literal_page_bytes():
     edges = {e.name: e.attributes for e in entities if e.kind == "dependency"}
     assert edges == {
         "InjectorCtrl->Gateway:DoseData": {
-            "source": "InjectorCtrl", "target": "Gateway", "interface": "DoseData"
+            "source": "InjectorCtrl",
+            "target": "Gateway",
+            "interface": "DoseData",
         },
         "InjectorCtrl->Recorder:DoseData": {
-            "source": "InjectorCtrl", "target": "Recorder", "interface": "DoseData"
+            "source": "InjectorCtrl",
+            "target": "Recorder",
+            "interface": "DoseData",
         },
         "SafetyMgr->InjectorCtrl:CommandData": {
-            "source": "SafetyMgr", "target": "InjectorCtrl", "interface": "CommandData"
+            "source": "SafetyMgr",
+            "target": "InjectorCtrl",
+            "interface": "CommandData",
         },
     }
     signal = next(e for e in entities if e.kind == "signal" and e.name == "Dose")
     assert signal.attributes == {"type": "uint32", "unit": "mg/cycle"}
     port = next(e for e in entities if e.kind == "port")
     assert port.attributes == {
-        "owner": "InjectorCtrl", "interface": "CommandData", "direction": "requires"
+        "owner": "InjectorCtrl",
+        "interface": "CommandData",
+        "direction": "requires",
     }
     flow = next(e for e in entities if e.kind == "flow")
     assert flow.attributes == {"source": "InjectorCtrl", "target": "Gateway"}
@@ -94,21 +104,37 @@ def test_wrapped_compound_prose_keeps_facts_and_literal_page_bytes():
         assert not any(b.text == " ".join(raw.split()) for b in blocks)
 
 
-@pytest.mark.parametrize("claim,code", [
-    (["InjectorCtrl component may provide DoseData interface", "to Gateway component."],
-     "ambiguous_prose"),
-    (["InjectorCtrl component never provides DoseData interface", "to Gateway component."],
-     "ambiguous_prose"),
-    (["If watchdog supervision is enabled, InjectorCtrl component provides",
-      "DoseData interface to Gateway component."], "ambiguous_prose"),
-    (["InjectorCtrl component arbitrates CalibrationData", "with Calibrator component."],
-     "unsupported_relationship"),
-])
+@pytest.mark.parametrize(
+    "claim,code",
+    [
+        (
+            ["InjectorCtrl component may provide DoseData interface", "to Gateway component."],
+            "ambiguous_prose",
+        ),
+        (
+            ["InjectorCtrl component never provides DoseData interface", "to Gateway component."],
+            "ambiguous_prose",
+        ),
+        (
+            [
+                "If watchdog supervision is enabled, InjectorCtrl component provides",
+                "DoseData interface to Gateway component.",
+            ],
+            "ambiguous_prose",
+        ),
+        (
+            ["InjectorCtrl component arbitrates CalibrationData", "with Calibrator component."],
+            "unsupported_relationship",
+        ),
+    ],
+)
 def test_warning_quotes_complete_original_page_with_qualifiers(claim, code):
-    content = line_pdf([
-        ["Reference legend.", "Component: PowerStage"],
-        ["Injection component inventory for release 31.5", *claim, "Engineering footer."],
-    ])
+    content = line_pdf(
+        [
+            ["Reference legend.", "Component: PowerStage"],
+            ["Injection component inventory for release 31.5", *claim, "Engineering footer."],
+        ]
+    )
     pages = original_pages(content)
     _, entities, warnings = extract("own-qualified.pdf", content)
     warning = next(w for w in warnings if w["code"] == code)
@@ -122,16 +148,22 @@ def test_warning_quotes_complete_original_page_with_qualifiers(claim, code):
 
 
 def test_supported_then_unknown_clause_keeps_edge_and_raw_warning_context():
-    content = line_pdf([[
-        "Metering component inventory (revision r23)",
-        "InjectorCtrl component provides DoseData interface",
-        "to Gateway and negotiates CalibrationData with Calibrator.",
-    ]])
+    content = line_pdf(
+        [
+            [
+                "Metering component inventory (revision r23)",
+                "InjectorCtrl component provides DoseData interface",
+                "to Gateway and negotiates CalibrationData with Calibrator.",
+            ]
+        ]
+    )
     raw = original_pages(content)[1]
     _, entities, warnings = extract("own-mixed-claim.pdf", content)
     edge = next(e for e in entities if e.kind == "dependency")
     assert edge.attributes == {
-        "source": "InjectorCtrl", "target": "Gateway", "interface": "DoseData"
+        "source": "InjectorCtrl",
+        "target": "Gateway",
+        "interface": "DoseData",
     }
     assert edge.evidence == raw
     warning = next(w for w in warnings if w["code"] == "unsupported_relationship")
@@ -161,23 +193,23 @@ def mixed_fixture():
         [["SWC Name", "Responsibility"], ["CoolantCtrl", "Maintains circulation\nwithin limits"]],
         colWidths=[150, 230],
     )
-    interface = Table(
-        [["Interface Name", "Payload"], ["FlowData", "Flow"]], colWidths=[150, 230]
-    )
+    interface = Table([["Interface Name", "Payload"], ["FlowData", "Flow"]], colWidths=[150, 230])
     for table in (component, interface):
         table.setStyle([("GRID", (0, 0), (-1, -1), 1, "black")])
-    story.extend([
-        component,
-        Paragraph(
-            "CoolantCtrl component provides FlowData interface<br/>to Dashboard component.",
-            styles["Normal"],
-        ),
-        PageBreak(),
-        Paragraph("Cooling interface catalogue (revision r12)", styles["Normal"]),
-        interface,
-        Paragraph("FlowData interface carries Flow signal.", styles["Normal"]),
-        Paragraph("Flow signal has type uint16 and unit L/min.", styles["Normal"]),
-    ])
+    story.extend(
+        [
+            component,
+            Paragraph(
+                "CoolantCtrl component provides FlowData interface<br/>to Dashboard component.",
+                styles["Normal"],
+            ),
+            PageBreak(),
+            Paragraph("Cooling interface catalogue (revision r12)", styles["Normal"]),
+            interface,
+            Paragraph("FlowData interface carries Flow signal.", styles["Normal"]),
+            Paragraph("Flow signal has type uint16 and unit L/min.", styles["Normal"]),
+        ]
+    )
     SimpleDocTemplate(stream).build(story)
     return stream.getvalue()
 
@@ -217,8 +249,15 @@ def test_literal_sources_survive_ingest_review_query_export_and_reopen(tmp_path,
     store = app.state.store
     token = store.provision("dev", "own", "reviewer")
     document = store.ingest(
-        "own", "Own literal provenance", "1", "own-literal.pdf", content,
-        blocks, entities, warnings, "dev",
+        "own",
+        "Own literal provenance",
+        "1",
+        "own-literal.pdf",
+        content,
+        blocks,
+        entities,
+        warnings,
+        "dev",
     )
     store.review("own", document, SourceReview(approved=True, reason="Own source"), "dev", True)
     for entity in store.entities("own", document):
@@ -241,15 +280,19 @@ def test_literal_sources_survive_ingest_review_query_export_and_reopen(tmp_path,
                 json.dumps(s, sort_keys=True) for s in expected.sources
             }
         response = client.post(
-            "/workspaces/own/query", headers=headers,
+            "/workspaces/own/query",
+            headers=headers,
             json={"text": "CoolantCtrl", "document_id": document},
         )
         assert response.status_code == 200, response.text
         assert response.json()["evidence"]
         for source in response.json()["evidence"]:
             assert source["document_id"] == document and source["name"] == "own-literal.pdf"
-            assert any(b.text == source["text"] and b.location.model_dump() == source["location"]
-                       for b in blocks)
+            assert any(
+                b.text == source["source_context"]["text"]
+                and b.location.model_dump() == source["location"]
+                for b in blocks
+            )
     stored = store.entities("own", document)
     assert Store(path).entities("own", document) == stored
 

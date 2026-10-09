@@ -176,9 +176,7 @@ class Store:
                 continue
             key = cls._source_key(block.text, block.location)
             if key in block_keys:
-                issues.append(
-                    f"blocks {block_keys[key]} and {row['id']} claim the same occurrence"
-                )
+                issues.append(f"blocks {block_keys[key]} and {row['id']} claim the same occurrence")
             block_keys[key] = row["id"]
         broken_links = db.execute(
             "SELECT ee.entity_id,ee.block_id FROM entity_evidence ee "
@@ -187,9 +185,7 @@ class Store:
             (document,),
         ).fetchall()
         for link in broken_links:
-            issues.append(
-                f"entity {link['entity_id']} links missing block {link['block_id']}"
-            )
+            issues.append(f"entity {link['entity_id']} links missing block {link['block_id']}")
         entities = db.execute(
             "SELECT id,evidence,location FROM entities WHERE document_id=?", (document,)
         ).fetchall()
@@ -391,10 +387,7 @@ class Store:
             query += " AND d.id=?"
             params.append(document)
         if approved_only:
-            query += (
-                " AND d.approved=1 AND d.provenance_status='verified' "
-                "AND e.status='approved'"
-            )
+            query += " AND d.approved=1 AND d.provenance_status='verified' AND e.status='approved'"
         with self.connection() as db:
             if approved_only:
                 documents = (
@@ -475,25 +468,47 @@ class Store:
             )
 
     def search(self, workspace, question, document=None, scope="facts"):
-        stop = {"what", "which", "the", "is", "are", "a", "an", "of", "to", "does", "how", "and"}
-        words = list(
-            dict.fromkeys(w for w in re.findall(r"[a-z0-9_]+", question.lower()) if w not in stop)
-        )
+        from .fact_answers import relevant
+
+        blocks = self.eligible_blocks(workspace, document, scope)
+        words = set(re.findall(r"[a-z0-9_]+", question.lower())) - {
+            "what",
+            "which",
+            "the",
+            "is",
+            "are",
+            "a",
+            "an",
+            "of",
+            "to",
+            "does",
+            "how",
+            "and",
+            "have",
+            "has",
+            "its",
+            "in",
+            "for",
+            "with",
+        }
         if not words:
             return []
-        query = " OR ".join('"' + w + '"' for w in words[:30])
-        sql = "SELECT b.id,b.text,b.location,d.id AS document_id,d.title,d.version,d.name FROM search JOIN blocks b ON b.id=search.id JOIN documents d ON d.id=b.document_id WHERE search MATCH ? AND d.workspace=? AND d.approved=1 AND d.provenance_status='verified'"
-        params = [query, workspace]
-        if document:
-            sql += " AND d.id=?"
-            params.append(document)
-        sql += " ORDER BY bm25(search) LIMIT 100"
+        query = " OR ".join('"' + w + '"' for w in sorted(words)[:30])
         with self.connection() as db:
-            rows = db.execute(sql, params).fetchall()
-        eligible = {
-            block["id"]: block for block in self.eligible_blocks(workspace, document, scope)
-        }
-        return [eligible[r["id"]] for r in rows if r["id"] in eligible][:5]
+            matches = db.execute(
+                "SELECT id FROM search WHERE search MATCH ? ORDER BY bm25(search)", (query,)
+            ).fetchall()
+        positions = {r["id"]: i for i, r in enumerate(matches)}
+        ranked = []
+        for block in blocks:
+            if scope == "source" and block["id"] not in positions:
+                continue
+            if scope == "facts" and not relevant(question, block):
+                continue
+            score = len(words & set(re.findall(r"[a-z0-9_]+", block["text"].lower())))
+            if score:
+                ranked.append((score, -positions.get(block["id"], len(positions)), block))
+        return [b for _, _, b in sorted(ranked, key=lambda item: item[:2], reverse=True)][:5]
 
     def eligible_blocks(self, workspace, document=None, scope="facts", approved=True):
         sql = "SELECT b.*,d.title,d.version,d.name FROM blocks b JOIN documents d ON d.id=b.document_id WHERE d.workspace=? AND d.provenance_status='verified'"
@@ -520,34 +535,54 @@ class Store:
                     self._assert_document_verified(db, workspace, row["id"])
             rows = db.execute(sql, params).fetchall()
             links = db.execute(
-                "SELECT ee.block_id,e.status,e.attributes,e.original_attributes FROM entity_evidence ee JOIN entities e ON e.id=ee.entity_id JOIN documents d ON d.id=e.document_id WHERE d.workspace=?",
+                "SELECT ee.block_id,e.id AS entity_id,e.kind,e.name,e.status,e.attributes,e.original_attributes FROM entity_evidence ee JOIN entities e ON e.id=ee.entity_id JOIN documents d ON d.id=e.document_id WHERE d.workspace=?",
                 (workspace,),
             ).fetchall()
-        states = {}
-        for row in links:
-            state = (
-                "approved_facts"
-                if row["status"] == "approved" and row["attributes"] == row["original_attributes"]
-                else "disputed_source"
-                if row["status"] == "rejected" or row["attributes"] != row["original_attributes"]
-                else "unreviewed_source"
-            )
-            states.setdefault(row["block_id"], []).append(state)
+        from .fact_answers import render_fact
+
+        links_by_block = {}
+        for link in links:
+            links_by_block.setdefault(link["block_id"], []).append(dict(link))
         output = []
         for row in rows:
-            linked = states.get(row["id"], [])
-            state = (
-                "disputed_source"
-                if "disputed_source" in linked
-                else "approved_facts"
-                if linked and all(s == "approved_facts" for s in linked)
-                else "unreviewed_source"
+            linked = links_by_block.get(row["id"], [])
+            facts = [
+                {
+                    "entity_id": e["entity_id"],
+                    "kind": e["kind"],
+                    "name": e["name"],
+                    "attributes": json.loads(e["attributes"]),
+                    "field_basis": (
+                        "reviewer_correction"
+                        if e["attributes"] != e["original_attributes"]
+                        else "reviewed_extraction"
+                    ),
+                }
+                for e in linked
+                if e["status"] == "approved"
+            ]
+            disputed = any(
+                e["status"] == "rejected" or e["attributes"] != e["original_attributes"]
+                for e in linked
             )
-            if scope == "facts" and state != "approved_facts":
-                continue
-            output.append(
-                {**dict(row), "location": json.loads(row["location"]), "review_state": state}
-            )
+            context_state = "disputed_source" if disputed else "unreviewed_source"
+            block = {
+                **dict(row),
+                "location": json.loads(row["location"]),
+                "review_state": context_state,
+                "approved_entity_ids": [f["entity_id"] for f in facts],
+            }
+            if scope == "facts":
+                if not facts:
+                    continue
+                block.update(
+                    text="\n".join(render_fact(f) for f in facts),
+                    facts=facts,
+                    review_state="approved_facts",
+                    text_basis="reviewed structured fields, not a literal source quote",
+                    source_context={"text": row["text"], "review_state": context_state},
+                )
+            output.append(block)
         return output
 
     def snapshot_fingerprint(self, workspace, document):
@@ -613,6 +648,31 @@ class Store:
         blocks = self.eligible_blocks(workspace, document, scope)
         if not blocks:
             return []
+        from .fact_answers import relevant
+
+        if scope == "facts":
+            with self.connection() as db:
+                indexed = {
+                    r[0]
+                    for r in db.execute(
+                        "SELECT block_id FROM embeddings WHERE model=?", (embedder.identity,)
+                    )
+                }
+            if any(b["id"] not in indexed for b in blocks):
+                raise ValueError("Index this document before querying")
+            blocks = [b for b in blocks if relevant(question, b)]
+            if not blocks:
+                return []
+            vectors = embedder.embed([question] + [b["text"] for b in blocks])
+            validate_vectors(vectors, len(blocks) + 1)
+            return sorted(
+                [
+                    {**b, "vector_similarity": cosine(vectors[0], v)}
+                    for b, v in zip(blocks, vectors[1:], strict=True)
+                ],
+                key=lambda b: b["vector_similarity"],
+                reverse=True,
+            )[:5]
         query = embedder.embed([question])[0]
         validate_vectors([query], 1)
         with self.connection() as db:

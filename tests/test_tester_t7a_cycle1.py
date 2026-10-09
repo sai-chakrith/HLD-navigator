@@ -14,10 +14,12 @@ from reportlab.pdfgen import canvas
 from hld_navigator.extraction import extract
 from hld_navigator.store import Store
 
-EVIDENCE = (Path(__file__).resolve().parents[1] / "tester_acceptance/evidence"
-            / datetime.now(UTC).strftime("t7a-cycle1-synthetic-%Y%m%dT%H%M%S%f"))
-TABLE = ("\n| SWC Name | Responsibility |\n|---|---|\n"
-         "|  Lyrik | Records events |\n")
+EVIDENCE = (
+    Path(__file__).resolve().parents[1]
+    / "tester_acceptance/evidence"
+    / datetime.now(UTC).strftime("t7a-cycle1-synthetic-%Y%m%dT%H%M%S%f")
+)
+TABLE = "\n| SWC Name | Responsibility |\n|---|---|\n|  Lyrik | Records events |\n"
 CAPTIONS = [
     "Fleet component inventory for release 12.7",
     "Subsystem component inventory (release 4)",
@@ -60,18 +62,24 @@ def preserve(name, value):
 def recorded(name, content):
     preserve(name, content)
     blocks, facts, warnings = extract(name, content)
-    preserve(name + ".outputs.json", {"notice": "not independently validated",
-        "blocks": [b.model_dump() for b in blocks], "entities": [e.model_dump() for e in facts],
-        "warnings": warnings})
+    preserve(
+        name + ".outputs.json",
+        {
+            "notice": "not independently validated",
+            "blocks": [b.model_dump() for b in blocks],
+            "entities": [e.model_dump() for e in facts],
+            "warnings": warnings,
+        },
+    )
     return facts, warnings
 
 
 @pytest.mark.parametrize("suffix", ["md", "txt"])
-@pytest.mark.parametrize("caption", CAPTIONS,
-                         ids=[f"caption-{i}" for i in range(len(CAPTIONS))])
+@pytest.mark.parametrize("caption", CAPTIONS, ids=[f"caption-{i}" for i in range(len(CAPTIONS))])
 def test_numeric_and_parenthesized_caption_warning_behavior(caption, suffix):
-    facts, warnings = recorded(f"caption-{CAPTIONS.index(caption)}.{suffix}",
-                               (caption + TABLE).encode())
+    facts, warnings = recorded(
+        f"caption-{CAPTIONS.index(caption)}.{suffix}", (caption + TABLE).encode()
+    )
     assert not warnings
     # R1 total-entity assertions remain in the old test file; this check concerns R2.
     table_facts = [f for f in facts if f.name == "Lyrik" and f.kind == "component"]
@@ -80,29 +88,43 @@ def test_numeric_and_parenthesized_caption_warning_behavior(caption, suffix):
     assert table_facts[0].evidence == "|  Lyrik | Records events |"
 
 
-@pytest.mark.parametrize("statement", UNKNOWN,
-                         ids=[f"unknown-{i}" for i in range(len(UNKNOWN))])
+@pytest.mark.parametrize("statement", UNKNOWN, ids=[f"unknown-{i}" for i in range(len(UNKNOWN))])
 def test_real_continuations_and_adjacent_unknown_clauses_still_warn(statement):
-    facts, warnings = recorded(f"unknown-{UNKNOWN.index(statement)}.md",
-                               (statement + TABLE).encode())
+    facts, warnings = recorded(
+        f"unknown-{UNKNOWN.index(statement)}.md", (statement + TABLE).encode()
+    )
     original = statement.splitlines()[-1]
     line = len(statement.splitlines())
-    assert any(w["code"] == "unsupported_relationship" and w["severity"] == "blocking"
-               and w["text"] == original and w["location"]["line"] == line for w in warnings)
+    assert any(
+        w["code"] == "unsupported_relationship"
+        and w["severity"] == "blocking"
+        and w["text"] == original
+        and w["location"]["line"] == line
+        for w in warnings
+    )
     assert not [f for f in facts if f.kind == "dependency" and "RateBudget" in f.name]
     if "provides the ILog interface" in statement:
-        assert any(f.kind == "dependency" and f.attributes == {
-            "source": "Lyrik", "target": "Mistral", "interface": "ILog"} for f in facts)
+        assert any(
+            f.kind == "dependency"
+            and f.attributes == {"source": "Lyrik", "target": "Mistral", "interface": "ILog"}
+            for f in facts
+        )
 
 
-@pytest.mark.parametrize("statement", QUALIFIED,
-                         ids=[f"qualified-{i}" for i in range(len(QUALIFIED))])
+@pytest.mark.parametrize(
+    "statement", QUALIFIED, ids=[f"qualified-{i}" for i in range(len(QUALIFIED))]
+)
 def test_modifier_headings_do_not_remove_qualified_warnings(statement):
-    facts, warnings = recorded(f"qualified-{QUALIFIED.index(statement)}.txt",
-                               (statement + TABLE).encode())
-    assert any(w["code"] == "ambiguous_prose" and w["severity"] == "blocking"
-               and w["text"] == statement.splitlines()[-1]
-               and w["location"]["line"] == len(statement.splitlines()) for w in warnings)
+    facts, warnings = recorded(
+        f"qualified-{QUALIFIED.index(statement)}.txt", (statement + TABLE).encode()
+    )
+    assert any(
+        w["code"] == "ambiguous_prose"
+        and w["severity"] == "blocking"
+        and w["text"] == statement.splitlines()[-1]
+        and w["location"]["line"] == len(statement.splitlines())
+        for w in warnings
+    )
     assert not [f for f in facts if f.kind in ("dependency", "port", "interface")]
 
 
@@ -128,10 +150,15 @@ def pdf_source(statement):
     return buffer.getvalue()
 
 
-@pytest.mark.parametrize("statement", [
-    None, "Lyrik component arbitrates RateBudget.",
-    "Lyrik component may provide the ILog interface to Mistral."],
-                         ids=["benign", "unsupported", "qualified"])
+@pytest.mark.parametrize(
+    "statement",
+    [
+        None,
+        "Lyrik component arbitrates RateBudget.",
+        "Lyrik component may provide the ILog interface to Mistral.",
+    ],
+    ids=["benign", "unsupported", "qualified"],
+)
 def test_modifier_pdf_tables_and_real_statements(statement):
     category = "benign" if statement is None else "qualified" if "may" in statement else "unknown"
     content = pdf_source(statement)
@@ -143,10 +170,19 @@ def test_modifier_pdf_tables_and_real_statements(statement):
     with pdfplumber.open(io.BytesIO(content)) as original:
         for page_number, page in enumerate(original.pages, 1):
             raw_span = page.crop((55, 112, 557, 166)).extract_text()
-            sources = [s for s in targets[0].sources if s["location"]["page"] == page_number
-                       and s["location"]["table"] is not None]
-            rows.append({"page": page_number, "original_page_text": page.extract_text(),
-                         "original_row_span": raw_span, "complete_target": targets[0].model_dump()})
+            sources = [
+                s
+                for s in targets[0].sources
+                if s["location"]["page"] == page_number and s["location"]["table"] is not None
+            ]
+            rows.append(
+                {
+                    "page": page_number,
+                    "original_page_text": page.extract_text(),
+                    "original_row_span": raw_span,
+                    "complete_target": targets[0].model_dump(),
+                }
+            )
             preserve(f"modifier-{category}.original-spans.json", rows)
             assert len(sources) == 1
             assert sources[0]["text"] == raw_span == "Lyrik Records events\nwithin limits"
@@ -154,21 +190,30 @@ def test_modifier_pdf_tables_and_real_statements(statement):
             if statement:
                 code = "ambiguous_prose" if category == "qualified" else "unsupported_relationship"
                 assert statement in page.extract_text()
-                assert any(w["code"] == code and w["severity"] == "blocking"
-                           and statement in w["text"] and w["location"]["page"] == page_number
-                           for w in warnings)
+                assert any(
+                    w["code"] == code
+                    and w["severity"] == "blocking"
+                    and statement in w["text"]
+                    and w["location"]["page"] == page_number
+                    for w in warnings
+                )
     if statement is None:
         assert not warnings
     if category == "qualified":
         assert not [f for f in facts if f.kind in ("dependency", "port", "interface")]
 
 
-@pytest.mark.parametrize("caption,statement,expected_status", [
-    (CAPTIONS[0], None, 200), (CAPTIONS[1], None, 200),
-    (CAPTIONS[4], "Lyrik component arbitrates RateBudget.", 409),
-])
-def test_reviewed_export_after_modifier_caption(caption, statement, expected_status,
-                                               tmp_path, monkeypatch):
+@pytest.mark.parametrize(
+    "caption,statement,expected_status",
+    [
+        (CAPTIONS[0], None, 200),
+        (CAPTIONS[1], None, 200),
+        (CAPTIONS[4], "Lyrik component arbitrates RateBudget.", 409),
+    ],
+)
+def test_reviewed_export_after_modifier_caption(
+    caption, statement, expected_status, tmp_path, monkeypatch
+):
     import hld_navigator.store as store_module
 
     index = CAPTIONS.index(caption)
@@ -182,9 +227,11 @@ def test_reviewed_export_after_modifier_caption(caption, statement, expected_sta
     token = Store(str(db_path)).provision("tester", "tester", "reviewer")
     records = []
     with TestClient(app, headers={"Authorization": f"Bearer {token}"}) as client:
-        upload = client.post("/workspaces/tester/documents",
-                             data={"title": "Cycle1 synthetic", "version": "1"},
-                             files={"file": ("cycle1.md", source.encode(), "text/markdown")})
+        upload = client.post(
+            "/workspaces/tester/documents",
+            data={"title": "Cycle1 synthetic", "version": "1"},
+            files={"file": ("cycle1.md", source.encode(), "text/markdown")},
+        )
         records.append({"route": "upload", "status": upload.status_code, "body": upload.json()})
         preserve(f"api-{index}.json", records)
         assert upload.status_code == 200
@@ -193,19 +240,26 @@ def test_reviewed_export_after_modifier_caption(caption, statement, expected_sta
             assert not upload.json()["warnings"]
         else:
             assert any(w["code"] == "unsupported_relationship" for w in upload.json()["warnings"])
-        approved = client.post(f"/workspaces/tester/documents/{doc}/review",
-                               json={"approved": True, "reason": "synthetic source"})
-        records.append({"route": "source-review", "status": approved.status_code,
-                        "body": approved.json()})
+        approved = client.post(
+            f"/workspaces/tester/documents/{doc}/review",
+            json={"approved": True, "reason": "synthetic source"},
+        )
+        records.append(
+            {"route": "source-review", "status": approved.status_code, "body": approved.json()}
+        )
         assert approved.status_code == 200
         entities = client.get("/workspaces/tester/entities", params={"document_id": doc})
-        records.append({"route": "entities", "status": entities.status_code,
-                        "body": entities.json()})
+        records.append(
+            {"route": "entities", "status": entities.status_code, "body": entities.json()}
+        )
         for entity in entities.json():
-            reviewed = client.post(f"/workspaces/tester/entities/{entity['id']}/review",
-                                   json={"status": "approved", "reason": "synthetic fact"})
-            records.append({"route": "entity-review", "status": reviewed.status_code,
-                            "body": reviewed.json()})
+            reviewed = client.post(
+                f"/workspaces/tester/entities/{entity['id']}/review",
+                json={"status": "approved", "reason": "synthetic fact"},
+            )
+            records.append(
+                {"route": "entity-review", "status": reviewed.status_code, "body": reviewed.json()}
+            )
             assert reviewed.status_code == 200
         exported = client.get("/workspaces/tester/export", params={"document_id": doc})
         records.append({"route": "export", "status": exported.status_code, "body": exported.json()})

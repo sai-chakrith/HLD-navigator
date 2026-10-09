@@ -14,10 +14,12 @@ from reportlab.pdfgen import canvas
 from hld_navigator.extraction import extract
 from hld_navigator.store import Store
 
-EVIDENCE = (Path(__file__).resolve().parents[1] / "tester_acceptance/evidence"
-            / datetime.now(UTC).strftime("t7a-synthetic-%Y%m%dT%H%M%S%f"))
-TABLE = ("\n| SWC Name | Responsibility |\n|---|---|\n"
-         "|  Aster | Monitors pressure |\n")
+EVIDENCE = (
+    Path(__file__).resolve().parents[1]
+    / "tester_acceptance/evidence"
+    / datetime.now(UTC).strftime("t7a-synthetic-%Y%m%dT%H%M%S%f")
+)
+TABLE = "\n| SWC Name | Responsibility |\n|---|---|\n|  Aster | Monitors pressure |\n"
 CAPTIONS = [
     "Plant component inventory - revision 7",
     "Deployment component catalogue: release 7",
@@ -60,9 +62,15 @@ def preserve(name, value):
 def extract_record(name, content):
     preserve(name, content)
     blocks, entities, warnings = extract(name, content)
-    preserve(name + ".outputs.json", {
-        "notice": "not independently validated", "blocks": [b.model_dump() for b in blocks],
-        "entities": [e.model_dump() for e in entities], "warnings": warnings})
+    preserve(
+        name + ".outputs.json",
+        {
+            "notice": "not independently validated",
+            "blocks": [b.model_dump() for b in blocks],
+            "entities": [e.model_dump() for e in entities],
+            "warnings": warnings,
+        },
+    )
     return blocks, entities, warnings
 
 
@@ -79,39 +87,53 @@ def test_new_benign_captions_are_not_actions(caption, suffix):
     assert not warnings, f"benign nominal caption warned: {caption!r}"
 
 
-@pytest.mark.parametrize("statement", UNSUPPORTED,
-                         ids=[f"unsupported-{i}" for i in range(len(UNSUPPORTED))])
+@pytest.mark.parametrize(
+    "statement", UNSUPPORTED, ids=[f"unsupported-{i}" for i in range(len(UNSUPPORTED))]
+)
 def test_unknown_supported_then_unknown_and_near_caption_continuations(statement):
     i = UNSUPPORTED.index(statement)
     _, entities, warnings = extract_record(f"unsupported-{i}.md", (statement + TABLE).encode())
-    blocking = [w for w in warnings if w["severity"] == "blocking"
-                and w["code"] == "unsupported_relationship"]
+    blocking = [
+        w
+        for w in warnings
+        if w["severity"] == "blocking" and w["code"] == "unsupported_relationship"
+    ]
     assert blocking, f"unsupported relationship disappeared: {statement!r}"
     expected_line = 2 if statement.startswith("#") else 1
     original = statement.splitlines()[-1]
-    assert any(w["text"] == original and w["location"]["line"] == expected_line
-               for w in blocking)
+    assert any(w["text"] == original and w["location"]["line"] == expected_line for w in blocking)
     assert not [e for e in entities if e.kind == "dependency" and "GateBudget" in e.name]
     if "provides the IAct interface" in statement:
-        assert any(e.kind == "dependency" and e.attributes == {
-            "source": "Aster", "target": "Lumen", "interface": "IAct"} for e in entities)
+        assert any(
+            e.kind == "dependency"
+            and e.attributes == {"source": "Aster", "target": "Lumen", "interface": "IAct"}
+            for e in entities
+        )
 
 
-@pytest.mark.parametrize("statement", QUALIFIED,
-                         ids=[f"qualified-{i}" for i in range(len(QUALIFIED))])
+@pytest.mark.parametrize(
+    "statement", QUALIFIED, ids=[f"qualified-{i}" for i in range(len(QUALIFIED))]
+)
 def test_qualified_relationships_do_not_become_unconditional(statement):
     i = QUALIFIED.index(statement)
     _, entities, warnings = extract_record(f"qualified-{i}.txt", (statement + TABLE).encode())
-    assert any(w["code"] == "ambiguous_prose" and w["severity"] == "blocking"
-               and w["text"] == statement and w["location"]["line"] == 1 for w in warnings)
+    assert any(
+        w["code"] == "ambiguous_prose"
+        and w["severity"] == "blocking"
+        and w["text"] == statement
+        and w["location"]["line"] == 1
+        for w in warnings
+    )
     assert not [e for e in entities if e.kind in ("dependency", "port", "interface")]
 
 
 def pdf_source(statement=None):
     buffer = io.BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=(612, 792), invariant=1)
-    captions = ["Plant component inventory - revision 7",
-                "Deployment component catalogue: release 7"]
+    captions = [
+        "Plant component inventory - revision 7",
+        "Deployment component catalogue: release 7",
+    ]
     for caption in captions:
         pdf.setFont("Helvetica", 10)
         pdf.drawString(60, 748, caption)
@@ -131,8 +153,11 @@ def pdf_source(statement=None):
     return buffer.getvalue()
 
 
-@pytest.mark.parametrize("statement", [None, UNSUPPORTED[0], QUALIFIED[2]],
-                         ids=["benign", "unknown-on-table-pages", "qualified-on-table-pages"])
+@pytest.mark.parametrize(
+    "statement",
+    [None, UNSUPPORTED[0], QUALIFIED[2]],
+    ids=["benign", "unknown-on-table-pages", "qualified-on-table-pages"],
+)
 def test_new_pdf_captions_do_not_hide_real_statements(statement):
     from tester_acceptance.t2c_oracles import (
         partition_contributors,
@@ -148,36 +173,52 @@ def test_new_pdf_captions_do_not_hide_real_statements(statement):
     assert entities[0].name == "Aster"
     assert entities[0].attributes == {"description": "Monitors pressure within limits"}
     table_sources, _ = partition_contributors(
-        entities[0].sources, require_context=category == "unknown")
-    assert sorted((s["location"]["page"], s["location"]["table"], s["location"]["row"])
-                  for s in table_sources) == [(1, 1, 2), (2, 1, 2)]
+        entities[0].sources, require_context=category == "unknown"
+    )
+    assert sorted(
+        (s["location"]["page"], s["location"]["table"], s["location"]["row"]) for s in table_sources
+    ) == [(1, 1, 2), (2, 1, 2)]
     original_spans = []
     original_pages, row_spans = {}, {}
     with pdfplumber.open(io.BytesIO(content)) as original_pdf:
         for page in [1, 2]:
-            span = original_pdf.pages[page-1].crop((60, 112, 560, 162)).extract_text()
-            original_pages[page] = original_pdf.pages[page-1].extract_text()
+            span = original_pdf.pages[page - 1].crop((60, 112, 560, 162)).extract_text()
+            original_pages[page] = original_pdf.pages[page - 1].extract_text()
             row_spans[page] = span
             original_spans.append({"page": page, "row": 2, "text": span})
-            source = next(s for s in table_sources if (
-                s["location"]["page"], s["location"]["table"], s["location"]["row"])
-                == (page, 1, 2))
+            source = next(
+                s
+                for s in table_sources
+                if (s["location"]["page"], s["location"]["table"], s["location"]["row"])
+                == (page, 1, 2)
+            )
             assert source["text"] == span == "Aster Monitors pressure\nwithin limits"
     preserve(f"multipage-{category}.original-spans.json", original_spans)
     characterization = verify_contributors(
-        entities[0].sources, require_context=category == "unknown", originals=original_pages,
-        row_spans=row_spans, statement=statement)
-    preserve(f"multipage-{category}.evidence-characterization.json", {
-        "notice": "not independently validated",
-        "contributors": [c.model_dump() for c in characterization],
-        "literal_mechanical_gate_met": all(c.literal_original_substring for c in characterization),
-        "gap_task": next((c.gap_task for c in characterization if c.gap_task), None)})
+        entities[0].sources,
+        require_context=category == "unknown",
+        originals=original_pages,
+        row_spans=row_spans,
+        statement=statement,
+    )
+    preserve(
+        f"multipage-{category}.evidence-characterization.json",
+        {
+            "notice": "not independently validated",
+            "contributors": [c.model_dump() for c in characterization],
+            "literal_mechanical_gate_met": all(
+                c.literal_original_substring for c in characterization
+            ),
+            "gap_task": next((c.gap_task for c in characterization if c.gap_task), None),
+        },
+    )
     if statement is None:
         assert not warnings
     else:
         code = "ambiguous_prose" if category == "qualified" else "unsupported_relationship"
         warning_checks = verify_warnings(
-            warnings, statement=statement, code=code, originals=original_pages)
+            warnings, statement=statement, code=code, originals=original_pages
+        )
         preserve(f"multipage-{category}.warning-context-checks.json", warning_checks)
 
 
@@ -194,32 +235,37 @@ def test_api_warning_and_export_behavior_for_benign_captions(caption, tmp_path, 
     records = []
     i = CAPTIONS.index(caption)
     with TestClient(app, headers={"Authorization": f"Bearer {token}"}) as client:
-        uploaded = client.post("/workspaces/tester/documents",
-                               data={"title": "New synthetic caption", "version": "1"},
-                               files={"file": ("new.md", (caption + TABLE).encode(),
-                                                "text/markdown")})
-        records.append({"route": "upload", "status": uploaded.status_code,
-                        "body": uploaded.json()})
+        uploaded = client.post(
+            "/workspaces/tester/documents",
+            data={"title": "New synthetic caption", "version": "1"},
+            files={"file": ("new.md", (caption + TABLE).encode(), "text/markdown")},
+        )
+        records.append({"route": "upload", "status": uploaded.status_code, "body": uploaded.json()})
         preserve(f"api-{i}.json", records)
         assert uploaded.status_code == 200
         doc = uploaded.json()["id"]
-        source = client.post(f"/workspaces/tester/documents/{doc}/review",
-                             json={"approved": True, "reason": "Tester synthetic source"})
-        records.append({"route": "source-review", "status": source.status_code,
-                        "body": source.json()})
+        source = client.post(
+            f"/workspaces/tester/documents/{doc}/review",
+            json={"approved": True, "reason": "Tester synthetic source"},
+        )
+        records.append(
+            {"route": "source-review", "status": source.status_code, "body": source.json()}
+        )
         assert source.status_code == 200
         response = client.get("/workspaces/tester/entities", params={"document_id": doc})
         found = response.json()
         records.append({"route": "entities", "status": response.status_code, "body": found})
         for entity in found:
-            reviewed = client.post(f"/workspaces/tester/entities/{entity['id']}/review",
-                                   json={"status": "approved", "reason": "Tester synthetic fact"})
-            records.append({"route": "entity-review", "status": reviewed.status_code,
-                            "body": reviewed.json()})
+            reviewed = client.post(
+                f"/workspaces/tester/entities/{entity['id']}/review",
+                json={"status": "approved", "reason": "Tester synthetic fact"},
+            )
+            records.append(
+                {"route": "entity-review", "status": reviewed.status_code, "body": reviewed.json()}
+            )
             assert reviewed.status_code == 200
         exported = client.get("/workspaces/tester/export", params={"document_id": doc})
-        records.append({"route": "export", "status": exported.status_code,
-                        "body": exported.json()})
+        records.append({"route": "export", "status": exported.status_code, "body": exported.json()})
         preserve(f"api-{i}.json", records)
         assert exported.status_code == 200, "benign caption blocks reviewed export"
         assert not uploaded.json()["warnings"]

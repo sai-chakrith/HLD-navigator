@@ -49,8 +49,9 @@ class ModelAnswer(BaseModel):
         elif self.reason != ("contradictory_evidence" if self.status == "conflict" else ""):
             raise ValueError("reason must agree with response status")
         if self.status == "conflict":
-            alternatives = {(c.source_id, c.snippet) for claim in self.claims
-                            for c in claim.citations}
+            alternatives = {
+                (c.source_id, c.snippet) for claim in self.claims for c in claim.citations
+            }
             if len(alternatives) < 2:
                 raise ValueError("conflict disclosure requires at least two cited alternatives")
         return self

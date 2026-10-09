@@ -206,7 +206,14 @@ def create_app(path=None):
             "coverage_review": coverage,
             "coverage_claim": "reviewed scoped inventory; not proof of document completeness",
             "document": document,
-            "entities": approved,
+            "entities": [
+                {
+                    **e,
+                    "evidence_review_state": "source_context_not_approved_facts",
+                    "approved_fields": ["name", *e["attributes"]],
+                }
+                for e in approved
+            ],
             "findings": findings(approved),
             **architecture_report(approved),
             "limitations": (

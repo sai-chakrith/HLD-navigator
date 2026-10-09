@@ -3,6 +3,8 @@ import json
 import requests
 import streamlit as st
 
+from hld_navigator.api_destination import validate_api_destination
+
 st.set_page_config(page_title="HLD Navigator", layout="wide")
 
 st.title("HLD Navigator · AUTOSAR HLD Review")
@@ -19,19 +21,23 @@ token = st.sidebar.text_input("Individual access token", type="password")
 def call(method, path, **kwargs):
 
     try:
+        destination = validate_api_destination(base)
         response = requests.request(
             method,
-            f"{base}/workspaces/{workspace}{path}",
+            f"{destination}/workspaces/{workspace}{path}",
             headers={"Authorization": f"Bearer {token}"},
             timeout=200 if path == "/query" else 60,
+            allow_redirects=False,
             **kwargs,
         )
 
+        if 300 <= response.status_code < 400:
+            raise requests.RequestException("API redirects are refused before forwarding tokens")
         response.raise_for_status()
 
         return response.json()
 
-    except requests.RequestException as error:
+    except (requests.RequestException, ValueError) as error:
         st.error(str(error))
 
         if getattr(error, "response", None) is not None:
@@ -244,6 +250,11 @@ with search:
 
                 st.code(evidence["text"])
 
+                if evidence.get("source_context"):
+                    st.caption(
+                        "Original source context: " + evidence["source_context"]["review_state"]
+                    )
+                    st.code(evidence["source_context"]["text"])
                 st.json(evidence["location"])
 
 with report:

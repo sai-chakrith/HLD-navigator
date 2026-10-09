@@ -6,6 +6,8 @@ import json
 def reference(entity):
     return {
         "entity_id": entity["id"],
+        "review_scope": "entity name and structured attributes only",
+        "context_review_state": "unreviewed_source_context",
         "evidence": entity["evidence"],
         "sources": entity.get("sources") or [],
         "location": entity["location"],

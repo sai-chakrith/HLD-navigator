@@ -5,6 +5,7 @@ from pathlib import Path
 import pdfplumber
 
 from .models import Block, Entity, Location, TableDeclaration
+from .named_docs import named_declarations
 from .ocr import page_ocr
 from .prose import merge_entities, parse_pdf_prose, parse_prose
 from .tables import table_lines
@@ -61,8 +62,9 @@ def _pdf_prose_block(page, tables, location: Location) -> Block | None:
             return True
         x = (obj["x0"] + obj["x1"]) / 2
         y = (obj["top"] + obj["bottom"]) / 2
-        return not any(left <= x <= right and top <= y <= bottom
-                       for left, top, right, bottom in bounds)
+        return not any(
+            left <= x <= right and top <= y <= bottom for left, top, right, bottom in bounds
+        )
 
     text = page.filter(outside_tables).extract_text() or ""
     return Block(text=text, location=location) if text.strip() else None
@@ -74,6 +76,7 @@ def extract(name: str, content: bytes) -> tuple[list[Block], list[Entity], list[
     warnings: list[dict] = []
 
     def accept(text: str, location: Location, prose=True) -> None:
+        entities.extend(named_declarations(text, location))
         entity, error = parse_line(text, location)
         if entity:
             entities.append(entity)

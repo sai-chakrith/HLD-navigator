@@ -97,7 +97,10 @@ def run(root):
                 raise ValueError("Unsafe archive entry")
         archive.extractall(root)
     (root / "artifacts.json").write_text(json.dumps(ARTIFACTS, indent=2), encoding="utf-8")
-    print("Pinned CPU artifacts ready. Run tools/local_benchmark.py", flush=True)
+    print(
+        "Pinned CPU artifacts ready. See docs/LOCAL_SETUP.md or tools/serve_local_model.py",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

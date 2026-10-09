@@ -55,7 +55,7 @@ SYSTEM_PROMPT = (
 DIRECTIVE_LINE = re.compile(
     r"(?:\b(?:system|assistant|developer)\s*(?:message|instruction|:)"
     r"|<\s*/?(?:assistant|system|developer)\b"
-    r"|\b(?:ignore|override)\s+(?:the\s+question|(?:all\s+)?(?:prior|previous|system)"
+    r"|\b(?:ignore|override|disregard)\s+(?:the\s+question|(?:all\s+)?(?:prior|previous|earlier|system)"
     r"\s*(?:constraints|instructions)?)(?:\b|[.!])"
     r"|\breviewer\s+instruction\s*:|\bclaim\s+you\s+have\b)",
     re.IGNORECASE,
@@ -127,6 +127,22 @@ def filter_answer(raw, evidence):
             if citation.snippet not in generation_text(source["text"]):
                 return abstention(evidence, "quarantined_directive_citation")
             citations.append(ResolvedAnswerCitation(**citation.model_dump(), block_id=source["id"]))
+        from .fact_answers import semantic_violation
+
+        checked_context = []
+        for citation in claim.citations:
+            source_text = sources[citation.source_id]["text"]
+            # A literal substring must not crop its containing assertion's
+            # qualifiers. This bounded check does not establish entailment.
+            containing = [
+                sentence
+                for sentence in re.split(r"(?<=[.!?])\s+", source_text)
+                if citation.snippet in sentence
+            ]
+            checked_context.append({"text": "\n".join(containing) or citation.snippet})
+        violation = semantic_violation(claim.text, checked_context)
+        if violation:
+            return abstention(evidence, violation)
         claims.append(ResolvedAnswerClaim(text=claim.text, citations=citations).model_dump())
     if response.status == "abstained":
         return abstention(evidence, response.reason)
@@ -148,6 +164,10 @@ def filter_answer(raw, evidence):
         "claims": claims,
         "reason": response.reason,
         "quarantined_source_ids": quarantined_sources(evidence),
+        "human_review_required": True,
+        "guarantee_scope": (
+            "literal citations and bounded field checks; general entailment unverified"
+        ),
     }
 
 
@@ -171,6 +191,11 @@ def supported(answer, evidence):
 
 
 def answer(question, evidence):
+    from .fact_answers import field_answer
+
+    structured = field_answer(question, evidence)
+    if structured:
+        return structured
     if not evidence:
         return {
             "mode": "insufficient_evidence",

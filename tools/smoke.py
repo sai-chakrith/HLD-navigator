@@ -24,6 +24,7 @@ def main():
         help="Explicitly retain configured local answer-model settings",
     )
     parser.add_argument("--question", default="TorqueInterface")
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     if args.with_model and not (
         os.getenv("HLD_NAVIGATOR_CHAT_MODEL") or os.getenv("HLD_NAVIGATOR_OLLAMA_MODEL")
@@ -142,13 +143,54 @@ def main():
                 )
                 if args.with_model:
                     report.update(
-                        validation="Synthetic live API/retrieval/model integration; "
+                        validation="Synthetic live API/retrieval/answer workflow; "
                         "not an independent semantic benchmark",
                         question=args.question,
                         response=response.json(),
+                        model_invoked=response.json()["mode"] == "local_model_synthesis",
                         model=env.get("HLD_NAVIGATOR_CHAT_MODEL")
                         or env.get("HLD_NAVIGATOR_OLLAMA_MODEL"),
                     )
+
+                def post(path, **kwargs):
+                    result = requests.post(url + path, headers=headers, timeout=3, **kwargs)
+                    result.raise_for_status()
+                    return result.json()
+
+                mixed = post(
+                    "/documents",
+                    data={"title": "Mixed assertions", "version": "1"},
+                    files={
+                        "file": (
+                            "mixed.md",
+                            b"The Torque signal has type uint16 and unit Nm. Engine has ASIL D.",
+                        )
+                    },
+                )["id"]
+                post(f"/documents/{mixed}/review", json={"approved": True, "reason": "Access only"})
+                rows = requests.get(
+                    url + "/entities", headers=headers, params={"document_id": mixed}, timeout=3
+                ).json()
+                signal = next(e for e in rows if e["kind"] == "signal")
+                post(
+                    f"/entities/{signal['id']}/review",
+                    json={"status": "approved", "reason": "Torque fields only"},
+                )
+                fact_result = post(
+                    "/query", json={"text": "What ASIL does Engine have?", "document_id": mixed}
+                )
+                assert (
+                    fact_result["mode"] == "insufficient_evidence" and not fact_result["evidence"]
+                )
+                context = post(
+                    "/query", json={"text": "Engine ASIL", "document_id": mixed, "scope": "source"}
+                )
+                assert context["mode"] == "source_review_required"
+                assert "ASIL D" in context["evidence"][0]["text"]
+                report["mixed_review_probe"] = {
+                    "fact_result": fact_result,
+                    "source_result": context,
+                }
             finally:
                 if os.name == "nt":
                     # The Windows venv launcher may spawn a child Python interpreter.
@@ -167,7 +209,7 @@ def main():
                     server.kill()
                     server.wait(timeout=5)
     name = "live-model-http.json" if args.with_model else "live-http.json"
-    (root / "docs/evidence" / name).write_text(json.dumps(report, indent=2))
+    (args.output or root / "docs/evidence" / name).write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))
 
 

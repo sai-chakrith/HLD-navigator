@@ -12,8 +12,11 @@ from test_tester_t3b1_literal import PROSE, parsed, verify_literal
 
 from hld_navigator.extraction import extract
 
-EVIDENCE = (Path(__file__).resolve().parents[1] / "tester_acceptance/evidence"
-            / datetime.now(UTC).strftime("t3b1-fix1-boundaries-%Y%m%dT%H%M%S%f"))
+EVIDENCE = (
+    Path(__file__).resolve().parents[1]
+    / "tester_acceptance/evidence"
+    / datetime.now(UTC).strftime("t3b1-fix1-boundaries-%Y%m%dT%H%M%S%f")
+)
 
 
 def preserve(name, data):
@@ -59,29 +62,41 @@ def recorded(name, content):
             if boundary_counts[page]:
                 rows[(page, 1, 2)] = original.crop((38, 117, 574, 171)).extract_text()
     blocks, entities, warnings = extract(name + ".pdf", content)
-    preserve(name + ".original-outputs.json", {"notice": "not independently validated",
-        "original_pages": pages, "independent_detected_table_counts": boundary_counts,
-        "independent_row_crops": [{"identity": k, "text": v} for k, v in rows.items()],
-        "blocks": [b.model_dump() for b in blocks], "entities": [e.model_dump() for e in entities],
-        "warnings": warnings})
+    preserve(
+        name + ".original-outputs.json",
+        {
+            "notice": "not independently validated",
+            "original_pages": pages,
+            "independent_detected_table_counts": boundary_counts,
+            "independent_row_crops": [{"identity": k, "text": v} for k, v in rows.items()],
+            "blocks": [b.model_dump() for b in blocks],
+            "entities": [e.model_dump() for e in entities],
+            "warnings": warnings,
+        },
+    )
     return pages, rows, boundary_counts, entities, warnings
 
 
-@pytest.mark.parametrize("responsibility", ["Receives command", "Sends status",
-                                          "Routes telemetry", "Transmits samples"])
+@pytest.mark.parametrize(
+    "responsibility", ["Receives command", "Sends status", "Routes telemetry", "Transmits samples"]
+)
 def test_detected_benign_responsibility_verbs(responsibility):
     name = "benign-" + responsibility.split()[0]
-    pages, rows, detected, entities, warnings = recorded(
-        name, boundary_pdf(True, responsibility))
+    pages, rows, detected, entities, warnings = recorded(name, boundary_pdf(True, responsibility))
     assert detected == {1: 1, 2: 1}
     assert not warnings
     assert len(entities) == 1
     entity = entities[0]
     assert (entity.kind, entity.name, entity.attributes) == (
-        "component", "Mistral", {"description": responsibility})
+        "component",
+        "Mistral",
+        {"description": responsibility},
+    )
     assert len(entity.sources) == 2
-    assert sorted((s["location"]["page"], s["location"]["table"], s["location"]["row"])
-                  for s in entity.sources) == [(1, 1, 2), (2, 1, 2)]
+    assert sorted(
+        (s["location"]["page"], s["location"]["table"], s["location"]["row"])
+        for s in entity.sources
+    ) == [(1, 1, 2), (2, 1, 2)]
     for source in entity.sources:
         verify_literal(source["text"], source["location"], pages, rows)
 
@@ -91,7 +106,8 @@ def test_actual_unsupported_outside_table_is_never_hidden(detected):
     statement = "Mistral component routes SafetyBudget."
     name = "unsupported-" + str(detected)
     pages, rows, counts, entities, warnings = recorded(
-        name, boundary_pdf(detected, "Receives command", [statement]))
+        name, boundary_pdf(detected, "Receives command", [statement])
+    )
     assert counts == {1: int(detected), 2: int(detected)}
     blockers = [w for w in warnings if w["code"] == "unsupported_relationship"]
     assert len(blockers) == 2
@@ -111,7 +127,8 @@ def test_actual_unsupported_outside_table_is_never_hidden(detected):
 @pytest.mark.parametrize("detected", [False, True])
 def test_undetected_table_is_not_silently_called_complete(detected):
     pages, rows, counts, entities, warnings = recorded(
-        "no-outside-" + str(detected), boundary_pdf(detected, "Receives command"))
+        "no-outside-" + str(detected), boundary_pdf(detected, "Receives command")
+    )
     assert counts == {1: int(detected), 2: int(detected)}
     if detected:
         assert not warnings and len(entities) == 1
@@ -125,14 +142,19 @@ def test_undetected_table_is_not_silently_called_complete(detected):
 
 
 @pytest.mark.parametrize("detected", [False, True])
-@pytest.mark.parametrize("qualifier", ["If warmup is complete,", "Unless calibration is pending,",
-                                      "Nacre component may"])
+@pytest.mark.parametrize(
+    "qualifier", ["If warmup is complete,", "Unless calibration is pending,", "Nacre component may"]
+)
 def test_qualifier_split_around_table_retained_and_blocks(detected, qualifier):
-    subject = ("provide the FrameBus interface to Solace." if qualifier.endswith("may") else
-               "Nacre component provides the FrameBus interface to Solace.")
+    subject = (
+        "provide the FrameBus interface to Solace."
+        if qualifier.endswith("may")
+        else "Nacre component provides the FrameBus interface to Solace."
+    )
     name = "split-" + qualifier.split()[0] + "-" + str(detected)
     pages, rows, counts, entities, warnings = recorded(
-        name, boundary_pdf(detected, "Sends status", [subject], qualifier))
+        name, boundary_pdf(detected, "Sends status", [subject], qualifier)
+    )
     assert counts == {1: int(detected), 2: int(detected)}
     blockers = [w for w in warnings if w["code"] == "ambiguous_prose"]
     assert len(blockers) == 2
@@ -167,10 +189,18 @@ def test_existing_pdf_bytes_all_literal_quotes_and_boundary_disclosure(category,
         assert not warnings
     elif category == "unknown":
         assert all(w["unresolved_actions"] == ["arbitrates"] for w in warnings)
-    preserve(name + ".all-literal.json", {"notice": "not independently validated",
-        "source_audit": audit, "original_pdf_char_text": authored_spaces,
-        "original_extract_text_pages": pages, "literal_source_granularity": "page context or row",
-        "T3b2_boundary": "Identical pages match equally by text; extraction records page identity, "
-                         "but current non-table persistence joins text and does not uniquely bind "
-                         "each originating occurrence. Re-ingestion required for legacy quotes.",
-        "frozen_acceptance_established": False})
+    preserve(
+        name + ".all-literal.json",
+        {
+            "notice": "not independently validated",
+            "source_audit": audit,
+            "original_pdf_char_text": authored_spaces,
+            "original_extract_text_pages": pages,
+            "literal_source_granularity": "page context or row",
+            "T3b2_boundary": "Identical pages match equally by text; "
+            "extraction records page identity, "
+            "but current non-table persistence joins text and does not uniquely bind "
+            "each originating occurrence. Re-ingestion required for legacy quotes.",
+            "frozen_acceptance_established": False,
+        },
+    )
